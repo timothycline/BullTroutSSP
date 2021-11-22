@@ -188,10 +188,11 @@ jags.params <- c("N",'p','FCR',
 #           model.file = here('Analysis','MPVA',modelScript.name), n.chains = 3, n.burnin = nIter/2, n.thin = 10,
 #           n.iter = nIter)
 mod_lm <- jags.parallel(jags.data, parameters.to.save = jags.params,
-                       model.file = here('Analysis','MPVA',modelScript.name), n.chains = 10, n.burnin = 50000, n.thin = 10,
-                       n.iter = 100000)
+                       model.file = here('Analysis','MPVA',modelScript.name), n.chains = 10, n.burnin = 100000, n.thin = 100,
+                       n.iter = 1000000)
 
 saveRDS(mod_lm,file=here('mod_lm.RDS'))
+
 #jm <- rjags::jags.model(here('Analysis','MPVA',modelScript.name),n.chains=3,data=jags.data)
 #update(jm,2000)
 #s<-coda.samples(jm, jags.params,n.iter=2000)
