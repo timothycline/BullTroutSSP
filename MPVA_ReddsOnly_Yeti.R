@@ -14,15 +14,12 @@ library(MCMCvis)
 #     Sys.info()["sysname"] == "Darwin" && getRversion() >= "4.0.0") {
 #   parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
 # }
-Redds<-read.csv('Data/Raw/USGS_Harmonized_BLT_Redd_Data_BLTPatchID.csv',header=T,stringsAsFactors = F) %>% 
+
+#Read in Redd data
+Redds<-read.csv(here('Data','Raw','USGS_Harmonized_BLT_Redd_Data_BLTpatchID.csv'),header=T,stringsAsFactors = F) %>% 
   filter(Year != 999) %>% 
   mutate(SiteID = paste(gsub(" ", "", CoreArea, fixed = TRUE),gsub(" ", "", LocalPopulation, fixed = TRUE),gsub(" ", "", Waterbody, fixed = TRUE),sep='.')) %>%
   filter(!(CoreArea %in% c('Bitterroot River','West Fork Bitterroot River')))
-#Read in Redd data
-# Redds<-read.csv(here('Data','Raw','USGS_Harmonized_BLT_Redd_Data_BLTPatchID.csv'),header=T,stringsAsFactors = F) %>% 
-#   filter(Year != 999) %>% 
-#   mutate(SiteID = paste(gsub(" ", "", CoreArea, fixed = TRUE),gsub(" ", "", LocalPopulation, fixed = TRUE),gsub(" ", "", Waterbody, fixed = TRUE),sep='.')) %>%
-#   filter(!(CoreArea %in% c('Bitterroot River','West Fork Bitterroot River')))
   #filter(Kovach_ID != '' & CoreArea2015 != 'CANADA' & !is.na(LocalPopulation2015))
 Redds$Redds[Redds$Redds==0] <- -999 #note true zeros
 
