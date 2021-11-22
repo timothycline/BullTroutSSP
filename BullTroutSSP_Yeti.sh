@@ -2,6 +2,12 @@
 
 ssh tcline@yeti.cr.usgs.gov
 
-git remote add origin https://github.com/timothycline/BullTroutSSP.git
-git branch -M main
-git push -u origin main
+#Create directory
+mkdir ~/BullTroutSSP
+#Write datafiles - Do in different terminal
+scp -r Data tcline@yeti-dtn.cr.usgs.gov:~/BullTroutSSP
+
+#clone git repository
+cd ~/BullTroutSSP
+
+git clone https://github.com/timothycline/BullTroutSSP.git
