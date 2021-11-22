@@ -10,10 +10,10 @@ library(MCMCvis)
 
 ## WORKAROUND: https://github.com/rstudio/rstudio/issues/6692
 ## Revert to 'sequential' setup of PSOCK cluster in RStudio Console on macOS and R 4.0.0
-if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) && 
-    Sys.info()["sysname"] == "Darwin" && getRversion() >= "4.0.0") {
-  parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
-}
+# if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) && 
+#     Sys.info()["sysname"] == "Darwin" && getRversion() >= "4.0.0") {
+#   parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+# }
 
 #Read in Redd data
 Redds<-read.csv(here('Data','Raw','USGS_Harmonized_BLT_Redd_Data_BLTPatchID.csv'),header=T,stringsAsFactors = F) %>% 
@@ -32,18 +32,18 @@ Redd_X[Redd_X == 0] <- NA #rewrite those zeros as NA values
 Redd_X[Redd_X == -999] <- 0 #add back in the true zeros
 
 Redd_X <- Redd_X[rowSums(!is.na(Redd_X))>=5,]
-nrow(Redd_X)
+#nrow(Redd_X)
 
-unique(Redd_X)
+#unique(Redd_X)
 
-pdf('LocalPop_ReddTimeSeries.pdf')
-for(i in 1:nrow(Redd_X)){
-  MT1<-row.names(Redd_X)[i]
-  CA1<-Redds$CoreArea[match(MT1,Redds$SiteID)]
-  LP1 <- Redds$LocalPopulation[match(MT1,Redds$SiteID)]
-  plot(as.numeric(colnames(Redd_X)),Redd_X[i,],type='o',pch=16,main=paste(CA1,MT1,sep='.'),ylab='Redd count')
-}
-dev.off()
+# pdf('LocalPop_ReddTimeSeries.pdf')
+# for(i in 1:nrow(Redd_X)){
+#   MT1<-row.names(Redd_X)[i]
+#   CA1<-Redds$CoreArea[match(MT1,Redds$SiteID)]
+#   LP1 <- Redds$LocalPopulation[match(MT1,Redds$SiteID)]
+#   plot(as.numeric(colnames(Redd_X)),Redd_X[i,],type='o',pch=16,main=paste(CA1,MT1,sep='.'),ylab='Redd count')
+# }
+# dev.off()
 
 # library(MARSS)
 # m1 <- MARSS(Redd_X,model=list(m=1,R='diagonal and equal'),form='dfa')
@@ -56,14 +56,11 @@ dev.off()
 # points(Browns[,1]-2,Browns[,2],type='l',col='darkred',lwd=3)
 
 
-
-nrow(Redd_X)
-
 PatchCovars <- read.csv(here('Data','CovariateData','BLT_Patches_US_Metrics_Oct28_21.csv'),header=T,stringsAsFactors=F) %>% 
   filter(Subpatch_Flag == 998) #FullPatches Only
 #997 a smaller patch the corresponds to where the fish actually spawn
 #998 the full patch
-head(PatchCovars)
+#head(PatchCovars)
 
 
 #JAGS models structure for MPVA
@@ -186,10 +183,13 @@ jags.params <- c("N",'p','FCR',
                  'CA_b0r','CA_b0phi',
                  'sigma_CA_b0r','sigma_CA_b0phi',
                  'sigmaR')
-nIter <- 50000
-mod_lm <- R2jags::jags(jags.data, parameters.to.save = jags.params,
-          model.file = here('Analysis','MPVA',modelScript.name), n.chains = 3, n.burnin = nIter/2, n.thin = 10,
-          n.iter = nIter)
+# nIter <- 5000
+# mod_lm <- R2jags::jags(jags.data, parameters.to.save = jags.params,
+#           model.file = here('Analysis','MPVA',modelScript.name), n.chains = 3, n.burnin = nIter/2, n.thin = 10,
+#           n.iter = nIter)
+mod_lm <- jags.parallel(jags.data, parameters.to.save = jags.params,
+                       model.file = here('Analysis','MPVA',modelScript.name), n.chains = 3, n.burnin = nIter/2, n.thin = 10,
+                       n.iter = nIter)
 
 n_in
 #jm <- rjags::jags.model(here('Analysis','MPVA',modelScript.name),n.chains=3,data=jags.data)
