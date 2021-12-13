@@ -149,13 +149,13 @@ model {
 file = here('Analysis','MPVA',modelScript.name))
 
 
-NPRED<-0 #REFERS TO FORWARD PREDICTIONS
+NPRED<-5 #REFERS TO FORWARD PREDICTIONS
 n_in_full <- cbind(matrix(NA,nrow=nrow(Redd_X),ncol=1),as.matrix(Redd_X),matrix(NA,nrow=nrow(Redd_X),ncol=NPRED))
 #
 n_in <- n_in_full#[sample.int(nrow(n_in_full),10,replace=F),]
 
 StartYears <- apply(n_in,1,FUN=function(x){return(which(!is.na(x))[1])})
-EndYears <- rep(ncol(Redd_X)+5,nrow(Redd_X))
+EndYears <- rep(ncol(Redd_X)+1,nrow(Redd_X))
 
 LocalPops <- Redds_Meta$LocalPopulation[match(row.names(n_in),Redds_Meta$SiteID)]
 CoreAreas <- Redds_Meta$CoreArea[match(row.names(n_in),Redds_Meta$SiteID)]
@@ -188,8 +188,8 @@ jags.params <- c("N",'p','FCR',
 #           model.file = here('Analysis','MPVA',modelScript.name), n.chains = 3, n.burnin = nIter/2, n.thin = 10,
 #           n.iter = nIter)
 mod_lm <- jags.parallel(jags.data, parameters.to.save = jags.params,
-                       model.file = here('Analysis','MPVA',modelScript.name), n.chains = 10, n.burnin = 100000, n.thin = 100,
-                       n.iter = 1000000)
+                       model.file = here('Analysis','MPVA',modelScript.name), n.chains = 10, n.burnin = 50000, n.thin = 100,
+                       n.iter = 100000)
 
 saveRDS(mod_lm,file=here('mod_lm.RDS'))
 
