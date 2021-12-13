@@ -152,10 +152,10 @@ file = here('Analysis','MPVA',modelScript.name))
 NPRED<-0 #REFERS TO FORWARD PREDICTIONS
 n_in_full <- cbind(matrix(NA,nrow=nrow(Redd_X),ncol=1),as.matrix(Redd_X),matrix(NA,nrow=nrow(Redd_X),ncol=NPRED))
 #
-n_in <- n_in_full[sample.int(nrow(n_in_full),10,replace=F),]
+n_in <- n_in_full#[sample.int(nrow(n_in_full),10,replace=F),]
 
 StartYears <- apply(n_in,1,FUN=function(x){return(which(!is.na(x))[1])})
-EndYears <- rep(ncol(Redd_X)+1,nrow(Redd_X))
+EndYears <- rep(ncol(Redd_X)+5,nrow(Redd_X))
 
 LocalPops <- Redds_Meta$LocalPopulation[match(row.names(n_in),Redds_Meta$SiteID)]
 CoreAreas <- Redds_Meta$CoreArea[match(row.names(n_in),Redds_Meta$SiteID)]
