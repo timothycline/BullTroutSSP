@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Bull Trout SSP — Population Viability Analysis"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Model Results
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "Show code"
+    fig-width: 10
+    fig-height: 6
+    embed-resources: false
