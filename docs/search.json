@@ -89,5 +89,12 @@
     "title": "R Notebook",
     "section": "",
     "text": "This is an R Markdown Notebook. When you execute code within the notebook, the results appear beneath the code.\nTry executing this chunk by clicking the Run button within the chunk or by placing your cursor inside it and pressing Cmd+Shift+Enter.\n\n\nShow code\nplot(cars)\n\n\n\n\n\nAdd a new chunk by clicking the Insert Chunk button on the toolbar or by pressing Cmd+Option+I.\nWhen you save the notebook, an HTML file containing the code and output will be saved alongside it (click the Preview button or press Cmd+Shift+K to preview the HTML file).\nThe preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike Knit, Preview does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed."
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data Overview",
+    "section": "",
+    "text": "Populations: 61 \nCore areas:  11 \nYears:       39 ( 1984 - 2022 )\nRedd sites:  83 \nCPUE obs:    0 across 0 sections\ntemp_mean:   10.054 | temp_sd: 1.535 \nAll dimension checks passed.\n\n\nRedd counts are organized by core area (tabs) and local population (panels). Each point is an observed count from one survey site; the line connects population-level totals across all sites in that population-year. Missing years reflect surveys that were not conducted."
   }
 ]

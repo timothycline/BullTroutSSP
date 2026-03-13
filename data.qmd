@@ -1,0 +1,120 @@
+---
+title: "Data Overview"
+subtitle: "Redd Count Time Series by Core Area and Population"
+date: today
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center"
+)
+```
+
+```{r load}
+library(here)
+library(tidyverse)
+
+source(here("Code", "MPVA_Functions1_4.R"))
+source(here("Code", "PrepareData_MPVA1_2.R"))
+
+# Build tidy redd count data frame
+# n_in: nSites x nYears  (rows = sites, cols = years)
+# LocalPops_Num: site -> population index
+# CoreArea_Num:  site -> core area index (site-level)
+pop_core_vec <- CoreArea_Num[match(seq_len(nPop), LocalPops_Num)]
+
+df_redds <- as.data.frame(n_in) |>
+  setNames(as.character(DatYears)) |>
+  mutate(
+    site     = row_number(),
+    pop      = LocalPops_Num,
+    pop_name = U_LocalPops_In[LocalPops_Num],
+    core     = CoreArea_Num[match(LocalPops_Num, LocalPops_Num)],
+    core_name = U_CoreAreas_In[core]
+  ) |>
+  pivot_longer(
+    cols      = as.character(DatYears),
+    names_to  = "year",
+    values_to = "redds"
+  ) |>
+  mutate(year = as.integer(year))
+```
+
+Redd counts are organized by core area (tabs) and local population (panels).
+Each point is an observed count from one survey site; the line connects
+population-level totals across all sites in that population-year.
+Missing years reflect surveys that were not conducted.
+
+::: {.panel-tabset}
+
+```{r core-tabs, results='asis'}
+cores <- sort(unique(df_redds$core))
+
+for (ca in cores) {
+
+  core_label <- U_CoreAreas_In[ca]
+  pops_in_core <- sort(unique(df_redds$pop[df_redds$core == ca]))
+  n_pops <- length(pops_in_core)
+
+  cat("\n## ", core_label, "\n\n", sep = "")
+
+  # Summary stats for this core
+  df_core <- df_redds |> filter(core == ca)
+  n_obs   <- sum(!is.na(df_core$redds))
+  yr_range <- range(df_core$year[!is.na(df_core$redds)])
+
+  cat(
+    sprintf(
+      "**%d local populations** | **%d – %d** | **%d** site-year observations\n\n",
+      n_pops, yr_range[1], yr_range[2], n_obs
+    )
+  )
+
+  # Build population totals (sum across sites per pop-year)
+  df_pop_total <- df_core |>
+    group_by(pop_name, year) |>
+    summarise(total = sum(redds, na.rm = TRUE),
+              any_obs = any(!is.na(redds)),
+              .groups = "drop") |>
+    mutate(total = if_else(any_obs, total, NA_real_))
+
+  # Wrap in a code chunk via knitr::knit_expand isn't needed —
+  # we just print the ggplot directly
+  p <- ggplot() +
+    # Site-level raw counts as points
+    geom_point(
+      data = df_core |> filter(!is.na(redds)),
+      aes(x = year, y = redds),
+      alpha = 0.5, size = 1.5, color = "grey50"
+    ) +
+    # Population total as line
+    geom_line(
+      data = df_pop_total |> filter(!is.na(total)),
+      aes(x = year, y = total),
+      linewidth = 0.9, color = "steelblue"
+    ) +
+    geom_point(
+      data = df_pop_total |> filter(!is.na(total)),
+      aes(x = year, y = total),
+      size = 2, color = "steelblue"
+    ) +
+    facet_wrap(~pop_name, scales = "free_y",
+               ncol = min(3, n_pops)) +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 5)) +
+    labs(
+      x       = "Year",
+      y       = "Redd Count",
+      caption = "Grey points = individual survey sites; blue line = population total"
+    ) +
+    theme_bw(base_size = 12) +
+    theme(strip.text = element_text(size = 9, face = "bold"))
+
+  print(p)
+  cat("\n\n")
+}
+```
+
+:::
