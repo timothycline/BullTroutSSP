@@ -1,7 +1,13 @@
 ---
 title: "Data Overview"
-subtitle: "Redd Count Time Series by Core Area and Population"
+subtitle: "Redd Counts and Environmental Covariates by Core Area and Population"
 date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Core Areas & Populations"
 ---
 
 ```{r setup, include=FALSE}
@@ -13,108 +19,222 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r load}
+```{r load, include=FALSE}
 library(here)
 library(tidyverse)
+library(patchwork)
 
 source(here("Code", "MPVA_Functions1_4.R"))
-source(here("Code", "PrepareData_MPVA1_2.R"))
+suppressMessages(source(here("Code", "PrepareData_MPVA1_2.R")))
 
-# Build tidy redd count data frame
-# n_in: nSites x nYears  (rows = sites, cols = years)
-# LocalPops_Num: site -> population index
-# CoreArea_Num:  site -> core area index (site-level)
+# ── Index helpers ─────────────────────────────────────────────────────────────
 pop_core_vec <- CoreArea_Num[match(seq_len(nPop), LocalPops_Num)]
 
+# ── Tidy redd counts ──────────────────────────────────────────────────────────
 df_redds <- as.data.frame(n_in) |>
   setNames(as.character(DatYears)) |>
   mutate(
-    site     = row_number(),
-    pop      = LocalPops_Num,
-    pop_name = U_LocalPops_In[LocalPops_Num],
-    core     = CoreArea_Num[match(LocalPops_Num, LocalPops_Num)],
+    site      = row_number(),
+    pop       = LocalPops_Num,
+    pop_name  = U_LocalPops_In[LocalPops_Num],
+    core      = pop_core_vec[LocalPops_Num],
     core_name = U_CoreAreas_In[core]
   ) |>
-  pivot_longer(
-    cols      = as.character(DatYears),
-    names_to  = "year",
-    values_to = "redds"
-  ) |>
+  pivot_longer(as.character(DatYears), names_to = "year", values_to = "redds") |>
   mutate(year = as.integer(year))
-```
 
-Redd counts are organized by core area (tabs) and local population (panels).
-Each point is an observed count from one survey site; the line connects
-population-level totals across all sites in that population-year.
-Missing years reflect surveys that were not conducted.
+# Population total per year (sum across sites)
+df_pop_total <- df_redds |>
+  group_by(pop, pop_name, core, core_name, year) |>
+  summarise(total   = sum(redds, na.rm = TRUE),
+            any_obs = any(!is.na(redds)),
+            .groups = "drop") |>
+  mutate(total = if_else(any_obs, total, NA_real_))
 
-::: {.panel-tabset}
+# ── Tidy flow (log summer Q, pre-z-score, actual calendar years) ───────────
+# xSumFlow is an xtabs-derived matrix; use as.data.frame.matrix() not as.data.frame()
+df_flow <- as.data.frame.matrix(xSumFlow) |>
+  rownames_to_column("pop_name") |>
+  pivot_longer(-pop_name, names_to = "year", values_to = "log_flow") |>
+  mutate(year = as.integer(year)) |>
+  filter(!is.na(log_flow), is.finite(log_flow))
 
-```{r core-tabs, results='asis'}
-cores <- sort(unique(df_redds$core))
+# ── Tidy temperature (°C, pre-z-score, actual calendar years) ────────────
+df_temp <- as.data.frame.matrix(xtTemp) |>
+  rownames_to_column("pop_name") |>
+  pivot_longer(-pop_name, names_to = "year", values_to = "aug_temp_C") |>
+  mutate(year = as.integer(year),
+         aug_temp_C = if_else(aug_temp_C == 0, NA_real_, aug_temp_C)) |>
+  filter(!is.na(aug_temp_C))
 
-for (ca in cores) {
+# ── Tidy invasives (back-transform logit → proportion) ───────────────────
+df_inv <- InvRatIn_raw |>
+  as.data.frame() |>
+  rownames_to_column("pop_name") |>
+  pivot_longer(-pop_name, names_to = "year", values_to = "inv_logit") |>
+  mutate(year    = as.integer(year),
+         inv_prop = plogis(inv_logit)) |>
+  filter(!is.na(inv_prop))
 
-  core_label <- U_CoreAreas_In[ca]
-  pops_in_core <- sort(unique(df_redds$pop[df_redds$core == ca]))
-  n_pops <- length(pops_in_core)
+# ── Tidy LKT (core-level; show z-scored logit index) ────────────────────
+df_lkt <- LKT_raw |>
+  as.data.frame() |>
+  rownames_to_column("core_name") |>
+  pivot_longer(-core_name, names_to = "year", values_to = "lkt_index") |>
+  mutate(year = as.integer(year)) |>
+  filter(!is.na(lkt_index))
 
-  cat("\n## ", core_label, "\n\n", sep = "")
+# ── Static covariate table ────────────────────────────────────────────────
+df_static <- tibble(
+  pop_name    = U_LocalPops_In,
+  core_name   = U_CoreAreas_In[pop_core_vec],
+  adfluvial   = AdfluvialIn,
+  vb_zscored  = round(VBIn,    2),
+  flood_zscored = round(FloodIn, 2),
+  rdvb_zscored  = round(RDVBIn,  2),
+  extent_km   = round(extent_pop / 1000, 2)
+)
 
-  # Summary stats for this core
-  df_core <- df_redds |> filter(core == ca)
-  n_obs   <- sum(!is.na(df_core$redds))
-  yr_range <- range(df_core$year[!is.na(df_core$redds)])
+# ── Plot helpers ──────────────────────────────────────────────────────────────
+theme_data <- theme_bw(base_size = 11) +
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size = 10))
 
-  cat(
-    sprintf(
-      "**%d local populations** | **%d – %d** | **%d** site-year observations\n\n",
-      n_pops, yr_range[1], yr_range[2], n_obs
-    )
-  )
+plot_redds <- function(pop_idx) {
+  pn <- U_LocalPops_In[pop_idx]
+  d_sites  <- df_redds    |> filter(pop == pop_idx, !is.na(redds))
+  d_totals <- df_pop_total |> filter(pop == pop_idx, !is.na(total))
+  ggplot() +
+    geom_col(data = d_totals, aes(x = year, y = total),
+             fill = "steelblue", alpha = 0.25, width = 0.8) +
+    geom_point(data = d_sites, aes(x = year, y = redds),
+               color = "grey30", alpha = 0.7, size = 1.8) +
+    geom_line(data = d_totals, aes(x = year, y = total),
+              color = "steelblue", linewidth = 0.9) +
+    labs(x = NULL, y = "Redd count", title = "Redd counts") +
+    theme_data
+}
 
-  # Build population totals (sum across sites per pop-year)
-  df_pop_total <- df_core |>
-    group_by(pop_name, year) |>
-    summarise(total = sum(redds, na.rm = TRUE),
-              any_obs = any(!is.na(redds)),
-              .groups = "drop") |>
-    mutate(total = if_else(any_obs, total, NA_real_))
+plot_flow <- function(pop_idx) {
+  pn <- U_LocalPops_In[pop_idx]
+  d <- df_flow |> filter(pop_name == pn)
+  if (nrow(d) == 0) return(ggplot() + labs(title = "Flow: no data") + theme_data)
+  ggplot(d, aes(x = year, y = log_flow)) +
+    geom_line(color = "steelblue3", linewidth = 0.9) +
+    geom_point(size = 1.5, color = "steelblue3") +
+    labs(x = NULL, y = "Log summer discharge", title = "Summer streamflow") +
+    theme_data
+}
 
-  # Wrap in a code chunk via knitr::knit_expand isn't needed —
-  # we just print the ggplot directly
-  p <- ggplot() +
-    # Site-level raw counts as points
-    geom_point(
-      data = df_core |> filter(!is.na(redds)),
-      aes(x = year, y = redds),
-      alpha = 0.5, size = 1.5, color = "grey50"
-    ) +
-    # Population total as line
-    geom_line(
-      data = df_pop_total |> filter(!is.na(total)),
-      aes(x = year, y = total),
-      linewidth = 0.9, color = "steelblue"
-    ) +
-    geom_point(
-      data = df_pop_total |> filter(!is.na(total)),
-      aes(x = year, y = total),
-      size = 2, color = "steelblue"
-    ) +
-    facet_wrap(~pop_name, scales = "free_y",
-               ncol = min(3, n_pops)) +
-    scale_x_continuous(breaks = scales::pretty_breaks(n = 5)) +
-    labs(
-      x       = "Year",
-      y       = "Redd Count",
-      caption = "Grey points = individual survey sites; blue line = population total"
-    ) +
-    theme_bw(base_size = 12) +
-    theme(strip.text = element_text(size = 9, face = "bold"))
+plot_temp <- function(pop_idx) {
+  pn <- U_LocalPops_In[pop_idx]
+  d <- df_temp |> filter(pop_name == pn)
+  if (nrow(d) == 0) return(ggplot() + labs(title = "Temperature: no data") + theme_data)
+  ggplot(d, aes(x = year, y = aug_temp_C)) +
+    geom_line(color = "tomato3", linewidth = 0.9) +
+    geom_point(size = 1.5, color = "tomato3") +
+    labs(x = NULL, y = "August temperature (°C)", title = "August water temperature") +
+    theme_data
+}
 
-  print(p)
-  cat("\n\n")
+plot_inv <- function(pop_idx) {
+  pn <- U_LocalPops_In[pop_idx]
+  d <- df_inv |> filter(pop_name == pn)
+  if (nrow(d) == 0) return(ggplot() + labs(title = "Invasives: no data") + theme_data)
+  ggplot(d, aes(x = year, y = inv_prop)) +
+    geom_area(fill = "darkorange", alpha = 0.2) +
+    geom_line(color = "darkorange", linewidth = 0.9) +
+    geom_point(size = 1.5, color = "darkorange") +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1),
+                       limits = c(0, NA)) +
+    labs(x = NULL, y = "Non-native proportion", title = "Non-native trout ratio") +
+    theme_data
+}
+
+plot_lkt <- function(core_idx) {
+  cn <- U_CoreAreas_In[core_idx]
+  d <- df_lkt |> filter(core_name == cn)
+  if (nrow(d) == 0) return(ggplot() + labs(title = "Lake trout: no data") + theme_data)
+  ggplot(d, aes(x = year, y = lkt_index)) +
+    geom_hline(yintercept = 0, linetype = 2, color = "grey60") +
+    geom_area(fill = "purple4", alpha = 0.15) +
+    geom_line(color = "purple4", linewidth = 0.9) +
+    geom_point(size = 1.5, color = "purple4") +
+    labs(x = NULL, y = "Lake trout index\n(standardized logit)",
+         title = "Lake trout abundance index") +
+    theme_data
 }
 ```
 
-:::
+Each section below corresponds to one **core area**. Use the table of contents
+on the right to jump to a core area or local population of interest.
+
+For each population, plots show:
+
+- **Redd counts** — bars = population total, points = individual survey sites
+- **Summer streamflow** — log(annual summer discharge); actual calendar year of measurement (effective lag = 6 yr in model)
+- **August temperature** — mean August water temperature (°C); actual calendar year of measurement (effective lag = 6 yr in model)
+- **Non-native trout ratio** — proportion of non-native trout catch (brown, brook, rainbow)
+
+Each core area also shows the **lake trout abundance index** (core-level covariate).
+
+---
+
+```{r all-sections, results='asis', fig.width=11, fig.height=9}
+for (ca in seq_len(nCore)) {
+
+  core_label   <- U_CoreAreas_In[ca]
+  pops_in_core <- which(pop_core_vec == ca)
+  n_pops       <- length(pops_in_core)
+
+  # ── Core area header ──────────────────────────────────────────────────────
+  cat("\n\n## ", core_label, "\n\n", sep = "")
+
+  # Summary line
+  redd_core  <- df_redds |> filter(core == ca)
+  yr_range   <- range(redd_core$year[!is.na(redd_core$redds)])
+  cat(sprintf("**%d local population%s** | **%d – %d**\n\n",
+              n_pops, if (n_pops > 1) "s" else "", yr_range[1], yr_range[2]))
+
+  # Static covariate table for this core
+  stab <- df_static |>
+    filter(core_name == core_label) |>
+    select(Population = pop_name,
+           `Adfluvial` = adfluvial,
+           `Valley bottom (z)` = vb_zscored,
+           `Floodplain width (z)` = flood_zscored,
+           `Road density VB (z)` = rdvb_zscored,
+           `Extent (km)` = extent_km)
+
+  print(
+    knitr::kable(stab, format = "html", align = c("l","c","r","r","r","r")) |>
+    kableExtra::kable_styling(bootstrap_options = c("striped","condensed"),
+                              font_size = 12, full_width = FALSE)
+  )
+  cat("\n\n")
+
+  # Lake trout plot (core-level)
+  has_lkt <- any(!is.na(df_lkt$lkt_index[df_lkt$core_name == core_label]))
+  if (has_lkt) {
+    p_lkt <- plot_lkt(ca) +
+      labs(title = paste0(core_label, " — Lake trout abundance index"))
+    print(p_lkt)
+    cat("\n\n")
+  }
+
+  # ── Population subsections ────────────────────────────────────────────────
+  for (pop_idx in pops_in_core) {
+    pop_label <- U_LocalPops_In[pop_idx]
+    cat("\n\n### ", pop_label, "\n\n", sep = "")
+
+    p1 <- plot_redds(pop_idx)
+    p2 <- plot_flow(pop_idx)
+    p3 <- plot_temp(pop_idx)
+    p4 <- plot_inv(pop_idx)
+
+    combined <- (p1 | p2) / (p3 | p4)
+    print(combined)
+    cat("\n\n")
+  }
+}
+```
