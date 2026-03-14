@@ -30,6 +30,22 @@ suppressMessages(source(here("Code", "PrepareData_MPVA1_2.R")))
 # ── Index helpers ─────────────────────────────────────────────────────────────
 pop_core_vec <- CoreArea_Num[match(seq_len(nPop), LocalPops_Num)]
 
+# ── Population display names ("Boulder Creek (09040001BLD)") ─────────────────
+# PatchWB_In format: "BLTPatchID.WaterbodyName" — one row per survey site
+wb_raw <- sapply(PatchWB_In, function(x) strsplit(x, "\\.")[[1]][2])
+# Insert spaces before capital letters to recover readable name
+wb_readable <- trimws(gsub("([a-z0-9'])([A-Z])", "\\1 \\2", wb_raw))
+# Map to populations: use the first site's name for each population
+pop_display <- sapply(seq_len(nPop), function(p) {
+  first_site <- which(LocalPops_Num == p)[1]
+  paste0(wb_readable[first_site], " (", U_LocalPops_In[p], ")")
+})
+# Anchor-safe ID for each population (lowercase, hyphens)
+pop_anchor <- tolower(gsub("[^a-zA-Z0-9]+", "-", U_LocalPops_In))
+
+# ── Core area anchor IDs ──────────────────────────────────────────────────────
+core_anchor <- tolower(gsub("[^a-zA-Z0-9]+", "-", U_CoreAreas_In))
+
 # ── Tidy redd counts ──────────────────────────────────────────────────────────
 df_redds <- as.data.frame(n_in) |>
   setNames(as.character(DatYears)) |>
@@ -87,6 +103,7 @@ df_lkt <- LKT_raw |>
 # ── Static covariate table ────────────────────────────────────────────────
 df_static <- tibble(
   pop_name    = U_LocalPops_In,
+  pop_display = pop_display,
   core_name   = U_CoreAreas_In[pop_core_vec],
   adfluvial   = AdfluvialIn,
   vb_zscored  = round(VBIn,    2),
@@ -166,19 +183,23 @@ plot_lkt <- function(core_idx) {
 }
 ```
 
-Each section below corresponds to one **core area**. Use the table of contents
-on the right to jump to a core area or local population of interest.
+For each population, plots show redd counts, summer streamflow, August water
+temperature, and non-native trout ratio. Each core area section also includes a
+static covariate table and a lake trout abundance index plot (core-level).
+Covariate years shown are the actual measurement years; the model applies an
+effective 6-year lag.
 
-For each population, plots show:
-
-- **Redd counts** — bars = population total, points = individual survey sites
-- **Summer streamflow** — log(annual summer discharge); actual calendar year of measurement (effective lag = 6 yr in model)
-- **August temperature** — mean August water temperature (°C); actual calendar year of measurement (effective lag = 6 yr in model)
-- **Non-native trout ratio** — proportion of non-native trout catch (brown, brook, rainbow)
-
-Each core area also shows the **lake trout abundance index** (core-level covariate).
-
----
+```{r core-index, results='asis'}
+# Clickable core area index
+cat("## Jump to core area\n\n")
+for (ca in seq_len(nCore)) {
+  n_pops <- sum(pop_core_vec == ca)
+  cat(sprintf("- [%s](#%s) — %d population%s\n",
+              U_CoreAreas_In[ca], core_anchor[ca],
+              n_pops, if (n_pops > 1) "s" else ""))
+}
+cat("\n---\n\n")
+```
 
 ```{r all-sections, results='asis', fig.width=11, fig.height=9}
 for (ca in seq_len(nCore)) {
@@ -187,8 +208,8 @@ for (ca in seq_len(nCore)) {
   pops_in_core <- which(pop_core_vec == ca)
   n_pops       <- length(pops_in_core)
 
-  # ── Core area header ──────────────────────────────────────────────────────
-  cat("\n\n## ", core_label, "\n\n", sep = "")
+  # ── Core area header (explicit anchor ID for reliable TOC linking) ──────────
+  cat(sprintf("\n\n## %s {#%s}\n\n", core_label, core_anchor[ca]))
 
   # Summary line
   redd_core  <- df_redds |> filter(core == ca)
@@ -196,10 +217,10 @@ for (ca in seq_len(nCore)) {
   cat(sprintf("**%d local population%s** | **%d – %d**\n\n",
               n_pops, if (n_pops > 1) "s" else "", yr_range[1], yr_range[2]))
 
-  # Static covariate table for this core
+  # Static covariate table for this core (use display names)
   stab <- df_static |>
     filter(core_name == core_label) |>
-    select(Population = pop_name,
+    select(Population = pop_display,
            `Adfluvial` = adfluvial,
            `Valley bottom (z)` = vb_zscored,
            `W95 flood frequency (z)` = flood_zscored,
@@ -224,8 +245,8 @@ for (ca in seq_len(nCore)) {
 
   # ── Population subsections ────────────────────────────────────────────────
   for (pop_idx in pops_in_core) {
-    pop_label <- U_LocalPops_In[pop_idx]
-    cat("\n\n### ", pop_label, "\n\n", sep = "")
+    cat(sprintf("\n\n### %s {#%s}\n\n",
+                pop_display[pop_idx], pop_anchor[pop_idx]))
 
     p1 <- plot_redds(pop_idx)
     p2 <- plot_flow(pop_idx)
