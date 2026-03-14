@@ -1,5 +1,5 @@
 ---
-title: "Bull Trout Species Status Process"
+title: "Bull Trout Status and Threats"
 subtitle: "Multi-Population Viability Analysis"
 format:
   html:
@@ -17,9 +17,10 @@ yr_range <- range(fit$DatYears)
 Bull trout (*Salvelinus confluentus*) are a cold-water obligate salmonid
 native to western North America and listed as Threatened under the U.S.
 Endangered Species Act. This site presents a hierarchical state-space
-population model developed as part of the Bull Trout Species Status Process
-(SSP) to synthesize redd count monitoring data across the Northern Rocky
-Mountains and assess population status and vulnerability.
+population model developed through a collaboration between the US Geological Survey,
+US Fish and Wildlife Service, Montana Fish Wildlife and Parks, and Montana State University.
+The goal is to synthesize redd count monitoring data across the Northern Rocky
+Mountains and assess population status, threats, and vulnerability to inform conservation strategies.
 
 ---
 
@@ -33,7 +34,7 @@ to estimate:
 - **Density dependence** at the population level
 - **Effects of climate** (summer streamflow, August water temperature) on population growth
 - **Biotic threats** from non-native trout and lake trout
-- **Habitat quality** indicators (adfluvial life history access, valley bottom area, W95 winter flood frequency, road density)
+- **Habitat quality** indicators (adfluvial life history access, valley bottom extent, W95 winter flood frequency, road density)
 
 ---
 
@@ -73,15 +74,15 @@ Parameter uncertainty is propagated via the delta method.
 ## Species background
 
 Bull trout require cold, clear, complex streams for spawning and rearing.
-They are highly sensitive to:
+They are possibly sensitive to:
 
 | Threat | Mechanism |
 |--------|-----------|
 | Warming water temperatures | Upper thermal tolerance ~13–15 °C for spawning adults; lethal above ~20 °C |
 | Altered hydrology | Peak flow timing and winter flood frequency affect gravel incubation success |
-| Non-native trout | Competitive displacement and hybridization (brook trout); predation (lake trout) |
+| Non-native trout | Competitive displacement and hybridization (brown trout, brook trout); predation (lake trout) |
 | Road density | Fine sediment delivery to spawning gravels; barrier culverts |
-| Loss of migratory access | Adfluvial populations (lake-resident adults) have higher productivity |
+| Lack or loss of migratory access | Adfluvial populations (lake-resident adults) have higher productivity |
 
 ---
 
