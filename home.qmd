@@ -6,6 +6,12 @@ format:
     toc: false
 ---
 
+<!-- =====================================================================
+     COLLABORATORS: Feel free to edit any text in this file.
+     Please DO NOT modify anything inside ```{r} ... ``` code blocks —
+     those generate content automatically from the model.
+     ===================================================================== -->
+
 ```{r setup, include=FALSE}
 library(here)
 fit      <- readRDS(here("Results", "MPVA_Fit_D1_2_M1_14_R1_14.RDS"))
@@ -13,6 +19,11 @@ n_pop    <- fit$data_list$nPop
 n_core   <- fit$data_list$nCore
 yr_range <- range(fit$DatYears)
 ```
+Authors: 
+Timothy Cline, Montana State University (corresponding author timothy.cline2@montana.edu)
+Clint Muhlfeld, USGS - Northern Rocky Mountain Science Center 
+Robert Al-Chokhachy, USGS - Northern Rocky Mountain Science Center
+
 
 Bull trout (*Salvelinus confluentus*) are a cold-water obligate salmonid
 native to western North America and listed as Threatened under the U.S.

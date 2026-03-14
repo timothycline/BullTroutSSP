@@ -10,6 +10,12 @@ format:
     toc-title: "Core Areas & Populations"
 ---
 
+<!-- =====================================================================
+     COLLABORATORS: Feel free to edit the introductory text below.
+     Please DO NOT modify anything inside ```{r} ... ``` code blocks —
+     those generate all the plots and tables automatically.
+     ===================================================================== -->
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   echo    = FALSE,
