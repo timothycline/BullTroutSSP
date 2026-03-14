@@ -136,7 +136,7 @@ The factor of 0.5 converts spawning adults to females (one redd per female).
 | Invasive slope $\beta_\text{INV}$ | Global hyper-mean → Population |
 | Lake trout slope $\beta_\text{LKT}$ | Global hyper-mean → Core area |
 | Adfluvial access, valley bottom | Global scalar on $b_{0r}$ mean |
-| Floodplain width, road density | Global scalar on $b_{0r}$ mean |
+| W95 winter flood frequency, road density | Global scalar on $b_{0r}$ mean |
 
 ---
 
@@ -272,7 +272,7 @@ global_pars <- c("bAdf", "bVB", "bFlood", "bRD", "bLKT_M")
 global_df   <- bind_rows(lapply(global_pars, extract_fe)) |>
   mutate(
     Label = c("Adfluvial access", "Valley bottom width (VB)",
-              "Floodplain width (W95)", "Road density (valley bottom)",
+              "W95 winter flood frequency", "Road density (valley bottom)",
               "Lake trout ratio (cross-system mean)"),
     sig = ifelse(Lower95 > 0 | Upper95 < 0, "*", "")
   )

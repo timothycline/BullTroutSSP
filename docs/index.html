@@ -423,7 +423,7 @@ All dimension checks passed.</code></pre>
 <td>Global scalar on <span class="math inline">\(b_{0r}\)</span> mean</td>
 </tr>
 <tr class="even">
-<td>Floodplain width, road density</td>
+<td>W95 winter flood frequency, road density</td>
 <td>Global scalar on <span class="math inline">\(b_{0r}\)</span> mean</td>
 </tr>
 </tbody>
@@ -694,7 +694,7 @@ Worst-fitting sites:
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>global_df   <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">lapply</span>(global_pars, extract_fe)) <span class="sc">|&gt;</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Label =</span> <span class="fu">c</span>(<span class="st">"Adfluvial access"</span>, <span class="st">"Valley bottom width (VB)"</span>,</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Floodplain width (W95)"</span>, <span class="st">"Road density (valley bottom)"</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"W95 winter flood frequency"</span>, <span class="st">"Road density (valley bottom)"</span>,</span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Lake trout ratio (cross-system mean)"</span>),</span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">sig =</span> <span class="fu">ifelse</span>(Lower95 <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> Upper95 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="st">"*"</span>, <span class="st">""</span>)</span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  )</span>
