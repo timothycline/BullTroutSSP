@@ -6,10 +6,12 @@ website:
   title: "Bull Trout SSP — Population Viability Analysis"
   navbar:
     left:
-      - href: index.qmd
-        text: Model Results
+      - href: home.qmd
+        text: Home
       - href: data.qmd
         text: Data
+      - href: index.qmd
+        text: Model Results
 
 format:
   html:

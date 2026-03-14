@@ -166,5 +166,33 @@
     "title": "Data Overview",
     "section": "UpperClarkForkRiver",
     "text": "UpperClarkForkRiver\n3 local populations | 1994 – 2022\n\n\n\n\n\nPopulation\n\n\nAdfluvial\n\n\nValley bottom (z)\n\n\nW95 flood frequency (z)\n\n\nRoad density VB (z)\n\n\nExtent (km)\n\n\n\n\n\n\n17010201TWI\n\n\n0\n\n\n0.09\n\n\n0.09\n\n\n0.87\n\n\n0\n\n\n\n\n17010201WAR\n\n\n0\n\n\n1.18\n\n\n0.61\n\n\n2.21\n\n\n0\n\n\n\n\n17010202BOU\n\n\n0\n\n\n1.20\n\n\n-0.26\n\n\n1.48\n\n\n0\n\n\n\n\n\n\n\n\n\n\n\n17010201TWI\n\n\n\n\n\n\n\n17010201WAR\n\n\n\n\n\n\n\n17010202BOU"
+  },
+  {
+    "objectID": "home.html",
+    "href": "home.html",
+    "title": "Bull Trout Species Status Process",
+    "section": "",
+    "text": "Bull trout (Salvelinus confluentus) are a cold-water obligate salmonid native to western North America and listed as Threatened under the U.S. Endangered Species Act. This site presents a hierarchical state-space population model developed as part of the Bull Trout Species Status Process (SSP) to synthesize redd count monitoring data across the Northern Rocky Mountains and assess population status and vulnerability."
+  },
+  {
+    "objectID": "home.html#what-this-model-does",
+    "href": "home.html#what-this-model-does",
+    "title": "Bull Trout Species Status Process",
+    "section": "What this model does",
+    "text": "What this model does\nThe model integrates long-term redd count time series (1984–2022) from 61 local populations nested within 11 core areas to estimate:\n\nPopulation-specific growth rates and how they vary with environmental conditions\nDensity dependence at the population level\nEffects of climate (summer streamflow, August water temperature) on population growth\nBiotic threats from non-native trout and lake trout\nHabitat quality indicators (adfluvial life history access, valley bottom area, W95 winter flood frequency, road density)"
+  },
+  {
+    "objectID": "home.html#site-structure",
+    "href": "home.html#site-structure",
+    "title": "Bull Trout Species Status Process",
+    "section": "Site structure",
+    "text": "Site structure\n\n\n\nData\nExplore the raw redd count time series and environmental covariate data for each core area and local population. Use the right-side table of contents to navigate directly to the populations under your purview.\n\n\n\nModel Results\nView fitted population trajectories, observed vs. fitted redd counts, covariate effect estimates (including population-specific random slopes), and model variance components.\n\n\n\nAbout the model\nThe model is a hierarchical state-space Ricker model fitted with TMB (Template Model Builder). Random effects are integrated out via the Laplace approximation. Parameter uncertainty is propagated via the delta method."
+  },
+  {
+    "objectID": "home.html#species-background",
+    "href": "home.html#species-background",
+    "title": "Bull Trout Species Status Process",
+    "section": "Species background",
+    "text": "Species background\nBull trout require cold, clear, complex streams for spawning and rearing. They are highly sensitive to:\n\n\n\n\n\n\n\nThreat\nMechanism\n\n\n\n\nWarming water temperatures\nUpper thermal tolerance ~13–15 °C for spawning adults; lethal above ~20 °C\n\n\nAltered hydrology\nPeak flow timing and winter flood frequency affect gravel incubation success\n\n\nNon-native trout\nCompetitive displacement and hybridization (brook trout); predation (lake trout)\n\n\nRoad density\nFine sediment delivery to spawning gravels; barrier culverts\n\n\nLoss of migratory access\nAdfluvial populations (lake-resident adults) have higher productivity\n\n\n\n\nModel version 1.14 · Data version 1.2 · Source code at github.com/timothycline/BullTroutSSP"
   }
 ]
