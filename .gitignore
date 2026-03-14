@@ -6,5 +6,7 @@
 *.o
 *.so
 *.dll
+ShinyApp/app_data.RDS
+ShinyApp/submissions_log.csv
 
 /.quarto/
