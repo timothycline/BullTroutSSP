@@ -134,7 +134,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <section id="what-this-model-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-model-does">What this model does</h2>
-<p>The model integrates long-term redd count time series (1984–2022) from <strong>61 local populations</strong> nested within <strong>11 core areas</strong> to estimate:</p>
+<p>The model integrates long-term redd count time series (1984–2022) from <strong>83 local populations</strong> nested within <strong>27 core areas</strong> to estimate:</p>
 <ul>
 <li><strong>Population-specific growth rates</strong> and how they vary with environmental conditions</li>
 <li><strong>Density dependence</strong> at the population level</li>
@@ -160,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
 </div><div class="column" style="width:33%;">
 <section id="about-the-model" class="level3">
 <h3 class="anchored" data-anchor-id="about-the-model">About the model</h3>
-<p>The model is a hierarchical state-space Ricker model fitted with <a href="https://github.com/kaskr/adcomp">TMB</a> (Template Model Builder). Random effects are integrated out via the Laplace approximation. Parameter uncertainty is propagated via the delta method.</p>
+<p>The model is a hierarchical state-space Ricker model fitted with <a href="https://github.com/kaskr/adcomp">TMB</a> (Template Model Builder). Process error follows an AR(1) structure; redd counts are modelled with a Negative Binomial (NB2) observation model to account for overdispersion. Where available, electrofishing CPUE data provides an independent abundance index via a catchability sub-model. Random effects are integrated out via the Laplace approximation. Parameter uncertainty is propagated via the delta method.</p>
 </section>
 </div>
 </div>
@@ -204,7 +204,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><em>Model version 1.14 · Data version 1.2 · Source code at <a href="https://github.com/timothycline/BullTroutSSP">github.com/timothycline/BullTroutSSP</a></em></p>
+<p><em>Model version 1.18 · Data version 1.5 · Source code at <a href="https://github.com/timothycline/BullTroutSSP">github.com/timothycline/BullTroutSSP</a></em></p>
 
 
 </section>

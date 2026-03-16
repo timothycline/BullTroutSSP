@@ -14,7 +14,7 @@ format:
 
 ```{r setup, include=FALSE}
 library(here)
-fit      <- readRDS(here("Results", "MPVA_Fit_D1_2_M1_14_R1_14.RDS"))
+fit      <- readRDS(here("Results", "MPVA_Fit_D1_5_M1_18_R1_18.RDS"))
 n_pop    <- fit$data_list$nPop
 n_core   <- fit$data_list$nCore
 yr_range <- range(fit$DatYears)
@@ -74,6 +74,10 @@ and model variance components.
 
 The model is a hierarchical state-space Ricker model fitted with
 [TMB](https://github.com/kaskr/adcomp) (Template Model Builder).
+Process error follows an AR(1) structure; redd counts are modelled
+with a Negative Binomial (NB2) observation model to account for
+overdispersion. Where available, electrofishing CPUE data provides
+an independent abundance index via a catchability sub-model.
 Random effects are integrated out via the Laplace approximation.
 Parameter uncertainty is propagated via the delta method.
 :::
@@ -97,5 +101,5 @@ They are possibly sensitive to:
 
 ---
 
-*Model version 1.14 · Data version 1.2 · Source code at
+*Model version 1.18 · Data version 1.5 · Source code at
 [github.com/timothycline/BullTroutSSP](https://github.com/timothycline/BullTroutSSP)*
