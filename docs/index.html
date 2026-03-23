@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Bull Trout SSP Team">
-<meta name="dcterms.date" content="2026-03-16">
+<meta name="dcterms.date" content="2026-03-23">
 
 <title>Bull Trout SSP — Population Viability Analysis - Bull Trout Multi-Population Viability Analysis</title>
 <style>
@@ -130,7 +130,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Model Results</span></a>
+ <span class="menu-text">Model</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./outputs.html" rel="" target="">
+ <span class="menu-text">Model Outputs</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
@@ -206,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 16, 2026</p>
+      <p class="date">March 23, 2026</p>
     </div>
   </div>
   
@@ -251,13 +255,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"Code"</span>, <span class="fu">paste0</span>(<span class="st">"PrepareData_MPVA"</span>, DataVersion, <span class="st">".R"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Full dataset: using 27 core areas
-Populations: 83 
-Core areas:  27 
+<pre><code>Full dataset: using 26 core areas
+Populations: 80 
+Core areas:  26 
 Years:       39 ( 1984 - 2022 )
-Redd sites:  108 
+Redd sites:  105 
 CPUE obs:    60 across 2 sections
-temp_mean:   10.014 | temp_sd: 1.662 
+temp_mean:   10.11 | temp_sd: 1.61 
 All dimension checks passed.</code></pre>
 </div>
 <details>
@@ -301,17 +305,17 @@ All dimension checks passed.</code></pre>
 <tr class="odd">
 <td>Core area</td>
 <td>Watershed complex</td>
-<td>27</td>
+<td>26</td>
 </tr>
 <tr class="even">
 <td>Local population</td>
 <td>Spawning tributary</td>
-<td>83</td>
+<td>80</td>
 </tr>
 <tr class="odd">
 <td>Survey site</td>
 <td>Redd count reach</td>
-<td>108</td>
+<td>105</td>
 </tr>
 </tbody>
 </table>
@@ -357,23 +361,23 @@ All dimension checks passed.</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Core areas</td>
-<td style="text-align: left;">27</td>
+<td style="text-align: left;">26</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Local populations</td>
-<td style="text-align: left;">83</td>
+<td style="text-align: left;">80</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Survey sites</td>
-<td style="text-align: left;">108</td>
+<td style="text-align: left;">105</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Site-year observations</td>
-<td style="text-align: left;">2494</td>
+<td style="text-align: left;">2407</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Data coverage</td>
-<td style="text-align: left;">59.2%</td>
+<td style="text-align: left;">58.8%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CPUE observations</td>
@@ -511,19 +515,19 @@ All dimension checks passed.</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Negative log-likelihood</td>
-<td style="text-align: left;">9051.2</td>
+<td style="text-align: left;">8770.74</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Max &amp;#124;gradient&amp;#124;</td>
-<td style="text-align: left;">1.11e+01</td>
+<td style="text-align: left;">1.97e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">AR(1) ρ</td>
-<td style="text-align: left;">0.448 (SE 0.119)</td>
+<td style="text-align: left;">0.429 (SE 0.134)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">NB2 dispersion φ</td>
-<td style="text-align: left;">3.186 (SE 0.142)</td>
+<td style="text-align: left;">3.169 (SE 0.142)</td>
 </tr>
 </tbody>
 </table>
@@ -582,21 +586,21 @@ Worst-fitting sites:
 # A tibble: 15 × 6
    pop   site      n  rmse mean_pearson sd_pearson
    &lt;fct&gt; &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 5     6        26  31.3       -3.07        2.24
- 2 71    93       38  31.0        0.154       2.75
- 3 72    95       38  30.5        2.41        3.13
+ 1 71    93       38  31.6        0.156       2.79
+ 2 5     6        26  31.4       -3.08        2.23
+ 3 72    95       38  30.8        2.42        3.16
  4 62    83       27  29.2       -2.70        2.69
- 5 72    94       38  28.7       -2.61        2.00
- 6 61    81       12  25.5        0.118       2.92
- 7 76    99       38  22.1        0.132       2.32
- 8 28    39       32  21.3        0.203       2.51
- 9 5     7        24  20.5        2.07        3.99
-10 60    80       12  20.5        0.262       2.31
-11 80    105      29  20.3        1.22        2.65
-12 26    37       34  19.8        2.04        3.02
-13 46    63       38  19.7        1.27        2.35
-14 14    19       27  19.7        0.301       3.00
-15 8     12       33  18.9        1.24        3.22</code></pre>
+ 5 72    94       38  28.5       -2.61        1.99
+ 6 61    81       12  26.1        0.114       2.98
+ 7 76    99       38  22.9        0.139       2.40
+ 8 28    39       32  21.9        0.203       2.58
+ 9 60    80       12  21.7        0.264       2.46
+10 5     7        24  20.5        2.07        3.99
+11 80    105      29  20.5        1.23        2.67
+12 46    63       38  20.1        1.27        2.41
+13 26    37       34  20.1        2.05        3.08
+14 14    19       27  19.8        0.276       3.02
+15 8     12       33  19.0        1.25        3.24</code></pre>
 </div>
 <details>
 <summary>Show code</summary>
@@ -787,42 +791,42 @@ Worst-fitting sites:
 <tr class="odd">
 <td style="text-align: left;">rho</td>
 <td style="text-align: left;">AR(1) autocorrelation ρ</td>
-<td style="text-align: right;">0.448</td>
-<td style="text-align: right;">0.119</td>
-<td style="text-align: right;">0.214</td>
-<td style="text-align: right;">0.681</td>
+<td style="text-align: right;">0.429</td>
+<td style="text-align: right;">0.134</td>
+<td style="text-align: right;">0.166</td>
+<td style="text-align: right;">0.691</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigmaN</td>
 <td style="text-align: left;">Process error σ_N (innovation SD)</td>
-<td style="text-align: right;">0.116</td>
-<td style="text-align: right;">0.016</td>
-<td style="text-align: right;">0.085</td>
-<td style="text-align: right;">0.148</td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: right;">0.141</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">phi_obs</td>
 <td style="text-align: left;">NB2 dispersion φ_obs</td>
-<td style="text-align: right;">3.186</td>
+<td style="text-align: right;">3.169</td>
 <td style="text-align: right;">0.142</td>
-<td style="text-align: right;">2.907</td>
-<td style="text-align: right;">3.464</td>
+<td style="text-align: right;">2.891</td>
+<td style="text-align: right;">3.447</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma_cpue</td>
 <td style="text-align: left;">CPUE observation SD σ_cpue</td>
-<td style="text-align: right;">0.578</td>
+<td style="text-align: right;">0.580</td>
 <td style="text-align: right;">0.060</td>
-<td style="text-align: right;">0.460</td>
-<td style="text-align: right;">0.695</td>
+<td style="text-align: right;">0.462</td>
+<td style="text-align: right;">0.697</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma_q</td>
 <td style="text-align: left;">CPUE catchability SD σ_q</td>
 <td style="text-align: right;">1.042</td>
 <td style="text-align: right;">0.418</td>
-<td style="text-align: right;">0.223</td>
-<td style="text-align: right;">1.862</td>
+<td style="text-align: right;">0.222</td>
+<td style="text-align: right;">1.861</td>
 </tr>
 </tbody>
 </table>
@@ -913,7 +917,7 @@ Worst-fitting sites:
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Thermal optimum (z-scored): -0.345 
+<pre><code>Thermal optimum (z-scored): -0.413 
 Thermal optimum (raw scale): 9.44 </code></pre>
 </div>
 <div class="cell-output-display">
@@ -1217,9 +1221,9 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">09040001BLD</td>
 <td style="text-align: left;">StMaryRiver</td>
-<td style="text-align: right;">-0.047</td>
+<td style="text-align: right;">-0.046</td>
 <td style="text-align: right;">0.025</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">09040001KEN</td>
@@ -1231,7 +1235,7 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">09040001LEE</td>
 <td style="text-align: left;">StMaryRiver</td>
-<td style="text-align: right;">-0.042</td>
+<td style="text-align: right;">-0.044</td>
 <td style="text-align: right;">0.024</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
@@ -1239,112 +1243,112 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <td style="text-align: left; font-weight: bold;">17010101CAL</td>
 <td style="text-align: left;">KootenaiRiver</td>
 <td style="text-align: right;">-0.024</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010101KEE</td>
 <td style="text-align: left;">BullLake</td>
-<td style="text-align: right;">-0.047</td>
+<td style="text-align: right;">-0.050</td>
 <td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010101OBR</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.020</td>
+<td style="text-align: right;">-0.021</td>
 <td style="text-align: right;">0.018</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010101PIP</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.031</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.035</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010101QUA</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.047</td>
+<td style="text-align: right;">-0.049</td>
 <td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010102WES</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.010</td>
+<td style="text-align: right;">-0.012</td>
 <td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010104BOU</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.047</td>
-<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-0.046</td>
+<td style="text-align: right;">0.026</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010201TWI</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
 <td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010201WAR</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
-<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">-0.018</td>
 <td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202BOU</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
-<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">-0.010</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202EAS</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.016</td>
+<td style="text-align: right;">-0.015</td>
 <td style="text-align: right;">0.023</td>
 <td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202HOG</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.072</td>
+<td style="text-align: right;">-0.074</td>
 <td style="text-align: right;">0.026</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202MID</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">0.003</td>
 <td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202RAN</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.049</td>
+<td style="text-align: right;">-0.051</td>
 <td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202ROS</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.000</td>
 <td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202STO</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.042</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.045</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
@@ -1364,99 +1368,99 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203EFC</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.056</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.058</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203GLD</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.019</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203LKM</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
 <td style="text-align: right;">-0.041</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203LND</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">-0.026</td>
 <td style="text-align: right;">0.018</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203MNT</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">-0.002</td>
 <td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203MRL</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">-0.015</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203NFB</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">0.016</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203WFC</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.033</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010204FIS</td>
 <td style="text-align: left;">MiddleClarkForkRiver</td>
-<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.007</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010204RAT</td>
 <td style="text-align: left;">MiddleClarkForkRiver</td>
-<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">-0.015</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010205DEE</td>
 <td style="text-align: left;">WestForkBitterrootRiver</td>
-<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">-0.011</td>
 <td style="text-align: right;">0.024</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010205EAS</td>
 <td style="text-align: left;">BitterrootRiver</td>
-<td style="text-align: right;">-0.019</td>
+<td style="text-align: right;">-0.022</td>
 <td style="text-align: right;">0.017</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010205SKA</td>
 <td style="text-align: left;">BitterrootRiver</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.020</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206AKO</td>
 <td style="text-align: left;">AkokalaLake</td>
-<td style="text-align: right;">-0.039</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
@@ -1469,22 +1473,22 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206BOW</td>
 <td style="text-align: left;">BowmanLake</td>
-<td style="text-align: right;">-0.018</td>
+<td style="text-align: right;">-0.015</td>
 <td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206COA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.014</td>
-<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206CYC</td>
 <td style="text-align: left;">CycloneLake</td>
 <td style="text-align: right;">-0.049</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
@@ -1497,196 +1501,196 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206LLG</td>
 <td style="text-align: left;">LoggingLake</td>
-<td style="text-align: right;">-0.036</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.034</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206LQU</td>
 <td style="text-align: left;">LowerQuartzLake</td>
-<td style="text-align: right;">-0.039</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.036</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206RDM</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.028</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.030</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206TRL</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.020</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206UQU</td>
 <td style="text-align: left;">CeruleanQuartzMiddleQuartzLakes</td>
-<td style="text-align: right;">-0.032</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206WHA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.014</td>
+<td style="text-align: right;">-0.015</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207BEA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.030</td>
+<td style="text-align: right;">-0.031</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207BWL</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207CLK</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.036</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.035</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207GRA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">-0.022</td>
 <td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207HAR</td>
 <td style="text-align: left;">HarrisonLake</td>
-<td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.032</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207LNG</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.024</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207LNY</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207LPK</td>
 <td style="text-align: left;">FlatheadLake</td>
 <td style="text-align: right;">-0.035</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207MOR</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.014</td>
+<td style="text-align: right;">-0.012</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207OLE</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.030</td>
+<td style="text-align: right;">-0.029</td>
 <td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207SCH</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.018</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207STW</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.014</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209BSM</td>
 <td style="text-align: left;">BigSalmonLake</td>
-<td style="text-align: right;">-0.023</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209GRD</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.009</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.007</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209LSM</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.013</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209SLV</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">-0.027</td>
 <td style="text-align: right;">0.018</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209WBC</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.041</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.040</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209WHE</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.036</td>
+<td style="text-align: right;">-0.034</td>
 <td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209WRV</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.026</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209YNG</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.005</td>
-<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010210EAS</td>
 <td style="text-align: left;">UpperWhitefishLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">-0.019</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010210SWI</td>
 <td style="text-align: left;">WhitefishLake</td>
-<td style="text-align: right;">-0.006</td>
+<td style="text-align: right;">-0.007</td>
 <td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
@@ -1700,44 +1704,44 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211CLD</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.036</td>
-<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211ELK</td>
 <td style="text-align: left;">SwanLake</td>
 <td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211GOA</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">-0.030</td>
 <td style="text-align: right;">0.021</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211HLD</td>
 <td style="text-align: left;">HollandLake</td>
-<td style="text-align: right;">-0.050</td>
-<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.048</td>
+<td style="text-align: right;">0.022</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211JIM</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.038</td>
+<td style="text-align: right;">-0.037</td>
 <td style="text-align: right;">0.019</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211LND</td>
 <td style="text-align: left;">LindberghLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.019</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211LON</td>
@@ -1750,14 +1754,14 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <td style="text-align: left; font-weight: bold;">17010211LST</td>
 <td style="text-align: left;">SwanLake</td>
 <td style="text-align: right;">-0.038</td>
-<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.020</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211PIP</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.051</td>
-<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">-0.054</td>
+<td style="text-align: right;">0.024</td>
 <td style="text-align: right;">8e-04</td>
 </tr>
 <tr class="odd">
@@ -1770,30 +1774,9 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211WDW</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.043</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">17010304MED</td>
-<td style="text-align: left;">Couerd'AleneLake</td>
-<td style="text-align: right;">-0.037</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">17010304STJ</td>
-<td style="text-align: left;">Couerd'AleneLake</td>
-<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">-0.042</td>
 <td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">17010304WIS</td>
-<td style="text-align: left;">Couerd'AleneLake</td>
-<td style="text-align: right;">-0.035</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">7e-04</td>
 </tr>
 </tbody>
 </table>

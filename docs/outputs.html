@@ -1,0 +1,3793 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-03-23">
+
+<title>Bull Trout SSP — Population Viability Analysis - Model Outputs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Bull Trout SSP — Population Viability Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./home.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.html" rel="" target="">
+ <span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Model</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./outputs.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Model Outputs</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Core Areas &amp; Populations</h2>
+   
+  <ul>
+  <li><a href="#global-results" id="toc-global-results" class="nav-link active" data-scroll-target="#global-results">Global Results</a>
+  <ul class="collapse">
+  <li><a href="#covariate-effects" id="toc-covariate-effects" class="nav-link" data-scroll-target="#covariate-effects">Covariate Effects</a></li>
+  <li><a href="#variance-components" id="toc-variance-components" class="nav-link" data-scroll-target="#variance-components">Variance Components</a></li>
+  </ul></li>
+  <li><a href="#population-trajectories" id="toc-population-trajectories" class="nav-link" data-scroll-target="#population-trajectories">Population Trajectories</a>
+  <ul class="collapse">
+  <li><a href="#jump-to-core-area" id="toc-jump-to-core-area" class="nav-link" data-scroll-target="#jump-to-core-area">Jump to core area</a></li>
+  </ul></li>
+  <li><a href="#akokalalake" id="toc-akokalalake" class="nav-link" data-scroll-target="#akokalalake">AkokalaLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206ako" id="toc-17010206ako" class="nav-link" data-scroll-target="#17010206ako">Akokala Creek (17010206AKO)</a></li>
+  </ul></li>
+  <li><a href="#bigsalmonlake" id="toc-bigsalmonlake" class="nav-link" data-scroll-target="#bigsalmonlake">BigSalmonLake</a>
+  <ul class="collapse">
+  <li><a href="#17010209bsm" id="toc-17010209bsm" class="nav-link" data-scroll-target="#17010209bsm">Big Salmon Creek (17010209BSM)</a></li>
+  </ul></li>
+  <li><a href="#bitterrootriver" id="toc-bitterrootriver" class="nav-link" data-scroll-target="#bitterrootriver">BitterrootRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010205eas" id="toc-17010205eas" class="nav-link" data-scroll-target="#17010205eas">Meadow Creek (17010205EAS)</a></li>
+  <li><a href="#17010205ska" id="toc-17010205ska" class="nav-link" data-scroll-target="#17010205ska">Daly Creek (17010205SKA)</a></li>
+  </ul></li>
+  <li><a href="#blackfootriver" id="toc-blackfootriver" class="nav-link" data-scroll-target="#blackfootriver">BlackfootRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010203blm" id="toc-17010203blm" class="nav-link" data-scroll-target="#17010203blm">Belmont Creek (17010203BLM)</a></li>
+  <li><a href="#17010203gld" id="toc-17010203gld" class="nav-link" data-scroll-target="#17010203gld">Gold Creek (17010203GLD)</a></li>
+  <li><a href="#17010203lnd" id="toc-17010203lnd" class="nav-link" data-scroll-target="#17010203lnd">Copper Creek Lower (17010203LND)</a></li>
+  <li><a href="#17010203mnt" id="toc-17010203mnt" class="nav-link" data-scroll-target="#17010203mnt">Dunham Creek (17010203MNT)</a></li>
+  <li><a href="#17010203nfb" id="toc-17010203nfb" class="nav-link" data-scroll-target="#17010203nfb">North Fork Blackfoot River (17010203NFB)</a></li>
+  </ul></li>
+  <li><a href="#bowmanlake" id="toc-bowmanlake" class="nav-link" data-scroll-target="#bowmanlake">BowmanLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206bow" id="toc-17010206bow" class="nav-link" data-scroll-target="#17010206bow">Bowman Creek (17010206BOW)</a></li>
+  </ul></li>
+  <li><a href="#bulllake" id="toc-bulllake" class="nav-link" data-scroll-target="#bulllake">BullLake</a>
+  <ul class="collapse">
+  <li><a href="#17010101kee" id="toc-17010101kee" class="nav-link" data-scroll-target="#17010101kee">Keeler Creek (17010101KEE)</a></li>
+  </ul></li>
+  <li><a href="#ceruleanquartzmiddlequartzlakes" id="toc-ceruleanquartzmiddlequartzlakes" class="nav-link" data-scroll-target="#ceruleanquartzmiddlequartzlakes">CeruleanQuartzMiddleQuartzLakes</a>
+  <ul class="collapse">
+  <li><a href="#17010206uqu" id="toc-17010206uqu" class="nav-link" data-scroll-target="#17010206uqu">Quartz Creek (17010206UQU)</a></li>
+  </ul></li>
+  <li><a href="#clearwaterriverandlakes" id="toc-clearwaterriverandlakes" class="nav-link" data-scroll-target="#clearwaterriverandlakes">ClearwaterRiverandLakes</a>
+  <ul class="collapse">
+  <li><a href="#17010203efc" id="toc-17010203efc" class="nav-link" data-scroll-target="#17010203efc">East Fork Clearwater (17010203EFC)</a></li>
+  <li><a href="#17010203lkm" id="toc-17010203lkm" class="nav-link" data-scroll-target="#17010203lkm">Marshall Creek (17010203LKM)</a></li>
+  <li><a href="#17010203mrl" id="toc-17010203mrl" class="nav-link" data-scroll-target="#17010203mrl">Morrell Creek (17010203MRL)</a></li>
+  <li><a href="#17010203wfc" id="toc-17010203wfc" class="nav-link" data-scroll-target="#17010203wfc">West Fork Clearwater (17010203WFC)</a></li>
+  </ul></li>
+  <li><a href="#cyclonelake" id="toc-cyclonelake" class="nav-link" data-scroll-target="#cyclonelake">CycloneLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206cyc" id="toc-17010206cyc" class="nav-link" data-scroll-target="#17010206cyc">Cyclone Creek (17010206CYC)</a></li>
+  </ul></li>
+  <li><a href="#flatheadlake" id="toc-flatheadlake" class="nav-link" data-scroll-target="#flatheadlake">FlatheadLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206big" id="toc-17010206big" class="nav-link" data-scroll-target="#17010206big">Big Creek (17010206BIG)</a></li>
+  <li><a href="#17010206coa" id="toc-17010206coa" class="nav-link" data-scroll-target="#17010206coa">Coal Creek (17010206COA)</a></li>
+  <li><a href="#17010206ksh" id="toc-17010206ksh" class="nav-link" data-scroll-target="#17010206ksh">Kishenehn Creek (17010206KSH)</a></li>
+  <li><a href="#17010206rdm" id="toc-17010206rdm" class="nav-link" data-scroll-target="#17010206rdm">Red Meadow Creek (17010206RDM)</a></li>
+  <li><a href="#17010206trl" id="toc-17010206trl" class="nav-link" data-scroll-target="#17010206trl">Trail Creek (17010206TRL)</a></li>
+  <li><a href="#17010206wha" id="toc-17010206wha" class="nav-link" data-scroll-target="#17010206wha">Shorty Creek (17010206WHA)</a></li>
+  <li><a href="#17010207bea" id="toc-17010207bea" class="nav-link" data-scroll-target="#17010207bea">Bear Creek (17010207BEA)</a></li>
+  <li><a href="#17010207bwl" id="toc-17010207bwl" class="nav-link" data-scroll-target="#17010207bwl">Bowl Creek (17010207BWL)</a></li>
+  <li><a href="#17010207clk" id="toc-17010207clk" class="nav-link" data-scroll-target="#17010207clk">Clack Creek (17010207CLK)</a></li>
+  <li><a href="#17010207gra" id="toc-17010207gra" class="nav-link" data-scroll-target="#17010207gra">Granite Creek (17010207GRA)</a></li>
+  <li><a href="#17010207lng" id="toc-17010207lng" class="nav-link" data-scroll-target="#17010207lng">Long Creek (17010207LNG)</a></li>
+  <li><a href="#17010207lny" id="toc-17010207lny" class="nav-link" data-scroll-target="#17010207lny">Nyack Creek (17010207LNY)</a></li>
+  <li><a href="#17010207lpk" id="toc-17010207lpk" class="nav-link" data-scroll-target="#17010207lpk">Park Creek (17010207LPK)</a></li>
+  <li><a href="#17010207mor" id="toc-17010207mor" class="nav-link" data-scroll-target="#17010207mor">Lodge Pole Creek (17010207MOR)</a></li>
+  <li><a href="#17010207ole" id="toc-17010207ole" class="nav-link" data-scroll-target="#17010207ole">Ole Creek (17010207OLE)</a></li>
+  <li><a href="#17010207sch" id="toc-17010207sch" class="nav-link" data-scroll-target="#17010207sch">Dolly Varden Creek (17010207SCH)</a></li>
+  <li><a href="#17010207stw" id="toc-17010207stw" class="nav-link" data-scroll-target="#17010207stw">Strawberry Creek (17010207STW)</a></li>
+  </ul></li>
+  <li><a href="#harrisonlake" id="toc-harrisonlake" class="nav-link" data-scroll-target="#harrisonlake">HarrisonLake</a>
+  <ul class="collapse">
+  <li><a href="#17010207har" id="toc-17010207har" class="nav-link" data-scroll-target="#17010207har">Harrison Creek (17010207HAR)</a></li>
+  </ul></li>
+  <li><a href="#hollandlake" id="toc-hollandlake" class="nav-link" data-scroll-target="#hollandlake">HollandLake</a>
+  <ul class="collapse">
+  <li><a href="#17010211hld" id="toc-17010211hld" class="nav-link" data-scroll-target="#17010211hld">Holland Creek (17010211HLD)</a></li>
+  </ul></li>
+  <li><a href="#hungryhorsereservoir" id="toc-hungryhorsereservoir" class="nav-link" data-scroll-target="#hungryhorsereservoir">HungryHorseReservoir</a>
+  <ul class="collapse">
+  <li><a href="#17010209grd" id="toc-17010209grd" class="nav-link" data-scroll-target="#17010209grd">Gordon Creek (17010209GRD)</a></li>
+  <li><a href="#17010209lsm" id="toc-17010209lsm" class="nav-link" data-scroll-target="#17010209lsm">Little Salmon Creek (17010209LSM)</a></li>
+  <li><a href="#17010209slv" id="toc-17010209slv" class="nav-link" data-scroll-target="#17010209slv">Quintonkon Creek (17010209SLV)</a></li>
+  <li><a href="#17010209wbc" id="toc-17010209wbc" class="nav-link" data-scroll-target="#17010209wbc">Wounded Buck Creek (17010209WBC)</a></li>
+  <li><a href="#17010209whe" id="toc-17010209whe" class="nav-link" data-scroll-target="#17010209whe">Wheeler Creek (17010209WHE)</a></li>
+  <li><a href="#17010209wrv" id="toc-17010209wrv" class="nav-link" data-scroll-target="#17010209wrv">White River (17010209WRV)</a></li>
+  <li><a href="#17010209yng" id="toc-17010209yng" class="nav-link" data-scroll-target="#17010209yng">Youngs Creek (17010209YNG)</a></li>
+  </ul></li>
+  <li><a href="#kootenairiver" id="toc-kootenairiver" class="nav-link" data-scroll-target="#kootenairiver">KootenaiRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010101cal" id="toc-17010101cal" class="nav-link" data-scroll-target="#17010101cal">North Callahan Creek (17010101CAL)</a></li>
+  <li><a href="#17010101obr" id="toc-17010101obr" class="nav-link" data-scroll-target="#17010101obr">O’ Brien Creek (17010101OBR)</a></li>
+  <li><a href="#17010101pip" id="toc-17010101pip" class="nav-link" data-scroll-target="#17010101pip">Pipe Creek (17010101PIP)</a></li>
+  <li><a href="#17010101qua" id="toc-17010101qua" class="nav-link" data-scroll-target="#17010101qua">Quartz Creek (17010101QUA)</a></li>
+  <li><a href="#17010102wes" id="toc-17010102wes" class="nav-link" data-scroll-target="#17010102wes">West Fisher Creek (17010102WES)</a></li>
+  <li><a href="#17010104bou" id="toc-17010104bou" class="nav-link" data-scroll-target="#17010104bou">Boulder Creek (17010104BOU)</a></li>
+  </ul></li>
+  <li><a href="#lindberghlake" id="toc-lindberghlake" class="nav-link" data-scroll-target="#lindberghlake">LindberghLake</a>
+  <ul class="collapse">
+  <li><a href="#17010211lnd" id="toc-17010211lnd" class="nav-link" data-scroll-target="#17010211lnd">Swan Riverand Crystal Creek (17010211LND)</a></li>
+  </ul></li>
+  <li><a href="#logginglake" id="toc-logginglake" class="nav-link" data-scroll-target="#logginglake">LoggingLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206llg" id="toc-17010206llg" class="nav-link" data-scroll-target="#17010206llg">Logging Creek (17010206LLG)</a></li>
+  </ul></li>
+  <li><a href="#lowerquartzlake" id="toc-lowerquartzlake" class="nav-link" data-scroll-target="#lowerquartzlake">LowerQuartzLake</a>
+  <ul class="collapse">
+  <li><a href="#17010206lqu" id="toc-17010206lqu" class="nav-link" data-scroll-target="#17010206lqu">Quartz Creek (17010206LQU)</a></li>
+  </ul></li>
+  <li><a href="#middleclarkforkriver" id="toc-middleclarkforkriver" class="nav-link" data-scroll-target="#middleclarkforkriver">MiddleClarkForkRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010204fis" id="toc-17010204fis" class="nav-link" data-scroll-target="#17010204fis">North Fork Fish Creek (17010204FIS)</a></li>
+  <li><a href="#17010204rat" id="toc-17010204rat" class="nav-link" data-scroll-target="#17010204rat">Rattlesnake Creek (17010204RAT)</a></li>
+  </ul></li>
+  <li><a href="#rockcreek" id="toc-rockcreek" class="nav-link" data-scroll-target="#rockcreek">RockCreek</a>
+  <ul class="collapse">
+  <li><a href="#17010202eas" id="toc-17010202eas" class="nav-link" data-scroll-target="#17010202eas">East Fork Rock Creek (17010202EAS)</a></li>
+  <li><a href="#17010202hog" id="toc-17010202hog" class="nav-link" data-scroll-target="#17010202hog">Hogback Creek (17010202HOG)</a></li>
+  <li><a href="#17010202mid" id="toc-17010202mid" class="nav-link" data-scroll-target="#17010202mid">Carpp Creek (17010202MID)</a></li>
+  <li><a href="#17010202ran" id="toc-17010202ran" class="nav-link" data-scroll-target="#17010202ran">Ranch Creek (17010202RAN)</a></li>
+  <li><a href="#17010202ros" id="toc-17010202ros" class="nav-link" data-scroll-target="#17010202ros">Ross Fork Rock Creek (17010202ROS)</a></li>
+  <li><a href="#17010202sto" id="toc-17010202sto" class="nav-link" data-scroll-target="#17010202sto">Little Stony Creek (17010202STO)</a></li>
+  <li><a href="#17010202wel" id="toc-17010202wel" class="nav-link" data-scroll-target="#17010202wel">Welcome Creek (17010202WEL)</a></li>
+  </ul></li>
+  <li><a href="#stmaryriver" id="toc-stmaryriver" class="nav-link" data-scroll-target="#stmaryriver">StMaryRiver</a>
+  <ul class="collapse">
+  <li><a href="#09040001bld" id="toc-09040001bld" class="nav-link" data-scroll-target="#09040001bld">Boulder Creek (09040001BLD)</a></li>
+  <li><a href="#09040001ken" id="toc-09040001ken" class="nav-link" data-scroll-target="#09040001ken">Kennedy Creek (09040001KEN)</a></li>
+  <li><a href="#09040001lee" id="toc-09040001lee" class="nav-link" data-scroll-target="#09040001lee">Lee Creek (09040001LEE)</a></li>
+  </ul></li>
+  <li><a href="#swanlake" id="toc-swanlake" class="nav-link" data-scroll-target="#swanlake">SwanLake</a>
+  <ul class="collapse">
+  <li><a href="#17010211cld" id="toc-17010211cld" class="nav-link" data-scroll-target="#17010211cld">Cold Creek (17010211CLD)</a></li>
+  <li><a href="#17010211elk" id="toc-17010211elk" class="nav-link" data-scroll-target="#17010211elk">Elk Creek (17010211ELK)</a></li>
+  <li><a href="#17010211goa" id="toc-17010211goa" class="nav-link" data-scroll-target="#17010211goa">Goat Creek (17010211GOA)</a></li>
+  <li><a href="#17010211jim" id="toc-17010211jim" class="nav-link" data-scroll-target="#17010211jim">Jim Creek (17010211JIM)</a></li>
+  <li><a href="#17010211lon" id="toc-17010211lon" class="nav-link" data-scroll-target="#17010211lon">Lion Creek (17010211LON)</a></li>
+  <li><a href="#17010211lst" id="toc-17010211lst" class="nav-link" data-scroll-target="#17010211lst">North Fork Lost Creek (17010211LST)</a></li>
+  <li><a href="#17010211pip" id="toc-17010211pip" class="nav-link" data-scroll-target="#17010211pip">Piper Creek (17010211PIP)</a></li>
+  <li><a href="#17010211sou" id="toc-17010211sou" class="nav-link" data-scroll-target="#17010211sou">Soup Creek (17010211SOU)</a></li>
+  <li><a href="#17010211wdw" id="toc-17010211wdw" class="nav-link" data-scroll-target="#17010211wdw">South Woodward Creek (17010211WDW)</a></li>
+  </ul></li>
+  <li><a href="#upperclarkforkriver" id="toc-upperclarkforkriver" class="nav-link" data-scroll-target="#upperclarkforkriver">UpperClarkForkRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010201twi" id="toc-17010201twi" class="nav-link" data-scroll-target="#17010201twi">Twin Lakes Creek (17010201TWI)</a></li>
+  <li><a href="#17010201war" id="toc-17010201war" class="nav-link" data-scroll-target="#17010201war">Foster Creek (17010201WAR)</a></li>
+  <li><a href="#17010202bou" id="toc-17010202bou" class="nav-link" data-scroll-target="#17010202bou">Boulder Creek (17010202BOU)</a></li>
+  </ul></li>
+  <li><a href="#upperstillwaterlake" id="toc-upperstillwaterlake" class="nav-link" data-scroll-target="#upperstillwaterlake">UpperStillwaterLake</a>
+  <ul class="collapse">
+  <li><a href="#17010210swr" id="toc-17010210swr" class="nav-link" data-scroll-target="#17010210swr">Fitzsimmons Creek (17010210SWR)</a></li>
+  </ul></li>
+  <li><a href="#upperwhitefishlake" id="toc-upperwhitefishlake" class="nav-link" data-scroll-target="#upperwhitefishlake">UpperWhitefishLake</a>
+  <ul class="collapse">
+  <li><a href="#17010210eas" id="toc-17010210eas" class="nav-link" data-scroll-target="#17010210eas">East Fork Swift Creek (17010210EAS)</a></li>
+  </ul></li>
+  <li><a href="#westforkbitterrootriver" id="toc-westforkbitterrootriver" class="nav-link" data-scroll-target="#westforkbitterrootriver">WestForkBitterrootRiver</a>
+  <ul class="collapse">
+  <li><a href="#17010205dee" id="toc-17010205dee" class="nav-link" data-scroll-target="#17010205dee">Deer Creek (17010205DEE)</a></li>
+  </ul></li>
+  <li><a href="#whitefishlake" id="toc-whitefishlake" class="nav-link" data-scroll-target="#whitefishlake">WhitefishLake</a>
+  <ul class="collapse">
+  <li><a href="#17010210swi" id="toc-17010210swi" class="nav-link" data-scroll-target="#17010210swi">West Fork Swift Creek (17010210SWI)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Model Outputs</h1>
+<p class="subtitle lead">Population Trajectories and Estimates by Core Area</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 23, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+
+<!-- =====================================================================
+     COLLABORATORS: Feel free to edit the introductory text below.
+     Please DO NOT modify anything inside ```{r} ... ``` code blocks —
+     those generate all the plots and tables automatically from the model.
+     ===================================================================== -->
+<p>This page presents model results organized identically to the <a href="./data.html">Data</a> tab. Use the table of contents on the right to jump directly to any core area or local population.</p>
+<hr>
+<section id="global-results" class="level2">
+<h2 class="anchored" data-anchor-id="global-results">Global Results</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Convergence code</td>
+<td style="text-align: right;">0 (relative convergence)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Objective (NLL)</td>
+<td style="text-align: right;">9039.56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Max &amp;#124;gradient&amp;#124;</td>
+<td style="text-align: right;">3.60e-02</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Site-year observations</td>
+<td style="text-align: right;">2407</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Outer parameters</td>
+<td style="text-align: right;">125</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<section id="covariate-effects" class="level3">
+<h3 class="anchored" data-anchor-id="covariate-effects">Covariate Effects</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Covariate</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Units</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Summer flow (hyper-mean)</td>
+<td style="text-align: left;">log-λ / SD flow</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.014</td>
+<td style="text-align: right;">1.074</td>
+<td style="text-align: right;">0.2826</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">August temperature (hyper-mean)</td>
+<td style="text-align: left;">log-λ / SD temp</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">-1.479</td>
+<td style="text-align: right;">0.1391</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Temperature² (quadratic)</td>
+<td style="text-align: left;">log-λ / SD temp²</td>
+<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">0.005</td>
+<td style="text-align: right;">-2.727</td>
+<td style="text-align: right;">0.0064</td>
+<td style="text-align: left;">***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Non-native trout (hyper-mean)</td>
+<td style="text-align: left;">log-λ / SD INV</td>
+<td style="text-align: right;">-0.032</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">-3.457</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: left;">***</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lake trout (global scalar)</td>
+<td style="text-align: left;">log-λ / SD LKT</td>
+<td style="text-align: right;">-0.032</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">-2.597</td>
+<td style="text-align: right;">0.0094</td>
+<td style="text-align: left;">***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lake area (adfluvial access)</td>
+<td style="text-align: left;">log-λ / log(km²+1)</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.133</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">0.9222</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Unconfined valley bottom</td>
+<td style="text-align: left;">log-λ / z-score</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">2.077</td>
+<td style="text-align: right;">0.0378</td>
+<td style="text-align: left;">**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">W95 flood frequency</td>
+<td style="text-align: left;">log-λ / z-score</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.265</td>
+<td style="text-align: right;">0.7909</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Road density</td>
+<td style="text-align: left;">log-λ / z-score</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.253</td>
+<td style="text-align: right;">0.8003</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody><tfoot>
+<tr class="even">
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Note: </span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><sup></sup> *** p &lt; 0.01 ** p &lt; 0.05 * p &lt; 0.10. All dynamic covariates carry an effective 6-yr lag.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tfoot>
+
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="variance-components" class="level3">
+<h3 class="anchored" data-anchor-id="variance-components">Variance Components</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Type</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Process</td>
+<td style="text-align: left;">Process noise (σ_N)</td>
+<td style="text-align: right;">0.103</td>
+<td style="text-align: right;">0.017</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Process</td>
+<td style="text-align: left;">AR(1) autocorrelation (ρ)</td>
+<td style="text-align: right;">0.357</td>
+<td style="text-align: right;">0.144</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Observation</td>
+<td style="text-align: left;">NB2 dispersion (φ_obs)</td>
+<td style="text-align: right;">3.119</td>
+<td style="text-align: right;">0.142</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Growth rate SD — population</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Growth rate SD — core area</td>
+<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Density dependence SD — population</td>
+<td style="text-align: right;">0.244</td>
+<td style="text-align: right;">0.213</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Flow slope SD — population</td>
+<td style="text-align: right;">0.060</td>
+<td style="text-align: right;">0.015</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Temp slope SD — population</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.005</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Hierarchy</td>
+<td style="text-align: left;">Invasives slope SD — population</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="population-trajectories" class="level2">
+<h2 class="anchored" data-anchor-id="population-trajectories">Population Trajectories</h2>
+<p>Each plot shows <strong>estimated adult abundance</strong> (blue line) with <strong>50% CI</strong> (dark ribbon) and <strong>90% CI</strong> (light ribbon) derived from the delta method on the ADREPORT-ed log-scale state. Open circles are observed redd counts scaled to adult-equivalents (redds ÷ 0.5 × survey coverage fraction), placing observations and model estimates on the same axis. The dashed red line marks the <strong>20-adult management threshold</strong>.</p>
+<section id="jump-to-core-area" class="level3 cell" data-layout-align="center">
+<h3 class="anchored" data-anchor-id="jump-to-core-area">Jump to core area</h3>
+<ul>
+<li><a href="#akokalalake">AkokalaLake</a> — 1 population</li>
+<li><a href="#bigsalmonlake">BigSalmonLake</a> — 1 population</li>
+<li><a href="#bitterrootriver">BitterrootRiver</a> — 2 populations</li>
+<li><a href="#blackfootriver">BlackfootRiver</a> — 5 populations</li>
+<li><a href="#bowmanlake">BowmanLake</a> — 1 population</li>
+<li><a href="#bulllake">BullLake</a> — 1 population</li>
+<li><a href="#ceruleanquartzmiddlequartzlakes">CeruleanQuartzMiddleQuartzLakes</a> — 1 population</li>
+<li><a href="#clearwaterriverandlakes">ClearwaterRiverandLakes</a> — 4 populations</li>
+<li><a href="#cyclonelake">CycloneLake</a> — 1 population</li>
+<li><a href="#flatheadlake">FlatheadLake</a> — 17 populations</li>
+<li><a href="#harrisonlake">HarrisonLake</a> — 1 population</li>
+<li><a href="#hollandlake">HollandLake</a> — 1 population</li>
+<li><a href="#hungryhorsereservoir">HungryHorseReservoir</a> — 7 populations</li>
+<li><a href="#kootenairiver">KootenaiRiver</a> — 6 populations</li>
+<li><a href="#lindberghlake">LindberghLake</a> — 1 population</li>
+<li><a href="#logginglake">LoggingLake</a> — 1 population</li>
+<li><a href="#lowerquartzlake">LowerQuartzLake</a> — 1 population</li>
+<li><a href="#middleclarkforkriver">MiddleClarkForkRiver</a> — 2 populations</li>
+<li><a href="#rockcreek">RockCreek</a> — 7 populations</li>
+<li><a href="#stmaryriver">StMaryRiver</a> — 3 populations</li>
+<li><a href="#swanlake">SwanLake</a> — 9 populations</li>
+<li><a href="#upperclarkforkriver">UpperClarkForkRiver</a> — 3 populations</li>
+<li><a href="#upperstillwaterlake">UpperStillwaterLake</a> — 1 population</li>
+<li><a href="#upperwhitefishlake">UpperWhitefishLake</a> — 1 population</li>
+<li><a href="#westforkbitterrootriver">WestForkBitterrootRiver</a> — 1 population</li>
+<li><a href="#whitefishlake">WhitefishLake</a> — 1 population</li>
+</ul>
+<hr>
+</section>
+<p>::: {.cell layout-align=“center”}</p>
+</section>
+<section id="akokalalake" class="level2">
+<h2 class="anchored" data-anchor-id="akokalalake">AkokalaLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2008 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.080</strong> (SE: 0.142) — lambda ≈ <strong>0.923</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Akokala Creek (17010206AKO)
+</td>
+<td style="text-align:right;">
+-0.09
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.914
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-2.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206ako" class="level3">
+<h3 class="anchored" data-anchor-id="17010206ako">Akokala Creek (17010206AKO)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-3.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="bigsalmonlake" class="level2">
+<h2 class="anchored" data-anchor-id="bigsalmonlake">BigSalmonLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1993 – 2019</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.035</strong> (SE: 0.138) — lambda ≈ <strong>0.966</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Big Salmon Creek (17010209BSM)
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+0.974
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-1" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-1">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-4.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-1" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-1">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-5.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010209bsm" class="level3">
+<h3 class="anchored" data-anchor-id="17010209bsm">Big Salmon Creek (17010209BSM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-6.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="bitterrootriver" class="level2">
+<h2 class="anchored" data-anchor-id="bitterrootriver">BitterrootRiver</h2>
+<p><strong>2 local populations</strong> | Data span: <strong>1993 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.019</strong> (SE: 0.032) — lambda ≈ <strong>0.981</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Meadow Creek (17010205EAS)
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+0.990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Daly Creek (17010205SKA)
+</td>
+<td style="text-align:right;">
+-0.021
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.979
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-2" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-2">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-7.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-2" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-2">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-8.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010205eas" class="level3">
+<h3 class="anchored" data-anchor-id="17010205eas">Meadow Creek (17010205EAS)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-9.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010205ska" class="level3">
+<h3 class="anchored" data-anchor-id="17010205ska">Daly Creek (17010205SKA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-10.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="blackfootriver" class="level2">
+<h2 class="anchored" data-anchor-id="blackfootriver">BlackfootRiver</h2>
+<p><strong>5 local populations</strong> | Data span: <strong>1988 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.039</strong> (SE: 0.023) — lambda ≈ <strong>0.962</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Belmont Creek (17010203BLM)
+</td>
+<td style="text-align:right;">
+-0.060
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold Creek (17010203GLD)
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+0.023
+</td>
+<td style="text-align:right;">
+0.966
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Copper Creek Lower (17010203LND)
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.978
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dunham Creek (17010203MNT)
+</td>
+<td style="text-align:right;">
+-0.016
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.985
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Fork Blackfoot River (17010203NFB)
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+1.008
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-3" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-3">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-11.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-3" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-3">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-12.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010203blm" class="level3">
+<h3 class="anchored" data-anchor-id="17010203blm">Belmont Creek (17010203BLM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-13.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203gld" class="level3">
+<h3 class="anchored" data-anchor-id="17010203gld">Gold Creek (17010203GLD)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-14.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203lnd" class="level3">
+<h3 class="anchored" data-anchor-id="17010203lnd">Copper Creek Lower (17010203LND)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-15.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203mnt" class="level3">
+<h3 class="anchored" data-anchor-id="17010203mnt">Dunham Creek (17010203MNT)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-16.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203nfb" class="level3">
+<h3 class="anchored" data-anchor-id="17010203nfb">North Fork Blackfoot River (17010203NFB)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-17.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="bowmanlake" class="level2">
+<h2 class="anchored" data-anchor-id="bowmanlake">BowmanLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2002 – 2021</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.077</strong> (SE: 0.149) — lambda ≈ <strong>1.080</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bowman Creek (17010206BOW)
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:right;">
+1.085
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-4" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-4">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-18.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-4" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-4">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-19.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206bow" class="level3">
+<h3 class="anchored" data-anchor-id="17010206bow">Bowman Creek (17010206BOW)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-20.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="bulllake" class="level2">
+<h2 class="anchored" data-anchor-id="bulllake">BullLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1996 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.127</strong> (SE: 0.139) — lambda ≈ <strong>0.880</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Keeler Creek (17010101KEE)
+</td>
+<td style="text-align:right;">
+-0.103
+</td>
+<td style="text-align:right;">
+0.037
+</td>
+<td style="text-align:right;">
+0.902
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-5" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-5">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-21.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-5" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-5">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-22.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010101kee" class="level3">
+<h3 class="anchored" data-anchor-id="17010101kee">Keeler Creek (17010101KEE)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-23.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="ceruleanquartzmiddlequartzlakes" class="level2">
+<h2 class="anchored" data-anchor-id="ceruleanquartzmiddlequartzlakes">CeruleanQuartzMiddleQuartzLakes</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2003 – 2020</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.003</strong> (SE: 0.140) — lambda ≈ <strong>0.997</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Quartz Creek (17010206UQU)
+</td>
+<td style="text-align:right;">
+-0.007
+</td>
+<td style="text-align:right;">
+0.049
+</td>
+<td style="text-align:right;">
+0.993
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-6" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-6">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-24.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-6" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-6">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-25.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206uqu" class="level3">
+<h3 class="anchored" data-anchor-id="17010206uqu">Quartz Creek (17010206UQU)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-26.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="clearwaterriverandlakes" class="level2">
+<h2 class="anchored" data-anchor-id="clearwaterriverandlakes">ClearwaterRiverandLakes</h2>
+<p><strong>4 local populations</strong> | Data span: <strong>2002 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.037</strong> (SE: 0.136) — lambda ≈ <strong>0.964</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+East Fork Clearwater (17010203EFC)
+</td>
+<td style="text-align:right;">
+-0.035
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Marshall Creek (17010203LKM)
+</td>
+<td style="text-align:right;">
+-0.036
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Morrell Creek (17010203MRL)
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+West Fork Clearwater (17010203WFC)
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.974
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-7" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-7">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-27.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-7" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-7">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-28.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010203efc" class="level3">
+<h3 class="anchored" data-anchor-id="17010203efc">East Fork Clearwater (17010203EFC)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-29.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203lkm" class="level3">
+<h3 class="anchored" data-anchor-id="17010203lkm">Marshall Creek (17010203LKM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-30.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203mrl" class="level3">
+<h3 class="anchored" data-anchor-id="17010203mrl">Morrell Creek (17010203MRL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-31.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010203wfc" class="level3">
+<h3 class="anchored" data-anchor-id="17010203wfc">West Fork Clearwater (17010203WFC)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-32.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="cyclonelake" class="level2">
+<h2 class="anchored" data-anchor-id="cyclonelake">CycloneLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1993 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.055</strong> (SE: 0.139) — lambda ≈ <strong>0.947</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cyclone Creek (17010206CYC)
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+0.044
+</td>
+<td style="text-align:right;">
+0.951
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-8" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-8">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-33.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-8" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-8">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-34.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206cyc" class="level3">
+<h3 class="anchored" data-anchor-id="17010206cyc">Cyclone Creek (17010206CYC)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-35.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="flatheadlake" class="level2">
+<h2 class="anchored" data-anchor-id="flatheadlake">FlatheadLake</h2>
+<p><strong>17 local populations</strong> | Data span: <strong>1985 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.056</strong> (SE: 0.133) — lambda ≈ <strong>0.946</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Big Creek (17010206BIG)
+</td>
+<td style="text-align:right;">
+-0.032
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+0.968
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Coal Creek (17010206COA)
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+0.966
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kishenehn Creek (17010206KSH)
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Red Meadow Creek (17010206RDM)
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.957
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trail Creek (17010206TRL)
+</td>
+<td style="text-align:right;">
+-0.043
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.958
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Shorty Creek (17010206WHA)
+</td>
+<td style="text-align:right;">
+-0.032
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.968
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bear Creek (17010207BEA)
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.960
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bowl Creek (17010207BWL)
+</td>
+<td style="text-align:right;">
+-0.045
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.956
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clack Creek (17010207CLK)
+</td>
+<td style="text-align:right;">
+-0.058
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.943
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Granite Creek (17010207GRA)
+</td>
+<td style="text-align:right;">
+-0.048
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.953
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Long Creek (17010207LNG)
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.955
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nyack Creek (17010207LNY)
+</td>
+<td style="text-align:right;">
+-0.036
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+0.965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Park Creek (17010207LPK)
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.959
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lodge Pole Creek (17010207MOR)
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.963
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ole Creek (17010207OLE)
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.964
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dolly Varden Creek (17010207SCH)
+</td>
+<td style="text-align:right;">
+-0.036
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+0.965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Strawberry Creek (17010207STW)
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.972
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-9" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-9">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-36.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-9" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-9">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-37.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206big" class="level3">
+<h3 class="anchored" data-anchor-id="17010206big">Big Creek (17010206BIG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-38.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010206coa" class="level3">
+<h3 class="anchored" data-anchor-id="17010206coa">Coal Creek (17010206COA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-39.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010206ksh" class="level3">
+<h3 class="anchored" data-anchor-id="17010206ksh">Kishenehn Creek (17010206KSH)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-40.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010206rdm" class="level3">
+<h3 class="anchored" data-anchor-id="17010206rdm">Red Meadow Creek (17010206RDM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-41.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010206trl" class="level3">
+<h3 class="anchored" data-anchor-id="17010206trl">Trail Creek (17010206TRL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-42.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010206wha" class="level3">
+<h3 class="anchored" data-anchor-id="17010206wha">Shorty Creek (17010206WHA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-43.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207bea" class="level3">
+<h3 class="anchored" data-anchor-id="17010207bea">Bear Creek (17010207BEA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-44.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207bwl" class="level3">
+<h3 class="anchored" data-anchor-id="17010207bwl">Bowl Creek (17010207BWL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-45.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207clk" class="level3">
+<h3 class="anchored" data-anchor-id="17010207clk">Clack Creek (17010207CLK)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-46.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207gra" class="level3">
+<h3 class="anchored" data-anchor-id="17010207gra">Granite Creek (17010207GRA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-47.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207lng" class="level3">
+<h3 class="anchored" data-anchor-id="17010207lng">Long Creek (17010207LNG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-48.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207lny" class="level3">
+<h3 class="anchored" data-anchor-id="17010207lny">Nyack Creek (17010207LNY)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-49.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207lpk" class="level3">
+<h3 class="anchored" data-anchor-id="17010207lpk">Park Creek (17010207LPK)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-50.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207mor" class="level3">
+<h3 class="anchored" data-anchor-id="17010207mor">Lodge Pole Creek (17010207MOR)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-51.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207ole" class="level3">
+<h3 class="anchored" data-anchor-id="17010207ole">Ole Creek (17010207OLE)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-52.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207sch" class="level3">
+<h3 class="anchored" data-anchor-id="17010207sch">Dolly Varden Creek (17010207SCH)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-53.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010207stw" class="level3">
+<h3 class="anchored" data-anchor-id="17010207stw">Strawberry Creek (17010207STW)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-54.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="harrisonlake" class="level2">
+<h2 class="anchored" data-anchor-id="harrisonlake">HarrisonLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2004 – 2021</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.042</strong> (SE: 0.145) — lambda ≈ <strong>0.959</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Harrison Creek (17010207HAR)
+</td>
+<td style="text-align:right;">
+-0.047
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.954
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-10" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-10">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-55.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-10" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-10">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-56.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010207har" class="level3">
+<h3 class="anchored" data-anchor-id="17010207har">Harrison Creek (17010207HAR)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-57.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="hollandlake" class="level2">
+<h2 class="anchored" data-anchor-id="hollandlake">HollandLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1985 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.090</strong> (SE: 0.138) — lambda ≈ <strong>0.914</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Holland Creek (17010211HLD)
+</td>
+<td style="text-align:right;">
+-0.095
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.91
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-11" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-11">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-58.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-11" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-11">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-59.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010211hld" class="level3">
+<h3 class="anchored" data-anchor-id="17010211hld">Holland Creek (17010211HLD)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-60.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="hungryhorsereservoir" class="level2">
+<h2 class="anchored" data-anchor-id="hungryhorsereservoir">HungryHorseReservoir</h2>
+<p><strong>7 local populations</strong> | Data span: <strong>1993 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.007</strong> (SE: 0.133) — lambda ≈ <strong>0.993</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gordon Creek (17010209GRD)
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+1.014
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Little Salmon Creek (17010209LSM)
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+1.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quintonkon Creek (17010209SLV)
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wounded Buck Creek (17010209WBC)
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+0.023
+</td>
+<td style="text-align:right;">
+0.985
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wheeler Creek (17010209WHE)
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.988
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+White River (17010209WRV)
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Youngs Creek (17010209YNG)
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+1.022
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-12" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-12">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-61.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-12" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-12">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-62.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010209grd" class="level3">
+<h3 class="anchored" data-anchor-id="17010209grd">Gordon Creek (17010209GRD)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-63.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209lsm" class="level3">
+<h3 class="anchored" data-anchor-id="17010209lsm">Little Salmon Creek (17010209LSM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-64.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209slv" class="level3">
+<h3 class="anchored" data-anchor-id="17010209slv">Quintonkon Creek (17010209SLV)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-65.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209wbc" class="level3">
+<h3 class="anchored" data-anchor-id="17010209wbc">Wounded Buck Creek (17010209WBC)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-66.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209whe" class="level3">
+<h3 class="anchored" data-anchor-id="17010209whe">Wheeler Creek (17010209WHE)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-67.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209wrv" class="level3">
+<h3 class="anchored" data-anchor-id="17010209wrv">White River (17010209WRV)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-68.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010209yng" class="level3">
+<h3 class="anchored" data-anchor-id="17010209yng">Youngs Creek (17010209YNG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-69.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="kootenairiver" class="level2">
+<h2 class="anchored" data-anchor-id="kootenairiver">KootenaiRiver</h2>
+<p><strong>6 local populations</strong> | Data span: <strong>1985 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.039</strong> (SE: 0.022) — lambda ≈ <strong>0.962</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+North Callahan Creek (17010101CAL)
+</td>
+<td style="text-align:right;">
+-0.045
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.956
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+O’ Brien Creek (17010101OBR)
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.973
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pipe Creek (17010101PIP)
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.981
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quartz Creek (17010101QUA)
+</td>
+<td style="text-align:right;">
+-0.047
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.954
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+West Fisher Creek (17010102WES)
+</td>
+<td style="text-align:right;">
+-0.030
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Boulder Creek (17010104BOU)
+</td>
+<td style="text-align:right;">
+-0.060
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.942
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-13" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-13">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-70.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-13" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-13">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-71.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010101cal" class="level3">
+<h3 class="anchored" data-anchor-id="17010101cal">North Callahan Creek (17010101CAL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-72.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010101obr" class="level3">
+<h3 class="anchored" data-anchor-id="17010101obr">O’ Brien Creek (17010101OBR)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-73.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010101pip" class="level3">
+<h3 class="anchored" data-anchor-id="17010101pip">Pipe Creek (17010101PIP)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-74.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010101qua" class="level3">
+<h3 class="anchored" data-anchor-id="17010101qua">Quartz Creek (17010101QUA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-75.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010102wes" class="level3">
+<h3 class="anchored" data-anchor-id="17010102wes">West Fisher Creek (17010102WES)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-76.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010104bou" class="level3">
+<h3 class="anchored" data-anchor-id="17010104bou">Boulder Creek (17010104BOU)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-77.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="lindberghlake" class="level2">
+<h2 class="anchored" data-anchor-id="lindberghlake">LindberghLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1994 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.110</strong> (SE: 0.151) — lambda ≈ <strong>1.116</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Swan Riverand Crystal Creek (17010211LND)
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+0.077
+</td>
+<td style="text-align:right;">
+1.124
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-14" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-14">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-78.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-14" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-14">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-79.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010211lnd" class="level3">
+<h3 class="anchored" data-anchor-id="17010211lnd">Swan Riverand Crystal Creek (17010211LND)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-80.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="logginglake" class="level2">
+<h2 class="anchored" data-anchor-id="logginglake">LoggingLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2004 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.019</strong> (SE: 0.145) — lambda ≈ <strong>0.981</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Logging Creek (17010206LLG)
+</td>
+<td style="text-align:right;">
+-0.023
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.977
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-15" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-15">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-81.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-15" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-15">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-82.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206llg" class="level3">
+<h3 class="anchored" data-anchor-id="17010206llg">Logging Creek (17010206LLG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-83.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="lowerquartzlake" class="level2">
+<h2 class="anchored" data-anchor-id="lowerquartzlake">LowerQuartzLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>2004 – 2020</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.007</strong> (SE: 0.144) — lambda ≈ <strong>0.993</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Quartz Creek (17010206LQU)
+</td>
+<td style="text-align:right;">
+-0.017
+</td>
+<td style="text-align:right;">
+0.061
+</td>
+<td style="text-align:right;">
+0.984
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-16" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-16">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-84.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-16" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-16">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-85.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010206lqu" class="level3">
+<h3 class="anchored" data-anchor-id="17010206lqu">Quartz Creek (17010206LQU)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-86.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="middleclarkforkriver" class="level2">
+<h2 class="anchored" data-anchor-id="middleclarkforkriver">MiddleClarkForkRiver</h2>
+<p><strong>2 local populations</strong> | Data span: <strong>1999 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.010</strong> (SE: 0.035) — lambda ≈ <strong>0.990</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+North Fork Fish Creek (17010204FIS)
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+1.015
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rattlesnake Creek (17010204RAT)
+</td>
+<td style="text-align:right;">
+-0.009
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.991
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-17" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-17">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-87.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-17" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-17">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-88.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010204fis" class="level3">
+<h3 class="anchored" data-anchor-id="17010204fis">North Fork Fish Creek (17010204FIS)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-89.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010204rat" class="level3">
+<h3 class="anchored" data-anchor-id="17010204rat">Rattlesnake Creek (17010204RAT)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-90.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="rockcreek" class="level2">
+<h2 class="anchored" data-anchor-id="rockcreek">RockCreek</h2>
+<p><strong>7 local populations</strong> | Data span: <strong>1993 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.056</strong> (SE: 0.022) — lambda ≈ <strong>0.946</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+East Fork Rock Creek (17010202EAS)
+</td>
+<td style="text-align:right;">
+-0.059
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+0.943
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hogback Creek (17010202HOG)
+</td>
+<td style="text-align:right;">
+-0.075
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.928
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpp Creek (17010202MID)
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.978
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ranch Creek (17010202RAN)
+</td>
+<td style="text-align:right;">
+-0.056
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.945
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ross Fork Rock Creek (17010202ROS)
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.978
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Little Stony Creek (17010202STO)
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.939
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Welcome Creek (17010202WEL)
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.929
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-18" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-18">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-91.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-18" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-18">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-92.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010202eas" class="level3">
+<h3 class="anchored" data-anchor-id="17010202eas">East Fork Rock Creek (17010202EAS)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-93.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202hog" class="level3">
+<h3 class="anchored" data-anchor-id="17010202hog">Hogback Creek (17010202HOG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-94.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202mid" class="level3">
+<h3 class="anchored" data-anchor-id="17010202mid">Carpp Creek (17010202MID)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-95.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202ran" class="level3">
+<h3 class="anchored" data-anchor-id="17010202ran">Ranch Creek (17010202RAN)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-96.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202ros" class="level3">
+<h3 class="anchored" data-anchor-id="17010202ros">Ross Fork Rock Creek (17010202ROS)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-97.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202sto" class="level3">
+<h3 class="anchored" data-anchor-id="17010202sto">Little Stony Creek (17010202STO)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-98.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202wel" class="level3">
+<h3 class="anchored" data-anchor-id="17010202wel">Welcome Creek (17010202WEL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-99.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="stmaryriver" class="level2">
+<h2 class="anchored" data-anchor-id="stmaryriver">StMaryRiver</h2>
+<p><strong>3 local populations</strong> | Data span: <strong>1997 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.049</strong> (SE: 0.137) — lambda ≈ <strong>0.952</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Boulder Creek (09040001BLD)
+</td>
+<td style="text-align:right;">
+-0.031
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.969
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kennedy Creek (09040001KEN)
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.964
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lee Creek (09040001LEE)
+</td>
+<td style="text-align:right;">
+-0.025
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.975
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-19" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-19">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-100.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-19" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-19">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-101.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="09040001bld" class="level3">
+<h3 class="anchored" data-anchor-id="09040001bld">Boulder Creek (09040001BLD)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-102.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="09040001ken" class="level3">
+<h3 class="anchored" data-anchor-id="09040001ken">Kennedy Creek (09040001KEN)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-103.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="09040001lee" class="level3">
+<h3 class="anchored" data-anchor-id="09040001lee">Lee Creek (09040001LEE)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-104.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="swanlake" class="level2">
+<h2 class="anchored" data-anchor-id="swanlake">SwanLake</h2>
+<p><strong>9 local populations</strong> | Data span: <strong>1985 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.069</strong> (SE: 0.134) — lambda ≈ <strong>0.934</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cold Creek (17010211CLD)
+</td>
+<td style="text-align:right;">
+-0.066
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.936
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Elk Creek (17010211ELK)
+</td>
+<td style="text-align:right;">
+-0.057
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Goat Creek (17010211GOA)
+</td>
+<td style="text-align:right;">
+-0.058
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jim Creek (17010211JIM)
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.932
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lion Creek (17010211LON)
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.939
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Fork Lost Creek (17010211LST)
+</td>
+<td style="text-align:right;">
+-0.066
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.936
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Piper Creek (17010211PIP)
+</td>
+<td style="text-align:right;">
+-0.080
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.923
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Soup Creek (17010211SOU)
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.932
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+South Woodward Creek (17010211WDW)
+</td>
+<td style="text-align:right;">
+-0.066
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.936
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-20" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-20">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-105.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-20" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-20">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-106.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010211cld" class="level3">
+<h3 class="anchored" data-anchor-id="17010211cld">Cold Creek (17010211CLD)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-107.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211elk" class="level3">
+<h3 class="anchored" data-anchor-id="17010211elk">Elk Creek (17010211ELK)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-108.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211goa" class="level3">
+<h3 class="anchored" data-anchor-id="17010211goa">Goat Creek (17010211GOA)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-109.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211jim" class="level3">
+<h3 class="anchored" data-anchor-id="17010211jim">Jim Creek (17010211JIM)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-110.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211lon" class="level3">
+<h3 class="anchored" data-anchor-id="17010211lon">Lion Creek (17010211LON)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-111.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211lst" class="level3">
+<h3 class="anchored" data-anchor-id="17010211lst">North Fork Lost Creek (17010211LST)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-112.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211pip" class="level3">
+<h3 class="anchored" data-anchor-id="17010211pip">Piper Creek (17010211PIP)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-113.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211sou" class="level3">
+<h3 class="anchored" data-anchor-id="17010211sou">Soup Creek (17010211SOU)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-114.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010211wdw" class="level3">
+<h3 class="anchored" data-anchor-id="17010211wdw">South Woodward Creek (17010211WDW)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-115.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="upperclarkforkriver" class="level2">
+<h2 class="anchored" data-anchor-id="upperclarkforkriver">UpperClarkForkRiver</h2>
+<p><strong>3 local populations</strong> | Data span: <strong>1994 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>-0.006</strong> (SE: 0.033) — lambda ≈ <strong>0.994</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Twin Lakes Creek (17010201TWI)
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Foster Creek (17010201WAR)
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+1.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Boulder Creek (17010202BOU)
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+1.008
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-21" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-21">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-116.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-21" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-21">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-117.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010201twi" class="level3">
+<h3 class="anchored" data-anchor-id="17010201twi">Twin Lakes Creek (17010201TWI)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-118.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010201war" class="level3">
+<h3 class="anchored" data-anchor-id="17010201war">Foster Creek (17010201WAR)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-119.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="17010202bou" class="level3">
+<h3 class="anchored" data-anchor-id="17010202bou">Boulder Creek (17010202BOU)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-120.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="upperstillwaterlake" class="level2">
+<h2 class="anchored" data-anchor-id="upperstillwaterlake">UpperStillwaterLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1994 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.004</strong> (SE: 0.138) — lambda ≈ <strong>1.004</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fitzsimmons Creek (17010210SWR)
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+1.034
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-22" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-22">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-121.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-22" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-22">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-122.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010210swr" class="level3">
+<h3 class="anchored" data-anchor-id="17010210swr">Fitzsimmons Creek (17010210SWR)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-123.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="upperwhitefishlake" class="level2">
+<h2 class="anchored" data-anchor-id="upperwhitefishlake">UpperWhitefishLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1994 – 2020</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.054</strong> (SE: 0.139) — lambda ≈ <strong>1.055</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+East Fork Swift Creek (17010210EAS)
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.046
+</td>
+<td style="text-align:right;">
+1.058
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-23" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-23">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-124.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-23" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-23">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-125.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010210eas" class="level3">
+<h3 class="anchored" data-anchor-id="17010210eas">East Fork Swift Creek (17010210EAS)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-126.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="westforkbitterrootriver" class="level2">
+<h2 class="anchored" data-anchor-id="westforkbitterrootriver">WestForkBitterrootRiver</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1994 – 2021</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.008</strong> (SE: 0.041) — lambda ≈ <strong>1.008</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Deer Creek (17010205DEE)
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+0.037
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-24" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-24">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-127.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-24" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-24">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-128.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010205dee" class="level3">
+<h3 class="anchored" data-anchor-id="17010205dee">Deer Creek (17010205DEE)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-129.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="whitefishlake" class="level2">
+<h2 class="anchored" data-anchor-id="whitefishlake">WhitefishLake</h2>
+<p><strong>1 local population</strong> | Data span: <strong>1993 – 2022</strong></p>
+<blockquote class="blockquote">
+<p><strong>Core growth rate</strong> (b0r_core): <strong>0.011</strong> (SE: 0.139) — lambda ≈ <strong>1.011</strong></p>
+</blockquote>
+
+<table class="table table-striped table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Population
+</th>
+<th style="text-align:right;">
+b0r (pop)
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+λ (exp b0r)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+West Fork Swift Creek (17010210SWI)
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+1.048
+</td>
+</tr>
+</tbody>
+
+</table>
+<section id="covariate-sensitivity-25" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-sensitivity-25">Covariate sensitivity</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-130.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</section>
+<section id="covariate-exposure-25" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-exposure-25">Covariate exposure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs_files/figure-html/all-sections-131.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="17010210swi" class="level3">
+<h3 class="anchored" data-anchor-id="17010210swi">West Fork Swift Creek (17010210SWI)</h3>
+<p><img src="outputs_files/figure-html/all-sections-132.png" class="img-fluid" data-fig-align="center" width="960"> :::</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
