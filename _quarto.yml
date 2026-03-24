@@ -11,6 +11,8 @@ website:
       - href: data.qmd
         text: Data
       - href: index.qmd
+        text: Model
+      - href: results.qmd
         text: Model Results
 
 format:

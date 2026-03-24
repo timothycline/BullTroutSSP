@@ -1,6 +1,6 @@
 ---
 title: "Bull Trout Multi-Population Viability Analysis"
-subtitle: "TMB State-Space Ricker Model - v1.22"
+subtitle: "TMB State-Space Ricker Model — v1.22"
 date: today
 author: "Bull Trout SSP Team"
 format:
@@ -18,8 +18,7 @@ format:
      COLLABORATORS: Feel free to edit any text in this file.
      Please DO NOT modify anything inside ```{r} ... ``` code blocks —
      those generate the figures and tables automatically from the model.
-     The section headings (## Overview, ## Model Description, etc.) and
-     the narrative paragraphs beneath them are all fair game.
+     The section headings and narrative paragraphs are all fair game.
      ===================================================================== -->
 
 ```{r setup, include=FALSE}
@@ -69,73 +68,16 @@ re_summ <- summary(fit_rep, select = "random")
 get_re  <- function(nm) unname(re_summ[rownames(re_summ) == nm, "Estimate"])
 ```
 
-```{r load-qext}
-qext <- readRDS(here("Results", paste0(SaveName, "_Qext.RDS")))
-
-nYears_proj <- qext$nYears_proj
-proj_years  <- qext$proj_years
-N_proj_arr  <- exp(qext$logN_proj)   # nsim x nPop x nYears_proj
-nSim        <- dim(N_proj_arr)[1]
-
-# Aggregate projected N to core level: sum populations within each core,
-# then compute quantiles across simulations — gives proper uncertainty
-# for the summed (core-level) abundance.
-df_proj_core <- bind_rows(lapply(seq_len(nCore), function(cc) {
-  pops   <- which(pop_core_vec == cc)
-  Nc_sim <- if (length(pops) == 1)
-               matrix(N_proj_arr[, pops, ], nrow = nSim)
-             else
-               apply(N_proj_arr[, pops, ], c(1, 3), sum)
-  Nq <- apply(Nc_sim, 2, quantile,
-               probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = TRUE)
-  data.frame(core_name = U_CoreAreas_In[cc], year = proj_years,
-             N_p05 = Nq[1,], N_p25 = Nq[2,], N_p50 = Nq[3,],
-             N_p75 = Nq[4,], N_p95 = Nq[5,])
-}))
-
-# Per-population historical bands (lognormal from sdreport marginal SEs)
-logN_map <- matrix(fit_rep$value[names(fit_rep$value) == "logN"],
-                   nrow = nPop, ncol = data_list$nYears)
-logN_sd  <- matrix(fit_rep$sd[  names(fit_rep$value) == "logN"],
-                   nrow = nPop, ncol = data_list$nYears)
-z90 <- qnorm(0.95); z50 <- qnorm(0.75)
-
-df_hist_pop <- expand.grid(pop = seq_len(nPop),
-                           y_idx = seq_len(data_list$nYears)) |>
-  mutate(
-    pop_name  = U_LocalPops_In[pop],
-    core_name = U_CoreAreas_In[pop_core_vec[pop]],
-    year      = DatYears[y_idx],
-    N_p50     = exp(logN_map[cbind(pop, y_idx)]),
-    N_p05     = exp(logN_map[cbind(pop, y_idx)] - z90 * logN_sd[cbind(pop, y_idx)]),
-    N_p25     = exp(logN_map[cbind(pop, y_idx)] - z50 * logN_sd[cbind(pop, y_idx)]),
-    N_p75     = exp(logN_map[cbind(pop, y_idx)] + z50 * logN_sd[cbind(pop, y_idx)]),
-    N_p95     = exp(logN_map[cbind(pop, y_idx)] + z90 * logN_sd[cbind(pop, y_idx)])
-  )
-
-# Per-population projection bands (from simulation quantiles)
-r1 <- qext$qext_results[["thr20"]]
-df_proj_pop <- expand.grid(pop = seq_len(nPop),
-                           h   = seq_len(nYears_proj)) |>
-  mutate(
-    pop_name  = U_LocalPops_In[pop],
-    core_name = U_CoreAreas_In[pop_core_vec[pop]],
-    year      = proj_years[h],
-    N_p05     = r1$N_p05[cbind(pop, h)],
-    N_p25     = r1$N_p25[cbind(pop, h)],
-    N_p50     = r1$N_p50[cbind(pop, h)],
-    N_p75     = r1$N_p75[cbind(pop, h)],
-    N_p95     = r1$N_p95[cbind(pop, h)]
-  )
-```
-
 ---
 
 ## Overview
 
-This document presents results from a hierarchical state-space Ricker model
-for bull trout (*Salvelinus confluentus*) fitted to redd count time series
-across multiple local populations nested within core areas.
+This document presents the model structure and key diagnostics for a hierarchical
+state-space Ricker model fitted to bull trout (*Salvelinus confluentus*) redd
+count time series across multiple local populations nested within core areas.
+Detailed results — covariate effects, population trajectories, exposure and
+sensitivity, and future viability projections — are in the
+[Model Results](results.qmd) tab.
 
 ### Spatial Hierarchy
 
@@ -156,16 +98,14 @@ n_possible <- prod(dim(data_list$ReddCounts))
 
 data.frame(
   Metric = c("Years", "Core areas", "Local populations",
-             "Survey sites", "Site-year observations", "Data coverage",
-             "CPUE observations"),
+             "Survey sites", "Site-year observations", "Data coverage"),
   Value  = c(
     paste(year_range[1], "–", year_range[2]),
     data_list$nCore,
     data_list$nPop,
     data_list$nSites,
     n_obs,
-    paste0(round(100 * n_obs / n_possible, 1), "%"),
-    data_list$nCPUEobs
+    paste0(round(100 * n_obs / n_possible, 1), "%")
   )
 ) |>
   kable(col.names = c("Metric", "Value")) |>
@@ -189,7 +129,7 @@ $$R_{p,t} = b_{0r,p} + \beta_{\text{Flow},p} \cdot \text{Flow}_{p,t-1}
            + \beta_{\text{Temp},p} \cdot T_{p,t-1}
            + \beta_{\text{Temp}_2} \cdot T_{p,t-1}^2
            + \beta_{\text{INV},p} \cdot \text{INV}_{p,t-1}
-           + \beta_{\text{LKT},c} \cdot \text{LKT}_{c,t-1}
+           + \beta_{\text{LKT},M} \cdot \text{LKT}_{c,t-1}
            - \phi_p \cdot D_{p,t-1}$$
 
 Process errors follow an AR(1) structure:
@@ -206,12 +146,14 @@ redd counts.
 Redd counts at each survey site follow a Negative Binomial (NB2) distribution:
 
 $$C_{s,y} \sim \text{NB2}\!\left(\mu_{s,y},\; \phi_{\text{obs}}\right), \quad
-  \mu_{s,y} = 0.5 \cdot N_{p,y} \cdot \pi_s$$
+  \mu_{s,y} = 0.5 \cdot N_{p,y} \cdot \pi_s \cdot \exp(\beta_{\text{FC}} \cdot \text{Flow}_{p,y})$$
 
 where $\phi_{\text{obs}}$ is the NB2 dispersion parameter
 ($\text{Var} = \mu + \mu^2/\phi_{\text{obs}}$; as $\phi_{\text{obs}} \to \infty$
-the distribution collapses to Poisson), and $\pi_s$ is the fraction of
-population habitat surveyed at site $s$.
+the distribution collapses to Poisson), $\pi_s$ is the fraction of population
+habitat surveyed at site $s$, and $\beta_{\text{FC}}$ captures the contemporaneous
+same-year flow effect on redd detectability (observation model only; does not
+enter the state equation).
 
 ### CPUE Sub-Model
 
@@ -229,17 +171,187 @@ efficiency differences among electrofishing reaches.
 | Parameter | Hierarchy |
 |-----------|-----------|
 | Baseline growth rate $b_{0r}$ | Global → Core → Population |
-| Density dependence $\phi$ | Global → Core → Population |
+| Density dependence $\phi$ | Global → Population |
 | Flow slope $\beta_\text{Flow}$ | Global hyper-mean → Population |
 | Temperature slope $\beta_\text{Temp}$ | Global hyper-mean → Population |
 | Invasive slope $\beta_\text{INV}$ | Global hyper-mean → Population |
-| Lake trout slope $\beta_\text{LKT}$ | Global hyper-mean → Core area |
+| Lake trout slope $\beta_\text{LKT}$ | Global scalar (cores with lake trout only) |
 | Adfluvial access, unconfined valley bottom | Global scalar on $b_{0r}$ mean |
 | W95 winter flood frequency, road density | Global scalar on $b_{0r}$ mean |
+
+### Three-Stage Fitting
+
+| Stage | Observation model | Fixed | Purpose |
+|-------|-------------------|-------|---------|
+| A | Poisson | All SDs, AR(1) ρ | Initialize latent states |
+| B1 | Poisson | All SDs | Stabilise hierarchy under Poisson |
+| B2 | NB2 | — (all free) | Full model — final inference |
+
+---
+
+## Model Selection
+
+### Flow Lag
+
+Bull trout have a complex life history: eggs are deposited in late summer,
+incubate over winter, and juveniles spend several years rearing before returning
+as adults to spawn. We therefore tested a range of lags between environmental
+conditions and the observed adult redd count response. With temperature fixed at
+an effective 6-year lag (the best-supported specification from earlier runs), we
+searched a grid of **effective lags 4–8 years** × **moving-average windows
+(none, 2-year, 3-year)** for summer streamflow (15 combinations total). All
+models used the 3-stage NB2 fitting procedure; comparison is by marginal AIC.
+
+```{r flow-lag-selection, fig.height=4.5}
+fl <- readRDS(here("Results", "FlowLagSearch_2026-03-22.RDS"))
+
+fl_plot <- fl$results_df |>
+  filter(!is.na(AIC)) |>
+  mutate(
+    ma_label  = case_when(
+      MovAvgF == 0 ~ "No moving average",
+      MovAvgF == 2 ~ "2-year MA",
+      MovAvgF == 3 ~ "3-year MA"
+    ),
+    label     = factor(label, levels = rev(label[order(AIC)])),
+    fill_grp  = case_when(
+      delta_AIC <= 2 ~ "Within 2 AIC (equivalent)",
+      delta_AIC <= 7 ~ "Within 7 AIC (some support)",
+      TRUE           ~ "> 7 AIC (little support)"
+    ) |> factor(levels = c("Within 2 AIC (equivalent)",
+                            "Within 7 AIC (some support)",
+                            "> 7 AIC (little support)"))
+  )
+
+ggplot(fl_plot, aes(x = label, y = delta_AIC, fill = fill_grp)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+  geom_hline(yintercept = 2, linetype = 2, color = "goldenrod",  linewidth = 0.8) +
+  geom_hline(yintercept = 7, linetype = 3, color = "tomato",     linewidth = 0.8) +
+  geom_text(aes(label = sprintf("Δ%.1f", delta_AIC)),
+            hjust = -0.1, size = 3.2) +
+  scale_fill_manual(
+    values = c("Within 2 AIC (equivalent)"  = "steelblue",
+               "Within 7 AIC (some support)" = "goldenrod3",
+               "> 7 AIC (little support)"    = "grey60"),
+    name = NULL
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.25))) +
+  coord_flip() +
+  labs(
+    x        = NULL,
+    y        = "ΔAIC relative to best model",
+    title    = "Flow lag selection — ΔAIC by lag specification",
+    subtitle = sprintf(
+      "Temperature fixed: effective %d-yr lag, no smoothing  |  Data v%s  |  Model v%s",
+      fl$TempLag + 1, fl$DataVersion, fl$ModelVersion
+    ),
+    caption  = "NA = model failed to converge; longer lags exceeded the time-series extent"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(legend.position = "bottom")
+```
+
+The **6-year effective lag with no moving average** (Lag6_NoMA) has the lowest
+AIC. The next-best models all involve shorter lags with multi-year smoothing,
+which may be capturing a similar biological signal through averaging. Given
+the clean biological interpretation — eggs deposited in year *t* incubate for
+approximately one winter and juveniles rear for approximately 4–5 years before
+returning as adults — an unsmoothed 6-year lag is preferred. This specification
+is used in all subsequent model runs.
+
+### Static Habitat Covariates
+
+With the flow lag fixed, we tested all 2^4 = 16 subsets of four static habitat
+scalars that shift the prior mean of the population-level baseline growth rate:
+
+| Covariate | Abbreviation | Biological hypothesis |
+|-----------|-------------|----------------------|
+| Adfluvial access (binary) | Adf | Lake-connected populations have higher adult survival / energy reserves |
+| Unconfined valley bottom (z-score) | VB | Wider floodplains support more redd habitat and higher carrying capacity |
+| W95 winter flood frequency (z-score) | Flood | High-flow winters scour redds and reduce recruitment |
+| Road density in valley bottom (z-score) | RD | Roads increase fine sediment delivery and reduce egg-to-fry survival |
+
+Dynamic covariates (flow, temperature, invasives, lake trout) were held at the
+selected lag specification throughout. Comparison is by AICc.
+
+```{r static-covar-selection, fig.height=6}
+sc <- readRDS(here("Results", "StaticCovarSelection_2026-03-23.RDS"))
+
+sc_plot <- sc$results_df |>
+  filter(!is.na(AICc)) |>
+  mutate(
+    label    = factor(label, levels = rev(label[order(AICc)])),
+    fill_grp = case_when(
+      delta_AICc_vs_best <= 2 ~ "Within 2 AICc (equivalent)",
+      delta_AICc_vs_best <= 7 ~ "Within 7 AICc (some support)",
+      TRUE                    ~ "> 7 AICc (little support)"
+    ) |> factor(levels = c("Within 2 AICc (equivalent)",
+                            "Within 7 AICc (some support)",
+                            "> 7 AICc (little support)"))
+  )
+
+ggplot(sc_plot, aes(x = label, y = delta_AICc_vs_best, fill = fill_grp)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+  geom_hline(yintercept = 2, linetype = 2, color = "goldenrod",  linewidth = 0.8) +
+  geom_hline(yintercept = 7, linetype = 3, color = "tomato",     linewidth = 0.8) +
+  geom_text(aes(label = sprintf("Δ%.1f  (k=%d)", delta_AICc_vs_best, k_fixed)),
+            hjust = -0.05, size = 3.0) +
+  scale_fill_manual(
+    values = c("Within 2 AICc (equivalent)"  = "steelblue",
+               "Within 7 AICc (some support)" = "goldenrod3",
+               "> 7 AICc (little support)"    = "grey60"),
+    name = NULL
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.30))) +
+  coord_flip() +
+  labs(
+    x        = NULL,
+    y        = "ΔAICc relative to best model",
+    title    = "Static covariate model selection — all 16 subsets",
+    subtitle = sprintf(
+      "Flow lag %d yr, Temp lag %d yr (no smoothing)  |  Data v%s  |  n = %d site-years",
+      sc$FlowLag + 1, sc$TempLag + 1, sc$DataVersion, sc$n_obs
+    )
+  ) +
+  theme_bw(base_size = 11) +
+  theme(legend.position = "bottom")
+```
+
+```{r static-covar-table}
+sc$results_df |>
+  filter(!is.na(AICc)) |>
+  select(label, use_Adfluvial, use_VB, use_Flood, use_RD,
+         AICc, delta_AICc_vs_best, AICc_weight) |>
+  mutate(
+    across(c(use_Adfluvial, use_VB, use_Flood, use_RD),
+           ~ ifelse(. == 1, "✓", "")),
+    across(c(AICc, delta_AICc_vs_best), ~ round(., 2)),
+    AICc_weight = round(AICc_weight, 3)
+  ) |>
+  kable(
+    col.names = c("Model", "Adf", "VB", "Flood", "RD",
+                  "AICc", "ΔAICc", "w"),
+    align = c("l", "c", "c", "c", "c", "r", "r", "r")
+  ) |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE, font_size = 12) |>
+  row_spec(which(sc$results_df$delta_AICc_vs_best[!is.na(sc$results_df$AICc)] <= 2),
+           bold = TRUE, background = "#EBF5FB")
+```
+
+**Adfluvial access** and **flood frequency** appear in every model with strong
+support (ΔAICc ≤ 2); both have clear, directional effects. Valley bottom width
+and road density are individually marginal but add modest support when combined
+with the core two. The **full model (all four scalars)** sits at ΔAICc = 2.6 —
+within conventional equivalent-support range — and is retained to preserve
+biological completeness and consistency across core areas with different habitat
+profiles.
 
 ---
 
 ## Model Fit
+
+### Convergence
 
 ```{r convergence}
 conv_label <- ifelse(optB$convergence == 0, "Converged (0)",
@@ -247,155 +359,40 @@ conv_label <- ifelse(optB$convergence == 0, "Converged (0)",
 max_grad   <- max(abs(fit_rep$gradient.fixed))
 rho_e      <- get_rep("rho")
 phi_e      <- get_rep("phi_obs")
+sigN_e     <- get_rep("sigmaN")
 
 data.frame(
   Metric = c("Convergence code", "Negative log-likelihood", "Max |gradient|",
-             "AR(1) ρ", "NB2 dispersion φ"),
+             "AR(1) ρ", "NB2 dispersion φ_obs", "Process error σ_N"),
   Value  = c(
     conv_label,
     round(optB$objective, 2),
     formatC(max_grad, format = "e", digits = 2),
     paste0(round(rho_e$est, 3), " (SE ", round(rho_e$se, 3), ")"),
-    paste0(round(phi_e$est, 3), " (SE ", round(phi_e$se, 3), ")")
+    paste0(round(phi_e$est, 3), " (SE ", round(phi_e$se, 3), ")"),
+    paste0(round(sigN_e$est, 3), " (SE ", round(sigN_e$se, 3), ")")
   )
 ) |>
   kable(col.names = c("Metric", "Value")) |>
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
 
----
-
-## Latent Abundance Trajectories
-
-Estimated latent spawner abundance summed to the core-area level. Individual
-population trajectories are available in the Data tab.
-
-```{r core-trajectories, fig.height=14}
-fit_plots <- plot_fit(data_list, fit_rep)
-dfN       <- fit_plots$latent
-df_obsfit <- fit_plots$fit
-df_resid  <- fit_plots$resid
-
-# Sum MAP latent N across populations within each core area
-dfN_core <- dfN |>
-  mutate(
-    year_actual = DatYears[year],
-    core_name   = U_CoreAreas_In[pop_core_vec[pop]]
-  ) |>
-  group_by(core_name, year_actual) |>
-  summarise(N_total = sum(N, na.rm = TRUE), .groups = "drop")
-
-ggplot() +
-  # Historical: MAP line + shaded area
-  geom_area(data = dfN_core,
-            aes(x = year_actual, y = N_total),
-            fill = "steelblue", alpha = 0.15) +
-  geom_line(data = dfN_core,
-            aes(x = year_actual, y = N_total),
-            color = "steelblue", linewidth = 0.9) +
-  # Divider between historical and projected
-  geom_vline(xintercept = DatYears[data_list$nYears] + 0.5,
-             linetype = 2, color = "grey50", linewidth = 0.4) +
-  # Projected: 90% CI, 50% CI, median
-  geom_ribbon(data = df_proj_core,
-              aes(x = year, ymin = N_p05, ymax = N_p95),
-              fill = "tomato", alpha = 0.15) +
-  geom_ribbon(data = df_proj_core,
-              aes(x = year, ymin = N_p25, ymax = N_p75),
-              fill = "tomato", alpha = 0.30) +
-  geom_line(data = df_proj_core,
-            aes(x = year, y = N_p50),
-            color = "tomato", linewidth = 0.9) +
-  facet_wrap(~core_name, scales = "free_y", ncol = 4) +
-  labs(x = "Year", y = "Estimated spawners (sum of local populations)",
-       title = "Estimated Bull Trout Spawner Abundance by Core Area",
-       subtitle = paste0("Historical: MAP estimate (blue) | Projected ",
-                         nYears_proj, " years: median + 50/90% CI (red)",
-                         " | Future covariates: ", qext$future_cov_assumption)) +
-  theme_bw(base_size = 11) +
-  theme(strip.text = element_text(size = 8),
-        panel.grid.minor = element_blank())
-```
-
----
-
-## Observed vs Fitted Redd Counts
+### Observed vs Fitted Redd Counts
 
 ```{r obs-fitted-scatter}
+fit_plots <- plot_fit(data_list, fit_rep)
+df_obsfit <- fit_plots$fit
+
 df_obsfit |>
   ggplot(aes(x = mu, y = y_obs)) +
   geom_point(alpha = 0.3, size = 1.2, color = "grey30") +
-  geom_abline(slope = 1, intercept = 0, color = "steelblue", linetype = 2, linewidth = 1) +
+  geom_abline(slope = 1, intercept = 0, color = "steelblue",
+              linetype = 2, linewidth = 1) +
   scale_x_continuous(trans = "log1p", labels = scales::comma) +
   scale_y_continuous(trans = "log1p", labels = scales::comma) +
   labs(x = "Fitted NB2 mean (log1p scale)", y = "Observed (log1p scale)",
-       title = "Observed vs Fitted Redd Counts - All Site-Years") +
+       title = "Observed vs Fitted Redd Counts — All Site-Years") +
   theme_bw()
-```
-
-```{r obs-fitted-pop, fig.height=20}
-# Population-level summaries: total observed vs fitted by year
-df_obsfit |>
-  mutate(
-    year_actual = DatYears[year],
-    pop_name    = U_LocalPops_In[pop],
-    core_name   = U_CoreAreas_In[pop_core_vec[pop]]
-  ) |>
-  group_by(pop_name, core_name, year_actual) |>
-  summarise(y_obs = sum(y_obs, na.rm = TRUE),
-            mu    = sum(mu,    na.rm = TRUE),
-            .groups = "drop") |>
-  ggplot(aes(x = year_actual)) +
-  geom_col(aes(y = y_obs), fill = "grey70", alpha = 0.6, width = 0.8) +
-  geom_line(aes(y = mu), color = "steelblue", linewidth = 0.7) +
-  facet_wrap(~pop_name, scales = "free_y", ncol = 5) +
-  labs(x = NULL, y = "Redd count",
-       title = "Observed (bars) vs Fitted (line) Redd Counts by Population") +
-  theme_bw(base_size = 9) +
-  theme(strip.text = element_text(size = 6),
-        axis.text.x = element_text(size = 6, angle = 45, hjust = 1))
-```
-
----
-
-## Population Viability Projections
-
-Historical estimated abundance (blue, 50% and 90% CI from model smoothing uncertainty)
-extended with a `r nYears_proj`-year stochastic forward projection (red, 50% and 90% CI
-from `r qext$nsim` simulations sampling parameter and process uncertainty).
-Dotted line marks N = 20 adults. Future covariates held at historical mean (z-score = 0).
-
-```{r pop-trajectories, fig.height=22, fig.width=11}
-ggplot() +
-  geom_ribbon(data = df_hist_pop,
-              aes(x = year, ymin = N_p05, ymax = N_p95),
-              fill = "steelblue", alpha = 0.15) +
-  geom_ribbon(data = df_hist_pop,
-              aes(x = year, ymin = N_p25, ymax = N_p75),
-              fill = "steelblue", alpha = 0.30) +
-  geom_line(data = df_hist_pop,
-            aes(x = year, y = N_p50),
-            color = "steelblue", linewidth = 0.5) +
-  geom_vline(xintercept = DatYears[data_list$nYears] + 0.5,
-             linetype = 2, color = "grey50", linewidth = 0.3) +
-  geom_ribbon(data = df_proj_pop,
-              aes(x = year, ymin = N_p05, ymax = N_p95),
-              fill = "tomato", alpha = 0.15) +
-  geom_ribbon(data = df_proj_pop,
-              aes(x = year, ymin = N_p25, ymax = N_p75),
-              fill = "tomato", alpha = 0.30) +
-  geom_line(data = df_proj_pop,
-            aes(x = year, y = N_p50),
-            color = "tomato", linewidth = 0.6) +
-  geom_hline(yintercept = 20, linetype = 3,
-             color = "firebrick", linewidth = 0.4) +
-  facet_wrap(~pop_name, scales = "free_y", ncol = 5) +
-  labs(x = "Year", y = "Adult Abundance (N)",
-       title = "Local Population Abundance - Historical and Projected") +
-  theme_bw(base_size = 7) +
-  theme(strip.text      = element_text(size = 5),
-        axis.text.x     = element_text(size = 5, angle = 45, hjust = 1),
-        panel.grid.minor = element_blank())
 ```
 
 ---
@@ -403,17 +400,18 @@ ggplot() +
 ## Residual Diagnostics
 
 ```{r residuals-dist}
+df_resid <- fit_plots$resid
+
 df_resid |>
   ggplot(aes(x = pearson)) +
   geom_histogram(bins = 60, fill = "steelblue", color = "white", alpha = 0.8) +
   geom_vline(xintercept = 0, linetype = 2, color = "grey40") +
   labs(x = "Pearson Residual", y = "Count",
-       title = "Residual Distribution - All Site-Years") +
+       title = "Residual Distribution — All Site-Years") +
   theme_bw()
 ```
 
 ```{r residuals-year}
-# Mean residual by year — check for systematic temporal trends
 df_resid |>
   mutate(year_actual = DatYears[year]) |>
   group_by(year_actual) |>
@@ -427,7 +425,7 @@ df_resid |>
   geom_line(color = "steelblue", linewidth = 0.9) +
   geom_point(size = 2) +
   labs(x = "Year", y = "Mean Pearson Residual (± 95% CI)",
-       title = "Mean Residual by Year - Check for Temporal Trends") +
+       title = "Mean Residual by Year — Check for Temporal Trends") +
   theme_bw()
 ```
 
@@ -441,9 +439,6 @@ captures persistent multi-year trends in population dynamics; NB2 absorbs
 aggregated spawning behaviour and observer variability in redd counts.
 
 ```{r process-obs-params}
-rho_e   <- get_rep("rho")
-phi_e   <- get_rep("phi_obs")
-sigN_e  <- get_rep("sigmaN")
 sigq_e  <- get_rep("sigma_q")
 sigc_e  <- get_rep("sigma_cpue")
 
@@ -462,284 +457,157 @@ params_df <- data.frame(
   )
 
 params_df |>
-  kable(digits = 3, col.names = c("Parameter", "Estimate", "SE", "Lower 95%", "Upper 95%")) |>
+  kable(digits = 3,
+        col.names = c("Parameter", "Estimate", "SE", "Lower 95%", "Upper 95%")) |>
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
 
-```{r rho-phi-plot}
-params_df |>
-  filter(Parameter %in% c("AR(1) autocorrelation ρ", "NB2 dispersion φ_obs")) |>
-  ggplot(aes(x = Parameter, y = Estimate)) +
-  geom_hline(yintercept = 0, linetype = 2, color = "grey50") +
-  geom_errorbar(aes(ymin = Lower95, ymax = Upper95), width = 0.15, linewidth = 0.9) +
-  geom_point(size = 4, color = "steelblue") +
-  facet_wrap(~Parameter, scales = "free", ncol = 2) +
-  labs(x = NULL, y = "Estimate (95% CI)",
-       title = "Process Error AR(1) Autocorrelation and NB2 Observation Dispersion") +
-  theme_bw() +
-  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
-```
-
 ---
 
-## Covariate Effects
+## Why NB2? Overdispersion Diagnostic
 
-### Static Effects on Baseline Growth Rate
+Redd counts show strong overdispersion relative to what a Poisson observation
+model would predict. The plot below compares the observed site-level variance
+against mean redd count (each point = one survey site, ≥ 5 years of data) with
+the theoretical variance function for Poisson ($\text{Var} = \mu$) and NB2
+($\text{Var} = \mu + \mu^2/\phi_{\text{obs}}$). The data track the NB2 curve
+closely across nearly three orders of magnitude in abundance; the Poisson line
+consistently underpredicts variance, especially at high counts.
 
-These covariates shift the prior mean of the population-level growth rate
-intercept ($b_{0r,p}$). Adfluvial access (lake-associated populations) and
-unconfined valley bottom (floodplain habitat quality) reflect structural
-habitat attributes. W95 flood frequency and road density in the valley bottom
-capture disturbance.
+```{r nb2-justification, fig.height=5}
+# Build site × year data frame using the already-loaded fit objects
+phi_val <- phi_e$est[1]
+phi_se_ <- phi_e$se[1]
 
-```{r global-scalars}
-global_pars <- c("bAdf", "bUVB", "bFlood", "bRD")
+logN_mat_diag <- matrix(
+  fit_rep$value[names(fit_rep$value) == "logN"],
+  nrow = nPop, ncol = data_list$nYears
+)
 
-global_df <- lapply(global_pars, function(p) {
-  r <- get_rep(p)
-  if (!length(r$est)) return(NULL)
-  data.frame(Parameter = p, Estimate = r$est[1], SE = r$se[1])
-}) |>
-  bind_rows() |>
+df_diag <- expand.grid(site = seq_len(data_list$nSites),
+                       year = seq_len(data_list$nYears)) |>
+  as_tibble() |>
   mutate(
-    Label   = c("Adfluvial access",
-                "Unconfined valley bottom (z)",
-                "W95 winter flood frequency (z)",
-                "Road density in valley bottom (z)"),
-    Lower95 = Estimate - 1.96 * SE,
-    Upper95 = Estimate + 1.96 * SE,
-    sig     = ifelse(Lower95 > 0 | Upper95 < 0, "*", "")
+    pop   = data_list$site_pop[site] + 1L,
+    y_obs = as.vector(data_list$ReddCounts),
+    mu    = 0.5 * exp(logN_mat_diag[cbind(pop, year)]) * data_list$pS[site]
+  ) |>
+  filter(is.finite(y_obs), !is.na(y_obs), mu > 0)
+
+# Per-site variance vs mean (at least 5 years of data per site)
+site_stats <- df_diag |>
+  group_by(site) |>
+  summarise(obs_mean = mean(y_obs),
+            obs_var  = var(y_obs),
+            n        = n(),
+            .groups  = "drop") |>
+  filter(n >= 5, obs_mean > 0, obs_var > 0)
+
+# Compute global overdispersion statistics for annotation
+od_pois <- sum((df_diag$y_obs - df_diag$mu)^2 / df_diag$mu) / nrow(df_diag)
+od_nb2  <- sum((df_diag$y_obs - df_diag$mu)^2 /
+               (df_diag$mu + df_diag$mu^2 / phi_val)) / nrow(df_diag)
+
+# Theory curves
+mu_seq <- 10^seq(log10(min(site_stats$obs_mean)),
+                 log10(max(site_stats$obs_mean)),
+                 length.out = 300)
+var_lines <- tibble(
+  mu      = mu_seq,
+  Poisson = mu_seq,
+  NB2     = mu_seq + mu_seq^2 / phi_val
+) |> pivot_longer(-mu, names_to = "model", values_to = "var")
+
+ggplot(site_stats, aes(x = obs_mean, y = obs_var)) +
+  geom_point(alpha = 0.5, size = 2, colour = "grey30") +
+  geom_line(data = var_lines,
+            aes(x = mu, y = var, colour = model, linetype = model),
+            linewidth = 1.0) +
+  scale_colour_manual(values = c(Poisson = "steelblue", NB2 = "tomato"),
+                      name = NULL) +
+  scale_linetype_manual(values = c(Poisson = "dashed", NB2 = "solid"),
+                        name = NULL) +
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma) +
+  annotate("text", x = Inf, y = -Inf, hjust = 1.05, vjust = -0.5, size = 3.2,
+           label = sprintf(
+             "Poisson disp. = %.1f  |  NB2 disp. = %.2f  |  φ = %.2f (SE %.2f)",
+             od_pois, od_nb2, phi_val, phi_se_
+           ), colour = "grey30") +
+  labs(
+    x        = "Site mean redd count (log scale)",
+    y        = "Site observed variance (log scale)",
+    title    = "Observed variance vs mean — NB2 vs Poisson",
+    subtitle = sprintf(
+      "NB2: Var = μ + μ²/φ,  φ = %.2f (SE = %.2f);  Poisson: Var = μ",
+      phi_val, phi_se_
+    )
+  ) +
+  theme_bw(base_size = 12) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Causal Analysis: Invasives and Bull Trout
+
+To determine whether the negative association between non-native trout and bull
+trout reflects **displacement** (invasives suppressing bull trout population
+growth) or **replacement** (declining bull trout creating space for invasives),
+we fit cross-lagged mixed-effects regressions using the model-estimated latent
+log-abundance as the bull trout index. The displacement signal — INV(t−k)
+predicting log-λ(t) — is large, negative, and highly significant across all
+lags from 1 to 8 years (|t| = 6–21), with the strongest effect at a 1-year lag
+and gradual decay at longer horizons as expected from a lagged life-history
+response. The replacement signal — logN(t) predicting ΔINV(t+k) — is
+indistinguishable from zero at every lead (|t| < 0.4, R² < 0.01%).
+The asymmetry between the two directions strongly supports a causal pathway
+from invasive trout to bull trout suppression, rather than the reverse.
+
+```{r crosslag-plot, fig.height=6}
+cl <- readRDS(here("Results", "CrossLag_INV_BLT_2026-03-23.RDS"))
+
+inv2blt <- cl$results_inv2blt |>
+  mutate(sig = abs(t_stat) > 2,
+         panel = "INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement: invasives drive bull trout decline]")
+
+blt2inv <- cl$results_blt2inv |>
+  mutate(sig = abs(t_stat) > 2,
+         panel = "logN(t) \u2192 \u0394INV(t+k)   [Replacement: bull trout decline drives invasion]")
+
+bind_rows(inv2blt, blt2inv) |>
+  mutate(panel = factor(panel, levels = c(
+    "INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement: invasives drive bull trout decline]",
+    "logN(t) \u2192 \u0394INV(t+k)   [Replacement: bull trout decline drives invasion]"
+  ))) |>
+  ggplot(aes(x = lag_yr, y = beta)) +
+  geom_hline(yintercept = 0, linetype = 2, color = "grey50", linewidth = 0.7) +
+  geom_ribbon(aes(ymin = lower95, ymax = upper95, fill = sig),
+              alpha = 0.18) +
+  geom_line(aes(color = sig), linewidth = 0.8) +
+  geom_point(aes(color = sig, fill = sig),
+             shape = 21, size = 3, stroke = 0.5) +
+  scale_color_manual(values = c(`FALSE` = "grey60",  `TRUE` = "steelblue"),
+                     labels = c(`FALSE` = "|t| \u2264 2", `TRUE` = "|t| > 2"),
+                     name = NULL) +
+  scale_fill_manual(values  = c(`FALSE` = "grey60",  `TRUE` = "steelblue"),
+                    labels  = c(`FALSE` = "|t| \u2264 2", `TRUE` = "|t| > 2"),
+                    name    = NULL) +
+  scale_x_continuous(breaks = 0:8) +
+  facet_wrap(~panel, ncol = 1, scales = "free_y") +
+  labs(
+    x       = "Lag / lead (years)",
+    y       = "Regression coefficient (± 95% CI)",
+    title   = "Cross-lagged analysis: causal direction between invasives and bull trout",
+    caption = paste0("Mixed-effects regression on model-estimated latent log-abundance.  ",
+                     "Run date: ", cl$run_date)
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    legend.position  = "bottom",
+    strip.text       = element_text(size = 9, face = "bold"),
+    panel.grid.minor = element_blank()
   )
-
-global_df |>
-  ggplot(aes(x = reorder(Label, Estimate), y = Estimate)) +
-  geom_hline(yintercept = 0, linetype = 2, color = "grey50") +
-  geom_errorbar(aes(ymin = Lower95, ymax = Upper95), width = 0.2, linewidth = 0.8) +
-  geom_point(size = 3.5, color = "steelblue") +
-  geom_text(aes(label = sig, y = Upper95 + 0.01), size = 5, color = "tomato") +
-  coord_flip() +
-  labs(x = NULL, y = "Coefficient estimate (95% CI)",
-       title = "Static Covariate Effects on Baseline Growth Rate",
-       caption = "* = 95% CI excludes zero") +
-  theme_bw()
-```
-
-### Thermal Performance Curve
-
-Bull trout growth rate shows a unimodal response to water temperature
-(linear + negative quadratic).
-
-```{r thermal-curve}
-if (covar_config$use_Temp == 1) {
-  plot_temp_curve(fit_rep, temp_mean = temp_mean, temp_sd = temp_sd)
-}
-```
-
-### Population-Level Flow Slopes
-
-Each local population has its own sensitivity to summer streamflow,
-drawn from a global hyper-distribution (dashed red line = hyper-mean).
-
-```{r flow-slopes, fig.height=14}
-if (covar_config$use_Flow == 1) {
-  r <- get_rep("bFlow_pop")
-  bFlow_M <- get_rep("bFlow_M")$est[1]
-
-  data.frame(
-    pop_name  = U_LocalPops_In,
-    core_name = U_CoreAreas_In[pop_core_vec],
-    estimate  = r$est,
-    se        = r$se
-  ) |>
-    ggplot(aes(x = reorder(pop_name, estimate), y = estimate, color = core_name)) +
-    geom_hline(yintercept = 0,       linetype = 2, color = "grey50") +
-    geom_hline(yintercept = bFlow_M, linetype = 3, color = "tomato", linewidth = 0.8) +
-    geom_errorbar(aes(ymin = estimate - 1.96 * se,
-                      ymax = estimate + 1.96 * se), width = 0.4, alpha = 0.6) +
-    geom_point(size = 1.8) +
-    annotate("text", x = 1, y = bFlow_M,
-             label = paste0("Hyper-mean = ", round(bFlow_M, 3)),
-             hjust = 0, vjust = -0.6, color = "tomato", size = 3.5) +
-    coord_flip() +
-    scale_color_brewer(palette = "Set3", name = "Core area") +
-    labs(x = NULL, y = "Flow slope (bFlow_pop)",
-         title = "Summer Streamflow Effect on Growth Rate by Population") +
-    theme_bw(base_size = 9) +
-    theme(legend.position = "right",
-          axis.text.y = element_text(size = 7))
-}
-```
-
-### Population-Level Temperature Slopes
-
-```{r temp-slopes, fig.height=14}
-if (covar_config$use_Temp == 1) {
-  r <- get_rep("bTemp_pop")
-  bTemp_M <- get_rep("bTemp_M")$est[1]
-
-  data.frame(
-    pop_name  = U_LocalPops_In,
-    core_name = U_CoreAreas_In[pop_core_vec],
-    estimate  = r$est,
-    se        = r$se
-  ) |>
-    ggplot(aes(x = reorder(pop_name, estimate), y = estimate, color = core_name)) +
-    geom_hline(yintercept = 0,       linetype = 2, color = "grey50") +
-    geom_hline(yintercept = bTemp_M, linetype = 3, color = "tomato", linewidth = 0.8) +
-    geom_errorbar(aes(ymin = estimate - 1.96 * se,
-                      ymax = estimate + 1.96 * se), width = 0.4, alpha = 0.6) +
-    geom_point(size = 1.8) +
-    annotate("text", x = 1, y = bTemp_M,
-             label = paste0("Hyper-mean = ", round(bTemp_M, 3)),
-             hjust = 0, vjust = -0.6, color = "tomato", size = 3.5) +
-    coord_flip() +
-    scale_color_brewer(palette = "Set3", name = "Core area") +
-    labs(x = NULL, y = "Temperature linear slope (bTemp_pop)",
-         title = "August Temperature Linear Effect on Growth Rate by Population",
-         caption = "Global quadratic (bTemp2) is negative - combined effect is unimodal") +
-    theme_bw(base_size = 9) +
-    theme(legend.position = "right",
-          axis.text.y = element_text(size = 7))
-}
-```
-
-### Population-Level Invasive Species Slopes
-
-```{r inv-slopes, fig.height=14}
-if (covar_config$use_INV == 1) {
-  r <- get_rep("bINV_pop")
-  bINV_M <- get_rep("bINV_M")$est[1]
-
-  data.frame(
-    pop_name  = U_LocalPops_In,
-    core_name = U_CoreAreas_In[pop_core_vec],
-    estimate  = r$est,
-    se        = r$se
-  ) |>
-    ggplot(aes(x = reorder(pop_name, estimate), y = estimate, color = core_name)) +
-    geom_hline(yintercept = 0,      linetype = 2, color = "grey50") +
-    geom_hline(yintercept = bINV_M, linetype = 3, color = "tomato", linewidth = 0.8) +
-    geom_errorbar(aes(ymin = estimate - 1.96 * se,
-                      ymax = estimate + 1.96 * se), width = 0.4, alpha = 0.6) +
-    geom_point(size = 1.8) +
-    annotate("text", x = 1, y = bINV_M,
-             label = paste0("Hyper-mean = ", round(bINV_M, 3)),
-             hjust = 0, vjust = -0.6, color = "tomato", size = 3.5) +
-    coord_flip() +
-    scale_color_brewer(palette = "Set3", name = "Core area") +
-    labs(x = NULL, y = "Invasive ratio slope (bINV_pop)",
-         title = "Non-Native Trout Ratio Effect on Growth Rate by Population") +
-    theme_bw(base_size = 9) +
-    theme(legend.position = "right",
-          axis.text.y = element_text(size = 7))
-}
-```
-
-### Global Lake Trout Slope
-
-In model v1.22 the lake trout effect is a single global scalar $\beta_{\text{LKT},M}$
-applied to all core areas with confirmed lake trout presence (replacing the per-core
-random effects used in earlier versions).
-
-```{r lkt-slopes}
-if (covar_config$use_LKT == 1) {
-  r <- get_rep("bLKT_M")
-  data.frame(Parameter = "bLKT_M (global scalar)",
-             Estimate  = round(r$est[1], 4),
-             SE        = round(r$se[1],  4),
-             Lower95   = round(r$est[1] - 1.96 * r$se[1], 4),
-             Upper95   = round(r$est[1] + 1.96 * r$se[1], 4)) |>
-    kable(col.names = c("Parameter", "Estimate", "SE", "Lower 95%", "Upper 95%")) |>
-    kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
-}
-```
-
----
-
-## Growth Rate and Density Dependence
-
-### Baseline Growth Rates by Population
-
-```{r b0r-by-pop, fig.height=14}
-b0r <- get_rep("b0r_pop")
-b0r_df <- data.frame(
-  pop_name  = U_LocalPops_In,
-  core_name = U_CoreAreas_In[pop_core_vec],
-  b0r       = b0r$est,
-  b0r_se    = b0r$se
-)
-
-ggplot(b0r_df, aes(x = reorder(pop_name, b0r), y = b0r, color = core_name)) +
-  geom_hline(yintercept = 0, linetype = 2, color = "grey50") +
-  geom_errorbar(aes(ymin = b0r - 1.96 * b0r_se,
-                    ymax = b0r + 1.96 * b0r_se), width = 0.4, alpha = 0.6) +
-  geom_point(size = 1.8) +
-  coord_flip() +
-  scale_color_brewer(palette = "Set3", name = "Core area") +
-  labs(x = NULL, y = "Baseline growth rate (b0r_pop)",
-       title = "Population-Level Baseline Growth Rates",
-       caption = "Positive = growing at mean covariate conditions; negative = declining") +
-  theme_bw(base_size = 9) +
-  theme(axis.text.y = element_text(size = 7))
-```
-
-### Variance Components
-
-```{r variance-components}
-sigma_pars <- c(
-  "sigmaN"          = "Process error σ_N (innovation)",
-  "sigma_b0r_core"  = "Growth rate: core-level SD",
-  "sigma_b0r_pop"   = "Growth rate: pop-level SD",
-  "sigma_b0phi_pop" = "Density dependence: pop SD",
-  "sigma_bFlow"     = "Flow slope: pop SD",
-  "sigma_bTemp"     = "Temp slope: pop SD",
-  "sigma_bINV"      = "Invasive slope: pop SD",
-  "sigma_bLKT"      = "Lake trout slope: core SD",
-  "sigma_cpue"      = "CPUE observation SD",
-  "sigma_q"         = "CPUE catchability SD"
-)
-
-sigma_df <- lapply(names(sigma_pars), function(nm) {
-  r <- get_rep(nm)
-  if (!length(r$est)) return(NULL)
-  data.frame(Label = sigma_pars[nm], Estimate = r$est[1], SE = r$se[1])
-}) |>
-  bind_rows()
-
-sigma_df |>
-  mutate(Lower95 = pmax(0, Estimate - 1.96 * SE),
-         Upper95 = Estimate + 1.96 * SE) |>
-  ggplot(aes(x = reorder(Label, Estimate), y = Estimate)) +
-  geom_errorbar(aes(ymin = Lower95, ymax = Upper95), width = 0.25, linewidth = 0.8) +
-  geom_point(size = 3, color = "steelblue") +
-  coord_flip() +
-  labs(x = NULL, y = "Standard deviation estimate (95% CI)",
-       title = "Variance Component Estimates") +
-  theme_bw()
-```
-
----
-
-## Population Summary Table
-
-Estimated baseline growth rate and density dependence for each local population.
-
-```{r pop-table}
-phi_pop <- exp(fit_rep$value[names(fit_rep$value) == "log_b0phi_pop"]) / 1000
-
-data.frame(
-  Population  = U_LocalPops_In,
-  `Core Area` = U_CoreAreas_In[pop_core_vec],
-  `b0r`       = round(b0r_df$b0r, 3),
-  `b0r SE`    = round(b0r_df$b0r_se, 3),
-  `phi (fish/km)` = round(phi_pop, 4),
-  check.names = FALSE
-) |>
-  kable(col.names = c("Population", "Core Area", "b0r", "SE", "φ (fish/km)"),
-        align     = c("l", "l", "r", "r", "r")) |>
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                font_size = 13) |>
-  column_spec(1, bold = TRUE)
 ```
 
 ---

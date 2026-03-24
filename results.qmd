@@ -1,0 +1,649 @@
+---
+title: "Model Results"
+subtitle: "Population Trajectories, Covariate Effects, and Viability Projections"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Core Areas & Populations"
+---
+
+<!-- =====================================================================
+     COLLABORATORS: Feel free to edit the introductory text below.
+     Please DO NOT modify anything inside ```{r} ... ``` code blocks —
+     those generate all the plots and tables automatically from the model.
+     ===================================================================== -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center"
+)
+```
+
+```{r load, include=FALSE}
+library(here)
+library(tidyverse)
+library(patchwork)
+library(knitr)
+library(kableExtra)
+library(scales)
+
+# ── Version identifiers ───────────────────────────────────────────────────────
+DataVersion     <- "1_8"
+ModelVersion    <- "1_22"
+RunVersion      <- "1_21"
+FunctionVersion <- "1_13"
+
+SaveName <- paste0("MPVA_Fit_D", DataVersion, "_M", ModelVersion, "_R", RunVersion)
+
+source(here("Code", paste0("MPVA_Functions", FunctionVersion, ".R")))
+suppressMessages(source(here("Code", paste0("PrepareData_MPVA", DataVersion, ".R"))))
+
+fit <- readRDS(here("Results", paste0(SaveName, ".RDS")))
+list2env(fit, envir = .GlobalEnv)
+
+pop_core_vec <- data_list$pop_core + 1L   # 1-indexed core for each pop
+
+# ── Population display names ──────────────────────────────────────────────────
+wb_raw      <- sapply(PatchWB_In, function(x) strsplit(x, "\\.")[[1]][2])
+wb_readable <- trimws(gsub("([a-z0-9'])([A-Z])", "\\1 \\2", wb_raw))
+pop_display <- sapply(seq_len(nPop), function(p) {
+  first_site <- which(LocalPops_Num == p)[1]
+  paste0(wb_readable[first_site], " (", U_LocalPops_In[p], ")")
+})
+pop_anchor  <- tolower(gsub("[^a-zA-Z0-9]+", "-", U_LocalPops_In))
+core_anchor <- tolower(gsub("[^a-zA-Z0-9]+", "-", U_CoreAreas_In))
+
+# ── Pre-extract logN matrix and SE matrix (ADREPORT delta-method) ────────────
+logN_vals    <- fit_rep$value[names(fit_rep$value) == "logN"]
+logN_se_vals <- fit_rep$sd[names(fit_rep$value)    == "logN"]
+logN_mat     <- matrix(logN_vals,    nrow = nPop, ncol = nYears)
+logN_se_mat  <- matrix(logN_se_vals, nrow = nPop, ncol = nYears)
+
+# ── Pre-extract population-level sensitivity parameters ───────────────────────
+bFlow_pop_vals <- fit_rep$value[names(fit_rep$value) == "bFlow_pop"]
+bFlow_pop_se   <- fit_rep$sd[names(fit_rep$value)    == "bFlow_pop"]
+bTemp_pop_vals <- fit_rep$value[names(fit_rep$value) == "bTemp_pop"]
+bTemp_pop_se   <- fit_rep$sd[names(fit_rep$value)    == "bTemp_pop"]
+bINV_pop_vals  <- fit_rep$value[names(fit_rep$value) == "bINV_pop"]
+bINV_pop_se    <- fit_rep$sd[names(fit_rep$value)    == "bINV_pop"]
+bFlow_M_val    <- fit_rep$value[names(fit_rep$value) == "bFlow_M"][1]
+bTemp_M_val    <- fit_rep$value[names(fit_rep$value) == "bTemp_M"][1]
+bINV_M_val     <- fit_rep$value[names(fit_rep$value) == "bINV_M"][1]
+
+# ── Covariate exposure matrices (model-scale: z-scored, lagged) ───────────────
+FlowMat <- data_list$Flow   # nPop  × nYears
+TempMat <- data_list$Temp   # nPop  × nYears
+INVMat  <- data_list$INV    # nPop  × nYears
+LKTMat  <- data_list$LKT    # nCore × nYears
+
+# ── Pre-compute observed totals and fitted mu per population-year ─────────────
+site_pop_1idx <- data_list$site_pop + 1L   # 0-indexed → 1-indexed
+
+obs_fitted_df <- tibble(
+  site     = rep(seq_len(data_list$nSites), times = nYears),
+  year_idx = rep(seq_len(nYears), each = data_list$nSites),
+  pop      = site_pop_1idx[rep(seq_len(data_list$nSites), times = nYears)],
+  y_obs    = as.vector(data_list$ReddCounts),
+  pS       = data_list$pS[rep(seq_len(data_list$nSites), times = nYears)],
+  N_est    = exp(logN_mat)[cbind(
+    site_pop_1idx[rep(seq_len(data_list$nSites), times = nYears)],
+    rep(seq_len(nYears), each = data_list$nSites)
+  )]
+) |>
+  mutate(mu = 0.5 * N_est * pS, year = DatYears[year_idx])
+
+obs_pop_year <- obs_fitted_df |>
+  group_by(pop, year) |>
+  summarise(
+    obs_total = if (any(!is.na(y_obs))) sum(y_obs, na.rm = TRUE) else NA_real_,
+    fitted_mu = sum(mu, na.rm = TRUE),
+    .groups   = "drop"
+  )
+
+# ── Theme ─────────────────────────────────────────────────────────────────────
+theme_out <- theme_bw(base_size = 11) +
+  theme(panel.grid.minor = element_blank(),
+        axis.title       = element_text(size = 10))
+
+THRESHOLD_ADULTS <- 20   # quasi-extinction threshold
+Z90 <- qnorm(0.95)       # 1.645 — 90% CI
+Z50 <- qnorm(0.75)       # 0.674 — 50% CI
+```
+
+```{r load-qext, include=FALSE}
+qext <- readRDS(here("Results", paste0(SaveName, "_Qext.RDS")))
+
+nYears_proj <- qext$nYears_proj
+proj_years  <- qext$proj_years
+N_hist_q    <- qext$N_hist_q    # named list of nPop × nYears matrices (sim-based)
+r1          <- qext$qext_results[["thr20"]]   # threshold = 20 adults
+
+# ── Per-population historical bands (simulation-based from N_hist_q) ─────────
+df_hist_pop <- expand.grid(pop = seq_len(nPop),
+                           y_idx = seq_len(nYears)) |>
+  as_tibble() |>
+  mutate(
+    pop_name  = U_LocalPops_In[pop],
+    core_name = U_CoreAreas_In[pop_core_vec[pop]],
+    year      = DatYears[y_idx],
+    N_p50     = N_hist_q$N_p50[cbind(pop, y_idx)],
+    N_p05     = N_hist_q$N_p05[cbind(pop, y_idx)],
+    N_p25     = N_hist_q$N_p25[cbind(pop, y_idx)],
+    N_p75     = N_hist_q$N_p75[cbind(pop, y_idx)],
+    N_p95     = N_hist_q$N_p95[cbind(pop, y_idx)]
+  )
+
+# ── Per-population projection bands ──────────────────────────────────────────
+df_proj_pop <- expand.grid(pop = seq_len(nPop),
+                           h   = seq_len(nYears_proj)) |>
+  as_tibble() |>
+  mutate(
+    pop_name  = U_LocalPops_In[pop],
+    core_name = U_CoreAreas_In[pop_core_vec[pop]],
+    year      = proj_years[h],
+    N_p05     = r1$N_p05[cbind(pop, h)],
+    N_p25     = r1$N_p25[cbind(pop, h)],
+    N_p50     = r1$N_p50[cbind(pop, h)],
+    N_p75     = r1$N_p75[cbind(pop, h)],
+    N_p95     = r1$N_p95[cbind(pop, h)]
+  )
+
+# ── Core-level projection: sum populations within each core ──────────────────
+N_proj_arr <- exp(qext$logN_proj)   # nsim × nPop × nYears_proj
+nSim       <- dim(N_proj_arr)[1]
+
+df_proj_core <- bind_rows(lapply(seq_len(nCore), function(cc) {
+  pops   <- which(pop_core_vec == cc)
+  Nc_sim <- if (length(pops) == 1)
+               matrix(N_proj_arr[, pops, ], nrow = nSim)
+             else
+               apply(N_proj_arr[, pops, ], c(1, 3), sum)
+  Nq <- apply(Nc_sim, 2, quantile,
+               probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = TRUE)
+  data.frame(core_name = U_CoreAreas_In[cc], year = proj_years,
+             N_p05 = Nq[1,], N_p25 = Nq[2,], N_p50 = Nq[3,],
+             N_p75 = Nq[4,], N_p95 = Nq[5,])
+}))
+
+# ── Core-level historical MAP abundance ──────────────────────────────────────
+dfN_core <- expand.grid(pop = seq_len(nPop), y_idx = seq_len(nYears)) |>
+  as_tibble() |>
+  mutate(
+    core_name   = U_CoreAreas_In[pop_core_vec[pop]],
+    year_actual = DatYears[y_idx],
+    N           = exp(logN_mat[cbind(pop, y_idx)])
+  ) |>
+  group_by(core_name, year_actual) |>
+  summarise(N_total = sum(N, na.rm = TRUE), .groups = "drop")
+```
+
+```{r helper-functions, include=FALSE}
+# ── Population trajectory plot (historical + projected) ──────────────────────
+plot_trajectory <- function(pop_idx) {
+
+  # Historical: delta-method CI on MAP logN
+  se <- logN_se_mat[pop_idx, ]
+  lN <- logN_mat[pop_idx, ]
+  traj <- tibble(
+    year   = DatYears,
+    N      = exp(lN),
+    N_lo90 = exp(lN - Z90 * se),
+    N_hi90 = exp(lN + Z90 * se),
+    N_lo50 = exp(lN - Z50 * se),
+    N_hi50 = exp(lN + Z50 * se)
+  )
+
+  # Scale observed redd totals to adult-equivalent
+  sites_p  <- which(site_pop_1idx == pop_idx)
+  pS_total <- sum(data_list$pS[sites_p])
+  obs <- obs_pop_year |>
+    filter(pop == pop_idx) |>
+    mutate(N_obs_equiv = obs_total / (0.5 * pS_total))
+
+  # Projection bands
+  d_proj <- df_proj_pop |> filter(pop == pop_idx)
+
+  y_max <- max(
+    max(traj$N_hi90,     na.rm = TRUE),
+    max(obs$N_obs_equiv, na.rm = TRUE),
+    max(d_proj$N_p95,    na.rm = TRUE),
+    THRESHOLD_ADULTS * 1.5
+  ) * 1.08
+
+  ggplot() +
+    # Historical CI ribbons
+    geom_ribbon(data = traj,
+                aes(x = year, ymin = N_lo90, ymax = N_hi90),
+                fill = "steelblue", alpha = 0.15) +
+    geom_ribbon(data = traj,
+                aes(x = year, ymin = N_lo50, ymax = N_hi50),
+                fill = "steelblue", alpha = 0.30) +
+    geom_line(data = traj, aes(x = year, y = N),
+              color = "steelblue4", linewidth = 1.1) +
+    # Observed (redd-equivalent)
+    geom_point(data = obs, aes(x = year, y = N_obs_equiv),
+               shape = 21, fill = "white", color = "grey30",
+               size = 2.2, stroke = 0.8, na.rm = TRUE) +
+    # Divider
+    geom_vline(xintercept = DatYears[nYears] + 0.5,
+               linetype = 2, color = "grey50", linewidth = 0.4) +
+    # Projection ribbons
+    geom_ribbon(data = d_proj,
+                aes(x = year, ymin = N_p05, ymax = N_p95),
+                fill = "tomato", alpha = 0.15) +
+    geom_ribbon(data = d_proj,
+                aes(x = year, ymin = N_p25, ymax = N_p75),
+                fill = "tomato", alpha = 0.30) +
+    geom_line(data = d_proj, aes(x = year, y = N_p50),
+              color = "tomato3", linewidth = 1.0) +
+    # Management threshold
+    geom_hline(yintercept = THRESHOLD_ADULTS,
+               linetype = 3, color = "firebrick", linewidth = 0.8) +
+    annotate("text",
+             x     = min(DatYears) + 0.5,
+             y     = THRESHOLD_ADULTS * 1.10,
+             label = paste0(THRESHOLD_ADULTS, "-adult threshold"),
+             color = "firebrick", size = 3.0, hjust = 0) +
+    scale_y_continuous(labels = comma, limits = c(0, y_max)) +
+    labs(
+      x        = NULL,
+      y        = "Adults (estimated / observed equivalent)",
+      title    = "Estimated adult abundance",
+      subtitle = paste0(
+        "Historical: MAP ± 50/90% CI (blue)  |  Points: redds ÷ (0.5 × survey coverage)\n",
+        "Projected ", nYears_proj, " yr: median + 50/90% CI (red)  |  ",
+        "Future covariates: ", qext$future_cov_assumption
+      )
+    ) +
+    theme_out
+}
+
+# ── Sensitivity forest plot ───────────────────────────────────────────────────
+plot_sensitivity <- function(pops_in_core) {
+  covars <- list(
+    list(vals = bFlow_pop_vals, ses = bFlow_pop_se,
+         mean = bFlow_M_val,   label = "Summer flow"),
+    list(vals = bTemp_pop_vals, ses = bTemp_pop_se,
+         mean = bTemp_M_val,   label = "August temperature"),
+    list(vals = bINV_pop_vals,  ses = bINV_pop_se,
+         mean = bINV_M_val,    label = "Non-native trout")
+  )
+  sens_df <- bind_rows(lapply(covars, function(cv) {
+    tibble(
+      pop_name   = pop_display[pops_in_core],
+      covariate  = cv$label,
+      estimate   = cv$vals[pops_in_core],
+      se         = cv$ses[pops_in_core],
+      hyper_mean = cv$mean
+    )
+  })) |>
+    mutate(
+      lo95      = estimate - 1.96 * se,
+      hi95      = estimate + 1.96 * se,
+      sig       = (lo95 > 0) | (hi95 < 0),
+      pop_name  = factor(pop_name, levels = rev(pop_display[pops_in_core])),
+      covariate = factor(covariate,
+                         levels = c("Summer flow", "August temperature",
+                                    "Non-native trout"))
+    )
+
+  ggplot(sens_df, aes(x = estimate, y = pop_name)) +
+    geom_vline(xintercept = 0, linetype = 2, color = "grey50", linewidth = 0.7) +
+    geom_vline(aes(xintercept = hyper_mean),
+               linetype = 3, color = "goldenrod3", linewidth = 0.9) +
+    geom_errorbarh(aes(xmin = lo95, xmax = hi95),
+                   height = 0.3, alpha = 0.55, color = "grey40") +
+    geom_point(aes(fill = sig), shape = 21, size = 2.8,
+               color = "grey30", stroke = 0.5) +
+    scale_fill_manual(values = c(`FALSE` = "white", `TRUE` = "steelblue3"),
+                      guide = "none") +
+    facet_wrap(~covariate, scales = "free_x", nrow = 1) +
+    labs(
+      x        = "Effect on log-λ per SD covariate",
+      y        = NULL,
+      title    = "Population sensitivity to dynamic covariates",
+      subtitle = "Error bars: 95% CI  |  Gold dotted: global hyper-mean  |  Filled: CI excludes zero"
+    ) +
+    theme_out +
+    theme(strip.text      = element_text(size = 9, face = "bold"),
+          panel.spacing.x = unit(12, "pt"))
+}
+
+# ── Exposure time series ──────────────────────────────────────────────────────
+plot_exposure <- function(pops_in_core, ca) {
+  yr         <- DatYears
+  pop_labels <- setNames(pop_display[pops_in_core], as.character(pops_in_core))
+
+  mat_to_long <- function(mat, pops) {
+    bind_rows(lapply(pops, function(p) {
+      tibble(year = yr, value = mat[p, ], pop_name = pop_display[p])
+    })) |> filter(!is.na(value) & is.finite(value))
+  }
+
+  df_f <- mat_to_long(FlowMat, pops_in_core)
+  df_t <- mat_to_long(TempMat, pops_in_core)
+  df_i <- mat_to_long(INVMat,  pops_in_core)
+
+  n_pops_c   <- length(pops_in_core)
+  pal        <- scales::hue_pal()(n_pops_c)
+  pop_names  <- pop_display[pops_in_core]
+  color_scale <- scale_color_manual(values = setNames(pal, pop_names), name = NULL)
+
+  p_f <- ggplot(df_f, aes(x = year, y = value, color = pop_name)) +
+    geom_hline(yintercept = 0, linetype = 2, color = "grey70", linewidth = 0.5) +
+    geom_line(linewidth = 0.75, alpha = 0.85) +
+    color_scale + guides(color = "none") +
+    labs(x = NULL, y = "z-score", title = "Summer streamflow (z, lag 6yr)") +
+    theme_out
+
+  p_t <- ggplot(df_t, aes(x = year, y = value, color = pop_name)) +
+    geom_hline(yintercept = 0, linetype = 2, color = "grey70", linewidth = 0.5) +
+    geom_line(linewidth = 0.75, alpha = 0.85) +
+    color_scale + guides(color = "none") +
+    labs(x = NULL, y = "z-score", title = "August temperature (z, lag 6yr)") +
+    theme_out
+
+  p_i <- ggplot(df_i, aes(x = year, y = value, color = pop_name)) +
+    geom_hline(yintercept = 0, linetype = 2, color = "grey70", linewidth = 0.5) +
+    geom_line(linewidth = 0.75, alpha = 0.85) +
+    color_scale +
+    labs(x = NULL, y = "standardized index", title = "Non-native trout") +
+    theme_out +
+    theme(legend.position  = "bottom",
+          legend.text      = element_text(size = 7),
+          legend.key.width = unit(16, "pt"))
+
+  has_lkt_ca <- isTRUE(data_list$has_LKT[ca] == 1L)
+  lkt_vals   <- if (has_lkt_ca) LKTMat[ca, ] else rep(NA_real_, nYears)
+  df_l <- tibble(year = yr, value = lkt_vals) |>
+    filter(!is.na(value) & is.finite(value))
+
+  p_l <- if (nrow(df_l) > 0) {
+    ggplot(df_l, aes(x = year, y = value)) +
+      geom_hline(yintercept = 0, linetype = 2, color = "grey70", linewidth = 0.5) +
+      geom_area(fill = "purple4", alpha = 0.15) +
+      geom_line(color = "purple4", linewidth = 0.9) +
+      labs(x = NULL, y = "standardized index", title = "Lake trout (core-level)") +
+      theme_out
+  } else {
+    ggplot() +
+      annotate("text", x = 0.5, y = 0.5,
+               label = "No lake trout data\nfor this core area",
+               size = 4, color = "grey60") +
+      labs(title = "Lake trout (core-level)") + theme_out
+  }
+
+  (p_f | p_t) / (p_i | p_l)
+}
+```
+
+This page presents model results organized by spatial level — global, core area,
+and local population — followed by future viability projections. Use the table
+of contents on the right to jump to any core area or population. For model
+structure and diagnostics, see the [Model](index.qmd) tab.
+
+---
+
+## Global Results
+
+```{r global-fit, results='asis'}
+max_grad <- max(abs(fit_rep$gradient.fixed))
+n_obs_   <- sum(!is.na(data_list$ReddCounts))
+n_par    <- length(optB$par)
+
+tibble(
+  Metric = c("Convergence code", "Objective (NLL)", "Max |gradient|",
+             "Site-year observations", "Outer parameters"),
+  Value  = c(
+    ifelse(optB$convergence == 0, "0 (relative convergence)", optB$convergence),
+    round(optB$objective, 2),
+    formatC(max_grad, format = "e", digits = 2),
+    n_obs_,
+    n_par
+  )
+) |>
+  kable(col.names = c("Metric", "Value"), align = c("l","r")) |>
+  kable_styling(bootstrap_options = c("striped","hover"),
+                full_width = FALSE, font_size = 12)
+```
+
+### Covariate Effects
+
+```{r covar-table}
+get_est <- function(nm) {
+  v <- fit_rep$value[names(fit_rep$value) == nm]
+  s <- fit_rep$sd[names(fit_rep$value)    == nm]
+  if (!length(v)) return(c(NA_real_, NA_real_))
+  c(v[1], s[1])
+}
+
+covar_rows <- list(
+  list(par = "bFlow_M",  label = "Summer flow (hyper-mean)",        unit = "log-λ / SD flow"),
+  list(par = "bTemp_M",  label = "August temperature (hyper-mean)", unit = "log-λ / SD temp"),
+  list(par = "bTemp2",   label = "Temperature² (quadratic)",        unit = "log-λ / SD temp²"),
+  list(par = "bINV_M",   label = "Non-native trout (hyper-mean)",   unit = "log-λ / SD INV"),
+  list(par = "bLKT_M",   label = "Lake trout (global scalar)",      unit = "log-λ / SD LKT"),
+  list(par = "bAdf",     label = "Lake area (adfluvial access)",    unit = "log-λ / log(km²+1)"),
+  list(par = "bUVB",     label = "Unconfined valley bottom",        unit = "log-λ / z-score"),
+  list(par = "bFlood",   label = "W95 flood frequency",             unit = "log-λ / z-score"),
+  list(par = "bRD",      label = "Road density",                    unit = "log-λ / z-score")
+)
+
+covar_df <- bind_rows(lapply(covar_rows, function(r) {
+  es <- get_est(r$par)
+  tibble(Parameter = r$label, Units = r$unit, Estimate = es[1], SE = es[2])
+})) |>
+  filter(!is.na(Estimate)) |>
+  mutate(
+    z   = Estimate / SE,
+    p   = 2 * pnorm(-abs(z)),
+    Sig = case_when(
+      abs(z) >= 2.576 ~ "***",
+      abs(z) >= 1.960 ~ "**",
+      abs(z) >= 1.645 ~ "*",
+      TRUE            ~ ""
+    ),
+    across(c(Estimate, SE, z), ~ round(., 3)),
+    p = round(p, 4)
+  )
+
+covar_df |>
+  kable(col.names = c("Covariate", "Units", "Estimate", "SE", "z", "p", ""),
+        align = c("l","l","r","r","r","r","l")) |>
+  kable_styling(bootstrap_options = c("striped","hover"),
+                full_width = FALSE, font_size = 12) |>
+  footnote(general = "*** p < 0.01  ** p < 0.05  * p < 0.10.  Dynamic covariates carry an effective 6-yr lag.")
+```
+
+### Thermal Performance Curve
+
+Bull trout growth rate shows a unimodal response to water temperature
+(linear + negative quadratic).
+
+```{r thermal-curve, fig.height=4}
+if (covar_config$use_Temp == 1) {
+  plot_temp_curve(fit_rep, temp_mean = temp_mean, temp_sd = temp_sd)
+}
+```
+
+### Variance Components
+
+```{r variance-table}
+var_rows <- list(
+  list(par = "sigmaN",          label = "Process noise (σ_N)",               type = "Process"),
+  list(par = "rho",             label = "AR(1) autocorrelation (ρ)",          type = "Process"),
+  list(par = "phi_obs",         label = "NB2 dispersion (φ_obs)",             type = "Observation"),
+  list(par = "sigma_b0r_pop",   label = "Growth rate SD — population",        type = "Hierarchy"),
+  list(par = "sigma_b0r_core",  label = "Growth rate SD — core area",         type = "Hierarchy"),
+  list(par = "sigma_b0phi_pop", label = "Density dependence SD — population", type = "Hierarchy"),
+  list(par = "sigma_bFlow",     label = "Flow slope SD — population",         type = "Hierarchy"),
+  list(par = "sigma_bTemp",     label = "Temp slope SD — population",         type = "Hierarchy"),
+  list(par = "sigma_bINV",      label = "Invasives slope SD — population",    type = "Hierarchy")
+)
+
+var_df <- bind_rows(lapply(var_rows, function(r) {
+  es <- get_est(r$par)
+  tibble(Type = r$type, Parameter = r$label,
+         Estimate = round(es[1], 3), SE = round(es[2], 3))
+})) |>
+  filter(!is.na(Estimate))
+
+var_df |>
+  kable(col.names = c("Type", "Parameter", "Estimate", "SE"),
+        align = c("l","l","r","r")) |>
+  kable_styling(bootstrap_options = c("striped","hover"),
+                full_width = FALSE, font_size = 12) |>
+  column_spec(1, bold = TRUE)
+```
+
+---
+
+## Core-Area Abundance Trajectories
+
+Historical estimated abundance (blue) and `r nYears_proj`-year stochastic
+forward projection (red, 50% and 90% CI from `r qext$nsim` simulations).
+Future covariates held at historical mean (z-score = 0).
+
+```{r core-trajectories, fig.height=14}
+ggplot() +
+  geom_area(data = dfN_core,
+            aes(x = year_actual, y = N_total),
+            fill = "steelblue", alpha = 0.15) +
+  geom_line(data = dfN_core,
+            aes(x = year_actual, y = N_total),
+            color = "steelblue", linewidth = 0.9) +
+  geom_vline(xintercept = DatYears[nYears] + 0.5,
+             linetype = 2, color = "grey50", linewidth = 0.4) +
+  geom_ribbon(data = df_proj_core,
+              aes(x = year, ymin = N_p05, ymax = N_p95),
+              fill = "tomato", alpha = 0.15) +
+  geom_ribbon(data = df_proj_core,
+              aes(x = year, ymin = N_p25, ymax = N_p75),
+              fill = "tomato", alpha = 0.30) +
+  geom_line(data = df_proj_core,
+            aes(x = year, y = N_p50),
+            color = "tomato", linewidth = 0.9) +
+  facet_wrap(~core_name, scales = "free_y", ncol = 4) +
+  labs(x = "Year", y = "Estimated spawners (sum of local populations)",
+       title = "Estimated Bull Trout Spawner Abundance by Core Area",
+       subtitle = paste0(
+         "Historical: MAP estimate (blue)  |  Projected ", nYears_proj,
+         " years: median + 50/90% CI (red)  |  Future covariates: ",
+         qext$future_cov_assumption
+       )) +
+  theme_bw(base_size = 11) +
+  theme(strip.text = element_text(size = 8),
+        panel.grid.minor = element_blank())
+```
+
+---
+
+## Quasi-Extinction Risk Summary
+
+Probability that local population abundance falls below threshold at any point
+during the `r nYears_proj`-year projection (`r qext$nsim` simulations).
+
+```{r qext-table}
+qext_tbl20 <- qext$qext_table |>
+  filter(threshold == 20) |>
+  arrange(desc(p_qext)) |>
+  select(pop_name, core_name, p_qext, N_med_end, N_lo_end, N_hi_end)
+
+qext_tbl20 |>
+  kable(col.names = c("Population", "Core Area",
+                       "P(N < 20)", "N median", "N 5%", "N 95%"),
+        align = c("l","l","r","r","r","r"),
+        digits = c(0, 0, 3, 1, 1, 1)) |>
+  kable_styling(bootstrap_options = c("striped","hover","condensed"),
+                font_size = 12, full_width = FALSE) |>
+  column_spec(3, bold = TRUE,
+              color = ifelse(qext_tbl20$p_qext > 0.5, "firebrick", "black"))
+```
+
+---
+
+## Population Trajectories
+
+Each section below shows the core-level growth rate, population-level sensitivity
+to dynamic covariates, covariate exposure time series, and individual population
+abundance trajectories (historical MAP ± CI + `r nYears_proj`-year projection).
+
+```{r core-index, results='asis'}
+cat("### Jump to core area\n\n")
+for (ca in seq_len(nCore)) {
+  n_pops <- sum(pop_core_vec == ca)
+  cat(sprintf("- [%s](#%s) — %d population%s\n",
+              U_CoreAreas_In[ca], core_anchor[ca],
+              n_pops, if (n_pops > 1) "s" else ""))
+}
+cat("\n---\n\n")
+```
+
+```{r all-sections, results='asis', fig.width=10, fig.height=7}
+b0r_core_vals <- fit_rep$value[names(fit_rep$value) == "b0r_core"]
+b0r_core_se   <- fit_rep$sd[names(fit_rep$value)    == "b0r_core"]
+b0r_pop_vals  <- fit_rep$value[names(fit_rep$value) == "b0r_pop"]
+b0r_pop_se    <- fit_rep$sd[names(fit_rep$value)    == "b0r_pop"]
+
+for (ca in seq_len(nCore)) {
+
+  core_label   <- U_CoreAreas_In[ca]
+  pops_in_core <- which(pop_core_vec == ca)
+  n_pops       <- length(pops_in_core)
+
+  cat(sprintf("\n\n## %s {#%s}\n\n", core_label, core_anchor[ca]))
+
+  yr_range_core <- range(DatYears[apply(
+    data_list$ReddCounts[which(site_pop_1idx %in% pops_in_core), , drop = FALSE],
+    2, function(x) any(!is.na(x))
+  ) |> which()])
+
+  cat(sprintf("**%d local population%s** | Data span: **%d – %d**\n\n",
+              n_pops, if (n_pops > 1) "s" else "",
+              yr_range_core[1], yr_range_core[2]))
+
+  core_b0r    <- b0r_core_vals[ca]
+  core_b0r_se <- b0r_core_se[ca]
+  if (!is.na(core_b0r)) {
+    cat(sprintf(
+      "> **Core growth rate** (b0r_core): **%.3f** (SE: %.3f) — λ ≈ **%.3f**\n\n",
+      core_b0r, core_b0r_se, exp(core_b0r)
+    ))
+  }
+
+  # Population growth rate table
+  pop_summary <- tibble(
+    Population    = pop_display[pops_in_core],
+    `b0r (pop)`   = round(b0r_pop_vals[pops_in_core], 3),
+    `SE`          = round(b0r_pop_se[pops_in_core],   3),
+    `λ (exp b0r)` = round(exp(b0r_pop_vals[pops_in_core]), 3)
+  )
+  print(
+    kable(pop_summary, align = c("l","r","r","r")) |>
+    kable_styling(bootstrap_options = c("striped","condensed"),
+                  font_size = 11, full_width = FALSE)
+  )
+  cat("\n\n")
+
+  cat("#### Covariate sensitivity\n\n")
+  print(plot_sensitivity(pops_in_core))
+  cat("\n\n")
+
+  cat("#### Covariate exposure\n\n")
+  print(plot_exposure(pops_in_core, ca))
+  cat("\n\n<hr>\n\n")
+
+  for (pop_idx in pops_in_core) {
+    cat(sprintf("\n\n### %s {#%s}\n\n",
+                pop_display[pop_idx], pop_anchor[pop_idx]))
+    print(plot_trajectory(pop_idx))
+    cat("\n\n")
+  }
+}
+```
