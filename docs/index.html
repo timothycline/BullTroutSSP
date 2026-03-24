@@ -167,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#model-fit" id="toc-model-fit" class="nav-link" data-scroll-target="#model-fit">Model Fit</a></li>
   <li><a href="#latent-abundance-trajectories" id="toc-latent-abundance-trajectories" class="nav-link" data-scroll-target="#latent-abundance-trajectories">Latent Abundance Trajectories</a></li>
   <li><a href="#observed-vs-fitted-redd-counts" id="toc-observed-vs-fitted-redd-counts" class="nav-link" data-scroll-target="#observed-vs-fitted-redd-counts">Observed vs Fitted Redd Counts</a></li>
+  <li><a href="#population-viability-projections" id="toc-population-viability-projections" class="nav-link" data-scroll-target="#population-viability-projections">Population Viability Projections</a></li>
   <li><a href="#residual-diagnostics" id="toc-residual-diagnostics" class="nav-link" data-scroll-target="#residual-diagnostics">Residual Diagnostics</a></li>
   <li><a href="#process-error-and-observation-dispersion" id="toc-process-error-and-observation-dispersion" class="nav-link" data-scroll-target="#process-error-and-observation-dispersion">Process Error and Observation Dispersion</a></li>
   <li><a href="#covariate-effects" id="toc-covariate-effects" class="nav-link" data-scroll-target="#covariate-effects">Covariate Effects</a>
@@ -176,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#population-level-flow-slopes" id="toc-population-level-flow-slopes" class="nav-link" data-scroll-target="#population-level-flow-slopes">Population-Level Flow Slopes</a></li>
   <li><a href="#population-level-temperature-slopes" id="toc-population-level-temperature-slopes" class="nav-link" data-scroll-target="#population-level-temperature-slopes">Population-Level Temperature Slopes</a></li>
   <li><a href="#population-level-invasive-species-slopes" id="toc-population-level-invasive-species-slopes" class="nav-link" data-scroll-target="#population-level-invasive-species-slopes">Population-Level Invasive Species Slopes</a></li>
-  <li><a href="#core-level-lake-trout-slopes" id="toc-core-level-lake-trout-slopes" class="nav-link" data-scroll-target="#core-level-lake-trout-slopes">Core-Level Lake Trout Slopes</a></li>
+  <li><a href="#global-lake-trout-slope" id="toc-global-lake-trout-slope" class="nav-link" data-scroll-target="#global-lake-trout-slope">Global Lake Trout Slope</a></li>
   </ul></li>
   <li><a href="#growth-rate-and-density-dependence" id="toc-growth-rate-and-density-dependence" class="nav-link" data-scroll-target="#growth-rate-and-density-dependence">Growth Rate and Density Dependence</a>
   <ul class="collapse">
@@ -193,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Bull Trout Multi-Population Viability Analysis</h1>
-<p class="subtitle lead">TMB State-Space Ricker Model — v1.18</p>
+<p class="subtitle lead">TMB State-Space Ricker Model - v1.22</p>
 </div>
 
 
@@ -241,49 +242,100 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details>
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Version identifiers ──────────────────────────────────────────────────────</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>DataVersion     <span class="ot">&lt;-</span> <span class="st">"1_5"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ModelVersion    <span class="ot">&lt;-</span> <span class="st">"1_18"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>RunVersion      <span class="ot">&lt;-</span> <span class="st">"1_18"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>FunctionVersion <span class="ot">&lt;-</span> <span class="st">"1_8"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>DataVersion     <span class="ot">&lt;-</span> <span class="st">"1_8"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ModelVersion    <span class="ot">&lt;-</span> <span class="st">"1_22"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>RunVersion      <span class="ot">&lt;-</span> <span class="st">"1_21"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>FunctionVersion <span class="ot">&lt;-</span> <span class="st">"1_13"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>SaveName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"MPVA_Fit_D"</span>, DataVersion, <span class="st">"_M"</span>, ModelVersion, <span class="st">"_R"</span>, RunVersion)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Helper functions ─────────────────────────────────────────────────────────</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"Code"</span>, <span class="fu">paste0</span>(<span class="st">"MPVA_Functions"</span>, FunctionVersion, <span class="st">".R"</span>)))</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Load data (population names, years, covariates) ─────────────────────────</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"Code"</span>, <span class="fu">paste0</span>(<span class="st">"PrepareData_MPVA"</span>, DataVersion, <span class="st">".R"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Full dataset: using 26 core areas
-Populations: 80 
-Core areas:  26 
-Years:       39 ( 1984 - 2022 )
-Redd sites:  105 
-CPUE obs:    60 across 2 sections
-temp_mean:   10.11 | temp_sd: 1.61 
-All dimension checks passed.</code></pre>
-</div>
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Load saved model fit ─────────────────────────────────────────────────────</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="fu">paste0</span>(SaveName, <span class="st">".RDS"</span>)))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">list2env</span>(fit, <span class="at">envir =</span> .GlobalEnv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Load saved model fit ─────────────────────────────────────────────────────</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="fu">paste0</span>(SaveName, <span class="st">".RDS"</span>)))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">list2env</span>(fit, <span class="at">envir =</span> .GlobalEnv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
 </div>
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pop_core_vec <span class="ot">&lt;-</span> CoreArea_Num[<span class="fu">match</span>(<span class="fu">seq_len</span>(data_list<span class="sc">$</span>nPop), LocalPops_Num)]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Convenience extractor ────────────────────────────────────────────────────</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>get_rep <span class="ot">&lt;-</span> <span class="cf">function</span>(pname) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">est =</span> fit_rep<span class="sc">$</span>value[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> pname],</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">se  =</span> fit_rep<span class="sc">$</span>sd[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value)    <span class="sc">==</span> pname]</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nPop  <span class="ot">&lt;-</span> data_list<span class="sc">$</span>nPop</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nCore <span class="ot">&lt;-</span> data_list<span class="sc">$</span>nCore</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>pop_core_vec <span class="ot">&lt;-</span> data_list<span class="sc">$</span>pop_core <span class="sc">+</span> 1L   <span class="co"># 1-indexed core for each pop</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Convenience extractors ───────────────────────────────────────────────────</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>get_rep <span class="ot">&lt;-</span> <span class="cf">function</span>(pname) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">est =</span> fit_rep<span class="sc">$</span>value[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> pname],</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">se  =</span> fit_rep<span class="sc">$</span>sd[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value)    <span class="sc">==</span> pname]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>re_summ <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_rep, <span class="at">select =</span> <span class="st">"random"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>get_re  <span class="ot">&lt;-</span> <span class="cf">function</span>(nm) <span class="fu">unname</span>(re_summ[<span class="fu">rownames</span>(re_summ) <span class="sc">==</span> nm, <span class="st">"Estimate"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>qext <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="fu">paste0</span>(SaveName, <span class="st">"_Qext.RDS"</span>)))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>nYears_proj <span class="ot">&lt;-</span> qext<span class="sc">$</span>nYears_proj</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>proj_years  <span class="ot">&lt;-</span> qext<span class="sc">$</span>proj_years</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>N_proj_arr  <span class="ot">&lt;-</span> <span class="fu">exp</span>(qext<span class="sc">$</span>logN_proj)   <span class="co"># nsim x nPop x nYears_proj</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>nSim        <span class="ot">&lt;-</span> <span class="fu">dim</span>(N_proj_arr)[<span class="dv">1</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate projected N to core level: sum populations within each core,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then compute quantiles across simulations — gives proper uncertainty</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for the summed (core-level) abundance.</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>df_proj_core <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">lapply</span>(<span class="fu">seq_len</span>(nCore), <span class="cf">function</span>(cc) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  pops   <span class="ot">&lt;-</span> <span class="fu">which</span>(pop_core_vec <span class="sc">==</span> cc)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  Nc_sim <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(pops) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>               <span class="fu">matrix</span>(N_proj_arr[, pops, ], <span class="at">nrow =</span> nSim)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>             <span class="cf">else</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>               <span class="fu">apply</span>(N_proj_arr[, pops, ], <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), sum)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  Nq <span class="ot">&lt;-</span> <span class="fu">apply</span>(Nc_sim, <span class="dv">2</span>, quantile,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.95</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">core_name =</span> U_CoreAreas_In[cc], <span class="at">year =</span> proj_years,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">N_p05 =</span> Nq[<span class="dv">1</span>,], <span class="at">N_p25 =</span> Nq[<span class="dv">2</span>,], <span class="at">N_p50 =</span> Nq[<span class="dv">3</span>,],</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">N_p75 =</span> Nq[<span class="dv">4</span>,], <span class="at">N_p95 =</span> Nq[<span class="dv">5</span>,])</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Per-population historical bands (lognormal from sdreport marginal SEs)</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>logN_map <span class="ot">&lt;-</span> <span class="fu">matrix</span>(fit_rep<span class="sc">$</span>value[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> <span class="st">"logN"</span>],</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> nPop, <span class="at">ncol =</span> data_list<span class="sc">$</span>nYears)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>logN_sd  <span class="ot">&lt;-</span> <span class="fu">matrix</span>(fit_rep<span class="sc">$</span>sd[  <span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> <span class="st">"logN"</span>],</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> nPop, <span class="at">ncol =</span> data_list<span class="sc">$</span>nYears)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>z90 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.95</span>); z50 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.75</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>df_hist_pop <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">pop =</span> <span class="fu">seq_len</span>(nPop),</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y_idx =</span> <span class="fu">seq_len</span>(data_list<span class="sc">$</span>nYears)) <span class="sc">|&gt;</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_name  =</span> U_LocalPops_In[pop],</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name =</span> U_CoreAreas_In[pop_core_vec[pop]],</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">year      =</span> DatYears[y_idx],</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p50     =</span> <span class="fu">exp</span>(logN_map[<span class="fu">cbind</span>(pop, y_idx)]),</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p05     =</span> <span class="fu">exp</span>(logN_map[<span class="fu">cbind</span>(pop, y_idx)] <span class="sc">-</span> z90 <span class="sc">*</span> logN_sd[<span class="fu">cbind</span>(pop, y_idx)]),</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p25     =</span> <span class="fu">exp</span>(logN_map[<span class="fu">cbind</span>(pop, y_idx)] <span class="sc">-</span> z50 <span class="sc">*</span> logN_sd[<span class="fu">cbind</span>(pop, y_idx)]),</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p75     =</span> <span class="fu">exp</span>(logN_map[<span class="fu">cbind</span>(pop, y_idx)] <span class="sc">+</span> z50 <span class="sc">*</span> logN_sd[<span class="fu">cbind</span>(pop, y_idx)]),</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p95     =</span> <span class="fu">exp</span>(logN_map[<span class="fu">cbind</span>(pop, y_idx)] <span class="sc">+</span> z90 <span class="sc">*</span> logN_sd[<span class="fu">cbind</span>(pop, y_idx)])</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Per-population projection bands (from simulation quantiles)</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> qext<span class="sc">$</span>qext_results[[<span class="st">"thr20"</span>]]</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>df_proj_pop <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">pop =</span> <span class="fu">seq_len</span>(nPop),</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>                           <span class="at">h   =</span> <span class="fu">seq_len</span>(nYears_proj)) <span class="sc">|&gt;</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_name  =</span> U_LocalPops_In[pop],</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name =</span> U_CoreAreas_In[pop_core_vec[pop]],</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">year      =</span> proj_years[h],</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p05     =</span> r1<span class="sc">$</span>N_p05[<span class="fu">cbind</span>(pop, h)],</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p25     =</span> r1<span class="sc">$</span>N_p25[<span class="fu">cbind</span>(pop, h)],</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p50     =</span> r1<span class="sc">$</span>N_p50[<span class="fu">cbind</span>(pop, h)],</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p75     =</span> r1<span class="sc">$</span>N_p75[<span class="fu">cbind</span>(pop, h)],</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_p95     =</span> r1<span class="sc">$</span>N_p95[<span class="fu">cbind</span>(pop, h)]</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <hr>
@@ -325,26 +377,26 @@ All dimension checks passed.</code></pre>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>year_range <span class="ot">&lt;-</span> <span class="fu">range</span>(DatYears)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n_obs      <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_list<span class="sc">$</span>ReddCounts))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>n_possible <span class="ot">&lt;-</span> <span class="fu">prod</span>(<span class="fu">dim</span>(data_list<span class="sc">$</span>ReddCounts))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Years"</span>, <span class="st">"Core areas"</span>, <span class="st">"Local populations"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Survey sites"</span>, <span class="st">"Site-year observations"</span>, <span class="st">"Data coverage"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"CPUE observations"</span>),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(year_range[<span class="dv">1</span>], <span class="st">"–"</span>, year_range[<span class="dv">2</span>]),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nCore,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nPop,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nSites,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    n_obs,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n_obs <span class="sc">/</span> n_possible, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nCPUEobs</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>year_range <span class="ot">&lt;-</span> <span class="fu">range</span>(DatYears)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n_obs      <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_list<span class="sc">$</span>ReddCounts))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>n_possible <span class="ot">&lt;-</span> <span class="fu">prod</span>(<span class="fu">dim</span>(data_list<span class="sc">$</span>ReddCounts))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Years"</span>, <span class="st">"Core areas"</span>, <span class="st">"Local populations"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Survey sites"</span>, <span class="st">"Site-year observations"</span>, <span class="st">"Data coverage"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"CPUE observations"</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(year_range[<span class="dv">1</span>], <span class="st">"–"</span>, year_range[<span class="dv">2</span>]),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nCore,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nPop,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nSites,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    n_obs,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n_obs <span class="sc">/</span> n_possible, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nCPUEobs</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
@@ -480,25 +532,25 @@ All dimension checks passed.</code></pre>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>conv_label <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(optB<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"Converged (0)"</span>,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">paste</span>(<span class="st">"Not converged ("</span>, optB<span class="sc">$</span>convergence, <span class="st">")"</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>max_grad   <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(fit_rep<span class="sc">$</span>gradient.fixed))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rho_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"rho"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>phi_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"phi_obs"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Convergence code"</span>, <span class="st">"Negative log-likelihood"</span>, <span class="st">"Max |gradient|"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>             <span class="st">"AR(1) ρ"</span>, <span class="st">"NB2 dispersion φ"</span>),</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    conv_label,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(optB<span class="sc">$</span>objective, <span class="dv">2</span>),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">formatC</span>(max_grad, <span class="at">format =</span> <span class="st">"e"</span>, <span class="at">digits =</span> <span class="dv">2</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(rho_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(rho_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(phi_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(phi_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>conv_label <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(optB<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"Converged (0)"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">paste</span>(<span class="st">"Not converged ("</span>, optB<span class="sc">$</span>convergence, <span class="st">")"</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>max_grad   <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(fit_rep<span class="sc">$</span>gradient.fixed))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>rho_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"rho"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>phi_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"phi_obs"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Convergence code"</span>, <span class="st">"Negative log-likelihood"</span>, <span class="st">"Max |gradient|"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="st">"AR(1) ρ"</span>, <span class="st">"NB2 dispersion φ"</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    conv_label,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(optB<span class="sc">$</span>objective, <span class="dv">2</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">formatC</span>(max_grad, <span class="at">format =</span> <span class="st">"e"</span>, <span class="at">digits =</span> <span class="dv">2</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(rho_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(rho_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(phi_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(phi_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
@@ -515,19 +567,19 @@ All dimension checks passed.</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Negative log-likelihood</td>
-<td style="text-align: left;">8770.74</td>
+<td style="text-align: left;">9039.76</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Max &amp;#124;gradient&amp;#124;</td>
-<td style="text-align: left;">1.97e+00</td>
+<td style="text-align: left;">2.44e-02</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">AR(1) ρ</td>
-<td style="text-align: left;">0.429 (SE 0.134)</td>
+<td style="text-align: left;">0.359 (SE 0.143)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">NB2 dispersion φ</td>
-<td style="text-align: left;">3.169 (SE 0.142)</td>
+<td style="text-align: left;">3.124 (SE 0.142)</td>
 </tr>
 </tbody>
 </table>
@@ -543,7 +595,7 @@ All dimension checks passed.</code></pre>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit_plots <span class="ot">&lt;-</span> <span class="fu">plot_fit</span>(data_list, fit_rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit_plots <span class="ot">&lt;-</span> <span class="fu">plot_fit</span>(data_list, fit_rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -586,46 +638,67 @@ Worst-fitting sites:
 # A tibble: 15 × 6
    pop   site      n  rmse mean_pearson sd_pearson
    &lt;fct&gt; &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 71    93       38  31.6        0.156       2.79
- 2 5     6        26  31.4       -3.08        2.23
- 3 72    95       38  30.8        2.42        3.16
- 4 62    83       27  29.2       -2.70        2.69
- 5 72    94       38  28.5       -2.61        1.99
- 6 61    81       12  26.1        0.114       2.98
- 7 76    99       38  22.9        0.139       2.40
- 8 28    39       32  21.9        0.203       2.58
- 9 60    80       12  21.7        0.264       2.46
-10 5     7        24  20.5        2.07        3.99
-11 80    105      29  20.5        1.23        2.67
-12 46    63       38  20.1        1.27        2.41
-13 26    37       34  20.1        2.05        3.08
-14 14    19       27  19.8        0.276       3.02
-15 8     12       33  19.0        1.25        3.24</code></pre>
+ 1 5     6        26  32.3       -3.12        2.28
+ 2 71    93       38  32.1        0.107       2.82
+ 3 72    95       38  30.9        2.41        3.19
+ 4 62    83       27  29.4       -2.69        2.74
+ 5 72    94       38  28.4       -2.61        1.98
+ 6 61    81       12  27.1        0.134       3.11
+ 7 76    99       38  24.0        0.126       2.50
+ 8 60    80       12  23.1        0.224       2.59
+ 9 28    39       32  22.8        0.240       2.71
+10 26    37       34  20.7        2.06        3.21
+11 46    63       38  20.6        1.28        2.48
+12 5     7        24  20.5        2.06        3.96
+13 80    105      29  20.5        1.21        2.69
+14 14    19       27  20.5        0.366       3.07
+15 66    87       12  20.2        0.121       2.40</code></pre>
 </div>
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dfN       <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>latent</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>fit</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df_resid  <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>resid</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum latent N across populations within each core area</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>dfN_core <span class="ot">&lt;-</span> dfN <span class="sc">|&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_actual =</span> DatYears[year],</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name   =</span> U_CoreAreas_In[pop_core_vec[pop]]</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(core_name, year_actual) <span class="sc">|&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N_total =</span> <span class="fu">sum</span>(N, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfN_core, <span class="fu">aes</span>(<span class="at">x =</span> year_actual, <span class="at">y =</span> N_total)) <span class="sc">+</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>core_name, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Estimated spawners (sum of local populations)"</span>,</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Estimated Bull Trout Spawner Abundance by Core Area"</span>) <span class="sc">+</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dfN       <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>latent</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>fit</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df_resid  <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>resid</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum MAP latent N across populations within each core area</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>dfN_core <span class="ot">&lt;-</span> dfN <span class="sc">|&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_actual =</span> DatYears[year],</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name   =</span> U_CoreAreas_In[pop_core_vec[pop]]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(core_name, year_actual) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N_total =</span> <span class="fu">sum</span>(N, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Historical: MAP line + shaded area</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">data =</span> dfN_core,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year_actual, <span class="at">y =</span> N_total),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dfN_core,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year_actual, <span class="at">y =</span> N_total),</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Divider between historical and projected</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> DatYears[data_list<span class="sc">$</span>nYears] <span class="sc">+</span> <span class="fl">0.5</span>,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Projected: 90% CI, 50% CI, median</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_proj_core,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p05, <span class="at">ymax =</span> N_p95),</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"tomato"</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_proj_core,</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p25, <span class="at">ymax =</span> N_p75),</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"tomato"</span>, <span class="at">alpha =</span> <span class="fl">0.30</span>) <span class="sc">+</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_proj_core,</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> N_p50),</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"tomato"</span>, <span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>core_name, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Estimated spawners (sum of local populations)"</span>,</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Estimated Bull Trout Spawner Abundance by Core Area"</span>,</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Historical: MAP estimate (blue) | Projected "</span>,</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>                         nYears_proj, <span class="st">" years: median + 50/90% CI (red)"</span>,</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>                         <span class="st">" | Future covariates: "</span>, qext<span class="sc">$</span>future_cov_assumption)) <span class="sc">+</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -642,15 +715,15 @@ Worst-fitting sites:
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> y_obs)) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Fitted NB2 mean (log1p scale)"</span>, <span class="at">y =</span> <span class="st">"Observed (log1p scale)"</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed vs Fitted Redd Counts — All Site-Years"</span>) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> y_obs)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Fitted NB2 mean (log1p scale)"</span>, <span class="at">y =</span> <span class="st">"Observed (log1p scale)"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed vs Fitted Redd Counts - All Site-Years"</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -663,31 +736,78 @@ Worst-fitting sites:
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Population-level summaries: total observed vs fitted by year</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_actual =</span> DatYears[year],</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_name    =</span> U_LocalPops_In[pop],</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name   =</span> U_CoreAreas_In[pop_core_vec[pop]]</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pop_name, core_name, year_actual) <span class="sc">|&gt;</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y_obs =</span> <span class="fu">sum</span>(y_obs, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">mu    =</span> <span class="fu">sum</span>(mu,    <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year_actual)) <span class="sc">+</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> y_obs), <span class="at">fill =</span> <span class="st">"grey70"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mu), <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>pop_name, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Redd count"</span>,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed (bars) vs Fitted (line) Redd Counts by Population"</span>) <span class="sc">+</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">9</span>) <span class="sc">+</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Population-level summaries: total observed vs fitted by year</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_actual =</span> DatYears[year],</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_name    =</span> U_LocalPops_In[pop],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name   =</span> U_CoreAreas_In[pop_core_vec[pop]]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pop_name, core_name, year_actual) <span class="sc">|&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y_obs =</span> <span class="fu">sum</span>(y_obs, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">mu    =</span> <span class="fu">sum</span>(mu,    <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year_actual)) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> y_obs), <span class="at">fill =</span> <span class="st">"grey70"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> mu), <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>pop_name, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Redd count"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed (bars) vs Fitted (line) Redd Counts by Population"</span>) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/obs-fitted-pop-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="population-viability-projections" class="level2">
+<h2 class="anchored" data-anchor-id="population-viability-projections">Population Viability Projections</h2>
+<p>Historical estimated abundance (blue, 50% and 90% CI from model smoothing uncertainty) extended with a 7-year stochastic forward projection (red, 50% and 90% CI from 5000 simulations sampling parameter and process uncertainty). Dotted line marks N = 20 adults. Future covariates held at historical mean (z-score = 0).</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_hist_pop,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p05, <span class="at">ymax =</span> N_p95),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_hist_pop,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p25, <span class="at">ymax =</span> N_p75),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.30</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_hist_pop,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> N_p50),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> DatYears[data_list<span class="sc">$</span>nYears] <span class="sc">+</span> <span class="fl">0.5</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_proj_pop,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p05, <span class="at">ymax =</span> N_p95),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"tomato"</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> df_proj_pop,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> N_p25, <span class="at">ymax =</span> N_p75),</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"tomato"</span>, <span class="at">alpha =</span> <span class="fl">0.30</span>) <span class="sc">+</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_proj_pop,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> N_p50),</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"tomato"</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">20</span>, <span class="at">linetype =</span> <span class="dv">3</span>,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>pop_name, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Adult Abundance (N)"</span>,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Local Population Abundance - Historical and Projected"</span>) <span class="sc">+</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text      =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">5</span>),</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x     =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">5</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/pop-trajectories-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -704,7 +824,7 @@ Worst-fitting sites:
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">60</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pearson Residual"</span>, <span class="at">y =</span> <span class="st">"Count"</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Residual Distribution — All Site-Years"</span>) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Residual Distribution - All Site-Years"</span>) <span class="sc">+</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
@@ -732,7 +852,7 @@ Worst-fitting sites:
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean Pearson Residual (± 95% CI)"</span>,</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Mean Residual by Year — Check for Temporal Trends"</span>) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Mean Residual by Year - Check for Temporal Trends"</span>) <span class="sc">+</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
@@ -791,42 +911,42 @@ Worst-fitting sites:
 <tr class="odd">
 <td style="text-align: left;">rho</td>
 <td style="text-align: left;">AR(1) autocorrelation ρ</td>
-<td style="text-align: right;">0.429</td>
-<td style="text-align: right;">0.134</td>
-<td style="text-align: right;">0.166</td>
-<td style="text-align: right;">0.691</td>
+<td style="text-align: right;">0.359</td>
+<td style="text-align: right;">0.143</td>
+<td style="text-align: right;">0.079</td>
+<td style="text-align: right;">0.639</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigmaN</td>
 <td style="text-align: left;">Process error σ_N (innovation SD)</td>
-<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">0.103</td>
 <td style="text-align: right;">0.017</td>
-<td style="text-align: right;">0.075</td>
-<td style="text-align: right;">0.141</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">0.137</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">phi_obs</td>
 <td style="text-align: left;">NB2 dispersion φ_obs</td>
-<td style="text-align: right;">3.169</td>
+<td style="text-align: right;">3.124</td>
 <td style="text-align: right;">0.142</td>
-<td style="text-align: right;">2.891</td>
-<td style="text-align: right;">3.447</td>
+<td style="text-align: right;">2.845</td>
+<td style="text-align: right;">3.402</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma_cpue</td>
 <td style="text-align: left;">CPUE observation SD σ_cpue</td>
-<td style="text-align: right;">0.580</td>
-<td style="text-align: right;">0.060</td>
-<td style="text-align: right;">0.462</td>
-<td style="text-align: right;">0.697</td>
+<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">0.300</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma_q</td>
 <td style="text-align: left;">CPUE catchability SD σ_q</td>
-<td style="text-align: right;">1.042</td>
-<td style="text-align: right;">0.418</td>
-<td style="text-align: right;">0.222</td>
-<td style="text-align: right;">1.861</td>
+<td style="text-align: right;">0.500</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.500</td>
+<td style="text-align: right;">0.500</td>
 </tr>
 </tbody>
 </table>
@@ -917,8 +1037,8 @@ Worst-fitting sites:
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Thermal optimum (z-scored): -0.413 
-Thermal optimum (raw scale): 9.44 </code></pre>
+<pre><code>Thermal optimum (z-scored): -0.449 
+Thermal optimum (raw scale): 9.39 </code></pre>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1000,7 +1120,7 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set3"</span>, <span class="at">name =</span> <span class="st">"Core area"</span>) <span class="sc">+</span></span>
 <span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Temperature linear slope (bTemp_pop)"</span>,</span>
 <span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"August Temperature Linear Effect on Growth Rate by Population"</span>,</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">"Global quadratic (bTemp2) is negative — combined effect is unimodal"</span>) <span class="sc">+</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">"Global quadratic (bTemp2) is negative - combined effect is unimodal"</span>) <span class="sc">+</span></span>
 <span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">9</span>) <span class="sc">+</span></span>
 <span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
 <span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span>
@@ -1057,44 +1177,48 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 </div>
 </div>
 </section>
-<section id="core-level-lake-trout-slopes" class="level3">
-<h3 class="anchored" data-anchor-id="core-level-lake-trout-slopes">Core-Level Lake Trout Slopes</h3>
-<p>Lake trout abundance index (net-catch) is available only for core areas with confirmed lake trout presence. The hyper-mean <span class="math inline">\(\beta_{\text{LKT},M}\)</span> summarises the average temporal relationship between lake trout abundance and downstream bull trout growth rates.</p>
+<section id="global-lake-trout-slope" class="level3">
+<h3 class="anchored" data-anchor-id="global-lake-trout-slope">Global Lake Trout Slope</h3>
+<p>In model v1.22 the lake trout effect is a single global scalar <span class="math inline">\(\beta_{\text{LKT},M}\)</span> applied to all core areas with confirmed lake trout presence (replacing the per-core random effects used in earlier versions).</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (covar_config<span class="sc">$</span>use_LKT <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"bLKT_core"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  bLKT_M <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"bLKT_M"</span>)<span class="sc">$</span>est[<span class="dv">1</span>]</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">core_name =</span> U_CoreAreas_In,</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate  =</span> r<span class="sc">$</span>est,</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">se        =</span> r<span class="sc">$</span>se</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(estimate)) <span class="sc">|&gt;</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(core_name, estimate), <span class="at">y =</span> estimate)) <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>,      <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> bLKT_M, <span class="at">linetype =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"tomato"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> estimate <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se,</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ymax =</span> estimate <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se), <span class="at">width =</span> <span class="fl">0.25</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">1</span>, <span class="at">y =</span> bLKT_M,</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Hyper-mean = "</span>, <span class="fu">round</span>(bLKT_M, <span class="dv">3</span>)),</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"tomato"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Lake trout slope (bLKT_core)"</span>,</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Lake Trout Abundance Effect on Bull Trout Growth Rate by Core Area"</span>,</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">"Only core areas with lake trout netting data shown"</span>) <span class="sc">+</span></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"bLKT_M"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">Parameter =</span> <span class="st">"bLKT_M (global scalar)"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">Estimate  =</span> <span class="fu">round</span>(r<span class="sc">$</span>est[<span class="dv">1</span>], <span class="dv">4</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">SE        =</span> <span class="fu">round</span>(r<span class="sc">$</span>se[<span class="dv">1</span>],  <span class="dv">4</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">Lower95   =</span> <span class="fu">round</span>(r<span class="sc">$</span>est[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> r<span class="sc">$</span>se[<span class="dv">1</span>], <span class="dv">4</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">Upper95   =</span> <span class="fu">round</span>(r<span class="sc">$</span>est[<span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> r<span class="sc">$</span>se[<span class="dv">1</span>], <span class="dv">4</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Parameter"</span>, <span class="st">"Estimate"</span>, <span class="st">"SE"</span>, <span class="st">"Lower 95%"</span>, <span class="st">"Upper 95%"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/lkt-slopes-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
+<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lower 95%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Upper 95%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bLKT_M</td>
+<td style="text-align: left;">bLKT_M (global scalar)</td>
+<td style="text-align: right;">-0.0323</td>
+<td style="text-align: right;">0.0124</td>
+<td style="text-align: right;">-0.0566</td>
+<td style="text-align: right;">-0.0081</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 <hr>
@@ -1221,562 +1345,562 @@ Thermal optimum (raw scale): 9.44 </code></pre>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">09040001BLD</td>
 <td style="text-align: left;">StMaryRiver</td>
-<td style="text-align: right;">-0.046</td>
-<td style="text-align: right;">0.025</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.030</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">09040001KEN</td>
 <td style="text-align: left;">StMaryRiver</td>
-<td style="text-align: right;">-0.051</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.036</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">09040001LEE</td>
 <td style="text-align: left;">StMaryRiver</td>
-<td style="text-align: right;">-0.044</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010101CAL</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.024</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.044</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010101KEE</td>
 <td style="text-align: left;">BullLake</td>
-<td style="text-align: right;">-0.050</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.103</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010101OBR</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.026</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010101PIP</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.035</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.019</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010101QUA</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.049</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.046</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010102WES</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010104BOU</td>
 <td style="text-align: left;">KootenaiRiver</td>
-<td style="text-align: right;">-0.046</td>
-<td style="text-align: right;">0.026</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.059</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010201TWI</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010201WAR</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
-<td style="text-align: right;">-0.018</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202BOU</td>
 <td style="text-align: left;">UpperClarkForkRiver</td>
-<td style="text-align: right;">-0.010</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202EAS</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.023</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.058</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">4e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202HOG</td>
 <td style="text-align: left;">RockCreek</td>
 <td style="text-align: right;">-0.074</td>
 <td style="text-align: right;">0.026</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202MID</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">0.003</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202RAN</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.051</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.055</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202ROS</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010202STO</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.045</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.062</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010202WEL</td>
 <td style="text-align: left;">RockCreek</td>
-<td style="text-align: right;">-0.062</td>
+<td style="text-align: right;">-0.073</td>
 <td style="text-align: right;">0.025</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203BLM</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.063</td>
-<td style="text-align: right;">0.026</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.059</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203EFC</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.058</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.034</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203GLD</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.034</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203LKM</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.041</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.035</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203LND</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.026</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203MNT</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">-0.002</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203MRL</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.010</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010203NFB</td>
 <td style="text-align: left;">BlackfootRiver</td>
-<td style="text-align: right;">0.015</td>
-<td style="text-align: right;">0.025</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010203WFC</td>
 <td style="text-align: left;">ClearwaterRiverandLakes</td>
-<td style="text-align: right;">-0.033</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.025</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010204FIS</td>
 <td style="text-align: left;">MiddleClarkForkRiver</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010204RAT</td>
 <td style="text-align: left;">MiddleClarkForkRiver</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.009</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010205DEE</td>
 <td style="text-align: left;">WestForkBitterrootRiver</td>
-<td style="text-align: right;">-0.011</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.005</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010205EAS</td>
 <td style="text-align: left;">BitterrootRiver</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.017</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.009</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010205SKA</td>
 <td style="text-align: left;">BitterrootRiver</td>
-<td style="text-align: right;">-0.020</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206AKO</td>
 <td style="text-align: left;">AkokalaLake</td>
-<td style="text-align: right;">-0.037</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.089</td>
+<td style="text-align: right;">0.055</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206BIG</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.032</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206BOW</td>
 <td style="text-align: left;">BowmanLake</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.082</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206COA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.034</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206CYC</td>
 <td style="text-align: left;">CycloneLake</td>
-<td style="text-align: right;">-0.049</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.050</td>
+<td style="text-align: right;">0.044</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206KSH</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206LLG</td>
 <td style="text-align: left;">LoggingLake</td>
-<td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.023</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206LQU</td>
 <td style="text-align: left;">LowerQuartzLake</td>
-<td style="text-align: right;">-0.036</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.016</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206RDM</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.030</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.044</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206TRL</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.043</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010206UQU</td>
 <td style="text-align: left;">CeruleanQuartzMiddleQuartzLakes</td>
-<td style="text-align: right;">-0.029</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.007</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010206WHA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.033</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207BEA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.031</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.041</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207BWL</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.045</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207CLK</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.035</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.058</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207GRA</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">-0.048</td>
 <td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207HAR</td>
 <td style="text-align: left;">HarrisonLake</td>
-<td style="text-align: right;">-0.032</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.047</td>
+<td style="text-align: right;">0.063</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207LNG</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.045</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207LNY</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.021</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.036</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207LPK</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.035</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.041</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207MOR</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.038</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207OLE</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.029</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010207SCH</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.017</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.036</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010207STW</td>
 <td style="text-align: left;">FlatheadLake</td>
-<td style="text-align: right;">-0.013</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.028</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209BSM</td>
 <td style="text-align: left;">BigSalmonLake</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.026</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209GRD</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.007</td>
+<td style="text-align: right;">0.014</td>
 <td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209LSM</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209SLV</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.027</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209WBC</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.040</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209WHE</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010209WRV</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">-0.002</td>
 <td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010209YNG</td>
 <td style="text-align: left;">HungryHorseReservoir</td>
-<td style="text-align: right;">-0.004</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010210EAS</td>
 <td style="text-align: left;">UpperWhitefishLake</td>
-<td style="text-align: right;">-0.019</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.056</td>
+<td style="text-align: right;">0.046</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010210SWI</td>
 <td style="text-align: left;">WhitefishLake</td>
-<td style="text-align: right;">-0.007</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.048</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010210SWR</td>
 <td style="text-align: left;">UpperStillwaterLake</td>
-<td style="text-align: right;">-0.004</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211CLD</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.037</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.066</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211ELK</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.034</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.057</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211GOA</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.030</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.057</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211HLD</td>
 <td style="text-align: left;">HollandLake</td>
-<td style="text-align: right;">-0.048</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.095</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211JIM</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.037</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.070</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211LND</td>
 <td style="text-align: left;">LindberghLake</td>
-<td style="text-align: right;">-0.019</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">0.119</td>
+<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211LON</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.032</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.062</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211LST</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.038</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.065</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211PIP</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.054</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.080</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">17010211SOU</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.038</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">8e-04</td>
+<td style="text-align: right;">-0.070</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">17010211WDW</td>
 <td style="text-align: left;">SwanLake</td>
-<td style="text-align: right;">-0.042</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">7e-04</td>
+<td style="text-align: right;">-0.066</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">5e-04</td>
 </tr>
 </tbody>
 </table>
