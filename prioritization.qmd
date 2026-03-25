@@ -1,0 +1,145 @@
+---
+title: "Conservation Prioritization"
+subtitle: "Population Status and Scenario Explorer"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-location: right
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r load}
+library(here)
+library(tidyverse)
+library(reactable)
+
+DataVersion  <- "1_8"
+ModelVersion <- "1_22"
+OutName      <- paste0("PrioritizationData_D", DataVersion, "_M", ModelVersion)
+
+pdat <- readRDS(here("Results", paste0(OutName, ".RDS")))
+st   <- pdat$status_table
+meta <- pdat$meta
+```
+
+## Overview
+
+This page presents the demographic status of all `r meta$nPop` local bull trout
+populations across `r length(meta$core_names)` core areas in the Columbia
+Headwaters Recovery Unit. Estimates are derived from a hierarchical state-space
+Ricker model fitted to annual redd count time series
+(Model v`r meta$ModelVersion` / Data v`r meta$DataVersion`).
+
+**Interpreting the table:**
+
+- **λ (median)** — intrinsic growth rate under current covariate conditions
+  (last observed year). Values > 1 indicate a growing population; < 1 declining.
+- **Qext (N < 20)** — probability of dropping below 20 adults at any point in
+  a 7-year forward projection under mean environmental conditions.
+- **Sensitivity columns** — λ if a single threat lever is improved while all
+  others remain at current levels. These highlight which interventions offer
+  the greatest potential benefit per population.
+
+---
+
+## Interactive Scenario Tool
+
+The scenario tool lets you set covariate conditions across all populations
+simultaneously and see how projected λ changes — useful for comparing the
+relative benefit of different management actions and identifying which
+populations respond most strongly to each threat lever.
+
+```{=html}
+<div style="margin: 16px 0 24px 0;">
+  <a href="https://PLACEHOLDER.shinyapps.io/scenario_app/"
+     class="btn btn-primary"
+     target="_blank"
+     style="font-size: 15px; padding: 10px 24px;">
+    &#9654;&nbsp; Launch Scenario Explorer
+  </a>
+  <span style="margin-left: 12px; color: #666; font-size: 13px;">
+    Opens in a new tab
+  </span>
+</div>
+```
+
+> **Note:** Replace `PLACEHOLDER` above with your shinyapps.io account name
+> after deploying with `rsconnect::deployApp("ShinyApp/scenario_app")`.
+
+---
+
+## Population Status Table
+
+```{r status-table}
+lambda_style <- function(value) {
+  if (is.na(value)) return(list())
+  if (value >= 1) {
+    intensity <- min(1, (value - 1) / 0.5)
+    bg <- rgb(1 - intensity * 0.6, 1 - intensity * 0.4, 1)
+  } else {
+    intensity <- min(1, (1 - value) / 0.5)
+    bg <- rgb(1, 1 - intensity * 0.7, 1 - intensity * 0.7)
+  }
+  list(background = bg, fontWeight = "bold")
+}
+
+qext_style <- function(value) {
+  if (is.na(value)) return(list())
+  intensity <- min(1, value)
+  bg <- rgb(1, 1 - intensity * 0.7, 1 - intensity * 0.7)
+  list(background = bg)
+}
+
+reactable(
+  st |> select(core, pop_name, pop_id,
+               lambda_med, lambda_lo90, lambda_hi90,
+               qext_p20,
+               lam_inv_mean, lam_inv_best,
+               lam_temp_1sd, lam_flow_1sd, lam_lkt_best),
+  filterable      = TRUE,
+  searchable      = TRUE,
+  sortable        = TRUE,
+  resizable       = TRUE,
+  defaultPageSize = 30,
+  highlight       = TRUE,
+  columns = list(
+    core         = colDef(name = "Core Area",    minWidth = 130, sticky = "left"),
+    pop_name     = colDef(name = "Population",   minWidth = 120),
+    pop_id       = colDef(name = "Pop ID",       maxWidth = 90),
+    lambda_med   = colDef(name = "\u03bb (median)",  format = colFormat(digits = 2),
+                          style = lambda_style,  minWidth = 85),
+    lambda_lo90  = colDef(name = "\u03bb (5%)",  format = colFormat(digits = 2), maxWidth = 72),
+    lambda_hi90  = colDef(name = "\u03bb (95%)", format = colFormat(digits = 2), maxWidth = 72),
+    qext_p20     = colDef(name = "Qext (N<20)", format = colFormat(percent = TRUE, digits = 1),
+                          style = qext_style,   maxWidth = 95),
+    lam_inv_mean = colDef(name = "\u03bb (INV avg)",  format = colFormat(digits = 2),
+                          style = lambda_style,  maxWidth = 90),
+    lam_inv_best = colDef(name = "\u03bb (INV best)", format = colFormat(digits = 2),
+                          style = lambda_style,  maxWidth = 90),
+    lam_temp_1sd = colDef(name = "\u03bb (Temp \u22121SD)", format = colFormat(digits = 2),
+                          style = lambda_style,  maxWidth = 95),
+    lam_flow_1sd = colDef(name = "\u03bb (Flow +1SD)", format = colFormat(digits = 2),
+                          style = lambda_style,  maxWidth = 95),
+    lam_lkt_best = colDef(name = "\u03bb (LKT best)", format = colFormat(digits = 2),
+                          style = lambda_style,  na = "\u2014", maxWidth = 90)
+  ),
+  columnGroups = list(
+    colGroup(name = "Current Status",
+             columns = c("lambda_med", "lambda_lo90", "lambda_hi90")),
+    colGroup(name = "Quasi-Extinction",
+             columns = c("qext_p20")),
+    colGroup(name = "Sensitivity — best-case \u03bb per lever",
+             columns = c("lam_inv_mean", "lam_inv_best",
+                         "lam_temp_1sd", "lam_flow_1sd", "lam_lkt_best"))
+  )
+)
+```
+
+*Model v`r meta$ModelVersion` | Data v`r meta$DataVersion` |
+Run date: `r meta$run_date` |
+`r meta$nsamp` marginal posterior draws*
