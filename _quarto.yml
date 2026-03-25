@@ -16,6 +16,8 @@ website:
         text: Model Results
       - href: prioritization.qmd
         text: Prioritization
+      - href: metapop.qmd
+        text: Metapopulation
 
 format:
   html:

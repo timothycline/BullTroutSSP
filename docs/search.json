@@ -203,6 +203,48 @@
     "text": "WhitefishLake\n1 local population | Data span: 1993 – 2022\n\nCore growth rate (b0r_core): 0.011 (SE: 0.139) — lambda ≈ 1.011\n\n\n\n\n\n\nPopulation\n\n\nb0r (pop)\n\n\nSE\n\n\nλ (exp b0r)\n\n\n\n\n\n\nWest Fork Swift Creek (17010210SWI)\n\n\n0.047\n\n\n0.041\n\n\n1.048\n\n\n\n\n\n\nCovariate sensitivity\n\n\n\n\n\n\n\nCovariate exposure\n\n\n\n\n\n\n\n\nWest Fork Swift Creek (17010210SWI)\n :::"
   },
   {
+    "objectID": "metapop.html",
+    "href": "metapop.html",
+    "title": "Metapopulation Summary",
+    "section": "",
+    "text": "This page summarises bull trout viability at the core-area level across 26 core areas in the Columbia Headwaters Recovery Unit, based on 80 local populations monitored from 1984 to 2022.\nEstimates are derived from the hierarchical state-space Ricker model (Model v1_22 / Data v1_8).\nMetrics:\n\nN/km — estimated current abundance per km of connected spawning habitat (last data year)\nλ (core) — intrinsic growth rate at the core-area level; exp(b0r_core)\nMetapop Qext — probability that total core-area abundance falls below a minimum threshold at any point in a 7-year forward projection\nPop status — fraction of local populations with λ ≥ 1 vs. λ &lt; 1"
+  },
+  {
+    "objectID": "metapop.html#overview",
+    "href": "metapop.html#overview",
+    "title": "Metapopulation Summary",
+    "section": "",
+    "text": "This page summarises bull trout viability at the core-area level across 26 core areas in the Columbia Headwaters Recovery Unit, based on 80 local populations monitored from 1984 to 2022.\nEstimates are derived from the hierarchical state-space Ricker model (Model v1_22 / Data v1_8).\nMetrics:\n\nN/km — estimated current abundance per km of connected spawning habitat (last data year)\nλ (core) — intrinsic growth rate at the core-area level; exp(b0r_core)\nMetapop Qext — probability that total core-area abundance falls below a minimum threshold at any point in a 7-year forward projection\nPop status — fraction of local populations with λ ≥ 1 vs. λ &lt; 1"
+  },
+  {
+    "objectID": "metapop.html#abundance-density-by-core-area",
+    "href": "metapop.html#abundance-density-by-core-area",
+    "title": "Metapopulation Summary",
+    "section": "Abundance Density by Core Area",
+    "text": "Abundance Density by Core Area"
+  },
+  {
+    "objectID": "metapop.html#risk-matrix-core-growth-rate-vs.-quasi-extinction-risk",
+    "href": "metapop.html#risk-matrix-core-growth-rate-vs.-quasi-extinction-risk",
+    "title": "Metapopulation Summary",
+    "section": "Risk Matrix: Core Growth Rate vs. Quasi-Extinction Risk",
+    "text": "Risk Matrix: Core Growth Rate vs. Quasi-Extinction Risk\n\n\n\n\n\nQuadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small/isolated; orange = declining but larger buffer; red = declining and high extinction risk."
+  },
+  {
+    "objectID": "metapop.html#population-status-by-core-area",
+    "href": "metapop.html#population-status-by-core-area",
+    "title": "Metapopulation Summary",
+    "section": "Population Status by Core Area",
+    "text": "Population Status by Core Area"
+  },
+  {
+    "objectID": "metapop.html#core-area-summary-table",
+    "href": "metapop.html#core-area-summary-table",
+    "title": "Metapopulation Summary",
+    "section": "Core-Area Summary Table",
+    "text": "Core-Area Summary Table\n\n\n\n\n\n\n\nQext (total) = P(total core N &lt; 20 × n_pops at any projection year). Qext (majority) = P(majority of populations fall below 20 adults at any projection year). Model v1_22 | Data v1_8 | Run date: 2026-03-24"
+  },
+  {
     "objectID": "home.html",
     "href": "home.html",
     "title": "Bull Trout Status and Threats",
@@ -613,7 +655,7 @@
     "href": "prioritization.html#interactive-scenario-tool",
     "title": "Conservation Prioritization",
     "section": "Interactive Scenario Tool",
-    "text": "Interactive Scenario Tool\nThe scenario tool lets you set covariate conditions across all populations simultaneously and see how projected λ changes — useful for comparing the relative benefit of different management actions and identifying which populations respond most strongly to each threat lever.\n\n  \n    ▶  Launch Scenario Explorer\n  \n  \n    Opens in a new tab\n  \n\n\nNote: Replace PLACEHOLDER above with your shinyapps.io account name after deploying with rsconnect::deployApp(\"ShinyApp/scenario_app\")."
+    "text": "Interactive Scenario Tool\nThe scenario tool lets you set covariate conditions across all populations simultaneously and see how projected λ changes — useful for comparing the relative benefit of different management actions and identifying which populations respond most strongly to each threat lever.\n\n  \n    ▶  Launch Scenario Explorer\n  \n  \n    Opens in a new tab"
   },
   {
     "objectID": "prioritization.html#population-status-table",

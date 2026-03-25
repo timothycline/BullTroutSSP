@@ -1,0 +1,263 @@
+---
+title: "Metapopulation Summary"
+subtitle: "Core-Area Viability and Abundance"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-location: right
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r load}
+library(here)
+library(tidyverse)
+library(reactable)
+
+DataVersion  <- "1_8"
+ModelVersion <- "1_22"
+OutName      <- paste0("MetapopSummary_D", DataVersion, "_M", ModelVersion)
+
+ms   <- readRDS(here("Results", paste0(OutName, ".RDS")))
+cs   <- ms$core_summary
+pt   <- ms$pop_table
+meta <- ms$meta
+```
+
+## Overview
+
+This page summarises bull trout viability at the **core-area** level across
+`r meta$nCore` core areas in the Columbia Headwaters Recovery Unit, based on
+`r meta$nPop` local populations monitored from
+`r min(meta$DatYears)` to `r max(meta$DatYears)`.
+
+Estimates are derived from the hierarchical state-space Ricker model
+(Model v`r meta$ModelVersion` / Data v`r meta$DataVersion`).
+
+**Metrics:**
+
+- **N/km** — estimated current abundance per km of connected spawning habitat (last data year)
+- **λ (core)** — intrinsic growth rate at the core-area level; exp(b0r_core)
+- **Metapop Qext** — probability that total core-area abundance falls below a
+  minimum threshold at any point in a `r meta$nYears_proj`-year forward projection
+- **Pop status** — fraction of local populations with λ ≥ 1 vs. λ < 1
+
+---
+
+## Abundance Density by Core Area
+
+```{r density-plot, fig.height=7, fig.width=9}
+cs_plot <- cs |>
+  arrange(density_N_km) |>
+  mutate(
+    core_label = gsub("([a-z])([A-Z])", "\\1 \\2", core),
+    core_label = factor(core_label, levels = unique(core_label)),
+    status     = ifelse(lambda_core >= 1, "λ ≥ 1", "λ < 1")
+  )
+
+ggplot(cs_plot, aes(x = density_N_km, y = core_label, fill = status)) +
+  geom_col(alpha = 0.85) +
+  geom_errorbarh(
+    aes(xmin = density_lo_km, xmax = density_hi_km),
+    height = 0.35, linewidth = 0.5, color = "grey30"
+  ) +
+  scale_fill_manual(
+    values = c("λ ≥ 1" = "#1565C0", "λ < 1" = "#C62828"),
+    name   = "Core growth rate"
+  ) +
+  labs(
+    x        = "Estimated abundance per km connected habitat (N/km)",
+    y        = NULL,
+    subtitle = "Bars = 90% CI on current N estimate"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    plot.subtitle    = element_text(color = "grey40", size = 10)
+  )
+```
+
+---
+
+## Risk Matrix: Core Growth Rate vs. Quasi-Extinction Risk
+
+```{r risk-matrix, fig.height=6, fig.width=8}
+cs_risk <- cs |>
+  mutate(
+    core_label  = gsub("([a-z])([A-Z])", "\\1 \\2", core),
+    risk_status = case_when(
+      lambda_core >= 1 & metapop_qext <= 0.2  ~ "Stable",
+      lambda_core >= 1 & metapop_qext >  0.2  ~ "Growing but at-risk",
+      lambda_core <  1 & metapop_qext <= 0.2  ~ "Declining, lower risk",
+      TRUE                                     ~ "Declining, high risk"
+    ),
+    risk_status = factor(risk_status,
+                         levels = c("Stable", "Growing but at-risk",
+                                    "Declining, lower risk", "Declining, high risk"))
+  )
+
+ggplot(cs_risk,
+       aes(x = lambda_core, y = metapop_qext,
+           size = hab_km, color = risk_status,
+           label = core_label)) +
+  annotate("rect", xmin = -Inf, xmax = 1, ymin = 0.2, ymax = Inf,
+           fill = "#FFCDD2", alpha = 0.3) +
+  annotate("rect", xmin = 1, xmax = Inf, ymin = 0.2, ymax = Inf,
+           fill = "#FFF9C4", alpha = 0.4) +
+  annotate("rect", xmin = -Inf, xmax = 1, ymin = -Inf, ymax = 0.2,
+           fill = "#FFECB3", alpha = 0.3) +
+  annotate("rect", xmin = 1, xmax = Inf, ymin = -Inf, ymax = 0.2,
+           fill = "#C8E6C9", alpha = 0.3) +
+  geom_vline(xintercept = 1, linetype = 2, color = "grey40") +
+  geom_hline(yintercept = 0.2, linetype = 2, color = "grey40") +
+  geom_point(alpha = 0.85) +
+  ggrepel::geom_text_repel(size = 2.8, max.overlaps = 20, show.legend = FALSE) +
+  scale_color_manual(
+    values = c(
+      "Stable"                = "#1B5E20",
+      "Growing but at-risk"   = "#F9A825",
+      "Declining, lower risk" = "#E65100",
+      "Declining, high risk"  = "#B71C1C"
+    ),
+    name = NULL
+  ) +
+  scale_size_continuous(name = "Habitat (km)", range = c(2, 10)) +
+  scale_x_continuous(labels = function(x) sprintf("%.3f", x)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    x        = "Core-area intrinsic growth rate (λ)",
+    y        = "Metapopulation quasi-extinction probability",
+    subtitle = "Point size = connected habitat (km)  |  Qext threshold = 20 adults per population"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    plot.subtitle    = element_text(color = "grey40", size = 10)
+  )
+```
+
+*Quadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small/isolated;
+orange = declining but larger buffer; red = declining and high extinction risk.*
+
+---
+
+## Population Status by Core Area
+
+```{r pop-status, fig.height=7, fig.width=9}
+cs_status <- cs |>
+  mutate(
+    core_label  = gsub("([a-z])([A-Z])", "\\1 \\2", core),
+    core_label  = fct_reorder(core_label, pct_declining)
+  ) |>
+  select(core_label, n_pops, n_growing, n_declining) |>
+  pivot_longer(c(n_growing, n_declining),
+               names_to = "status", values_to = "count") |>
+  mutate(
+    status = recode(status,
+                    n_growing   = "Growing (λ ≥ 1)",
+                    n_declining = "Declining (λ < 1)")
+  )
+
+ggplot(cs_status, aes(x = count, y = core_label, fill = status)) +
+  geom_col(position = "stack", alpha = 0.85) +
+  scale_fill_manual(
+    values = c("Growing (λ ≥ 1)" = "#1565C0", "Declining (λ < 1)" = "#C62828"),
+    name   = NULL
+  ) +
+  scale_x_continuous(breaks = scales::breaks_width(1)) +
+  labs(
+    x        = "Number of local populations",
+    y        = NULL,
+    subtitle = "Sorted by % declining (bottom = highest concern)"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(
+    legend.position  = "bottom",
+    panel.grid.minor = element_blank(),
+    plot.subtitle    = element_text(color = "grey40", size = 10)
+  )
+```
+
+---
+
+## Core-Area Summary Table
+
+```{r summary-table}
+lambda_style <- function(value) {
+  if (is.na(value)) return(list())
+  if (value >= 1) {
+    intensity <- min(1, (value - 1) / 0.15)
+    bg <- rgb(1 - intensity * 0.6, 1 - intensity * 0.4, 1)
+  } else {
+    intensity <- min(1, (1 - value) / 0.15)
+    bg <- rgb(1, 1 - intensity * 0.7, 1 - intensity * 0.7)
+  }
+  list(background = bg, fontWeight = "bold")
+}
+
+qext_style <- function(value) {
+  if (is.na(value)) return(list())
+  intensity <- min(1, value)
+  bg <- rgb(1, 1 - intensity * 0.7, 1 - intensity * 0.7)
+  list(background = bg)
+}
+
+cs_tbl <- cs |>
+  mutate(core = gsub("([a-z])([A-Z])", "\\1 \\2", core)) |>
+  select(core, n_pops, hab_km,
+         density_N_km, density_lo_km, density_hi_km,
+         lambda_core, lambda_lo90, lambda_hi90,
+         n_growing, n_declining, pct_declining,
+         metapop_qext, metapop_qext_maj)
+
+reactable(
+  cs_tbl,
+  filterable      = TRUE,
+  searchable      = TRUE,
+  sortable        = TRUE,
+  resizable       = TRUE,
+  defaultPageSize = 30,
+  highlight       = TRUE,
+  columns = list(
+    core             = colDef(name = "Core Area",       minWidth = 160, sticky = "left"),
+    n_pops           = colDef(name = "Pops",            maxWidth = 65),
+    hab_km           = colDef(name = "Habitat (km)",    format = colFormat(digits = 1), maxWidth = 90),
+    density_N_km     = colDef(name = "N/km (med)",      format = colFormat(digits = 1),
+                               style = function(v) list(fontWeight = "bold"), maxWidth = 90),
+    density_lo_km    = colDef(name = "N/km (5%)",       format = colFormat(digits = 1), maxWidth = 80),
+    density_hi_km    = colDef(name = "N/km (95%)",      format = colFormat(digits = 1), maxWidth = 80),
+    lambda_core      = colDef(name = "λ (core)",        format = colFormat(digits = 3),
+                               style = lambda_style,    maxWidth = 85),
+    lambda_lo90      = colDef(name = "λ (5%)",          format = colFormat(digits = 3), maxWidth = 72),
+    lambda_hi90      = colDef(name = "λ (95%)",         format = colFormat(digits = 3), maxWidth = 72),
+    n_growing        = colDef(name = "Growing",         maxWidth = 75),
+    n_declining      = colDef(name = "Declining",       maxWidth = 80),
+    pct_declining    = colDef(name = "% Declining",     format = colFormat(suffix = "%"), maxWidth = 90),
+    metapop_qext     = colDef(name = "Qext (total)",    format = colFormat(percent = TRUE, digits = 1),
+                               style = qext_style,      maxWidth = 95),
+    metapop_qext_maj = colDef(name = "Qext (majority)", format = colFormat(percent = TRUE, digits = 1),
+                               style = qext_style,      maxWidth = 105)
+  ),
+  columnGroups = list(
+    colGroup(name = "Habitat & Abundance",
+             columns = c("n_pops", "hab_km", "density_N_km", "density_lo_km", "density_hi_km")),
+    colGroup(name = "Core Growth Rate",
+             columns = c("lambda_core", "lambda_lo90", "lambda_hi90")),
+    colGroup(name = "Population Status",
+             columns = c("n_growing", "n_declining", "pct_declining")),
+    colGroup(name = "Quasi-Extinction",
+             columns = c("metapop_qext", "metapop_qext_maj"))
+  )
+)
+```
+
+*Qext (total) = P(total core N < 20 × n_pops at any projection year).
+Qext (majority) = P(majority of populations fall below 20 adults at any projection year).
+Model v`r meta$ModelVersion` | Data v`r meta$DataVersion` |
+Run date: `r meta$run_date`*
