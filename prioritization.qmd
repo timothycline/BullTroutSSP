@@ -56,7 +56,7 @@ populations respond most strongly to each threat lever.
 
 ```{=html}
 <div style="margin: 16px 0 24px 0;">
-  <a href="https://PLACEHOLDER.shinyapps.io/scenario_app/"
+  <a href="https://timothycline.shinyapps.io/scenario_app/"
      class="btn btn-primary"
      target="_blank"
      style="font-size: 15px; padding: 10px 24px;">
@@ -68,8 +68,6 @@ populations respond most strongly to each threat lever.
 </div>
 ```
 
-> **Note:** Replace `PLACEHOLDER` above with your shinyapps.io account name
-> after deploying with `rsconnect::deployApp("ShinyApp/scenario_app")`.
 
 ---
 
