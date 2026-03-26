@@ -34,9 +34,9 @@ library(kableExtra)
 library(scales)
 
 # ── Version identifiers ───────────────────────────────────────────────────────
-DataVersion     <- "1_8"
+DataVersion     <- "1_10"
 ModelVersion    <- "1_22"
-RunVersion      <- "1_21"
+RunVersion      <- "1_22"
 FunctionVersion <- "1_13"
 
 SaveName <- paste0("MPVA_Fit_D", DataVersion, "_M", ModelVersion, "_R", RunVersion)
@@ -111,7 +111,7 @@ theme_out <- theme_bw(base_size = 11) +
   theme(panel.grid.minor = element_blank(),
         axis.title       = element_text(size = 10))
 
-THRESHOLD_ADULTS <- 20   # quasi-extinction threshold
+THRESHOLD_ADULTS <- 20   # demographic risk threshold
 Z90 <- qnorm(0.95)       # 1.645 — 90% CI
 Z50 <- qnorm(0.75)       # 0.674 — 50% CI
 ```
@@ -121,7 +121,7 @@ qext <- readRDS(here("Results", paste0(SaveName, "_Qext.RDS")))
 
 nYears_proj <- qext$nYears_proj
 proj_years  <- qext$proj_years
-N_hist_q    <- qext$N_hist_q    # named list of nPop × nYears matrices (sim-based)
+N_hist_q    <- qext$N_hist_q    # named list of nPop × nYears matrices (analytical delta-method)
 r1          <- qext$qext_results[["thr20"]]   # threshold = 20 adults
 
 # ── Per-population historical bands (simulation-based from N_hist_q) ─────────
@@ -383,14 +383,19 @@ plot_exposure <- function(pops_in_core, ca) {
 }
 ```
 
-This page presents model results organized by spatial level — global, core area,
-and local population — followed by future viability projections. Use the table
-of contents on the right to jump to any core area or population. For model
-structure and diagnostics, see the [Model](index.qmd) tab.
+This page presents model results organized by spatial level — global summary,
+core area trajectories, and local population detail. Use the table of contents
+on the right to navigate directly to any core area or population. For model
+structure and diagnostics, see the [Model](model.html) tab.
 
 ---
 
 ## Global Results
+
+Summary of model fit for the full multi-population dataset. A convergence code
+of 0 indicates the optimizer reached a local minimum; the maximum absolute
+gradient over fixed-effect parameters is the primary numerical convergence
+criterion (values below 0.01 are generally acceptable).
 
 ```{r global-fit, results='asis'}
 max_grad <- max(abs(fit_rep$gradient.fixed))
@@ -414,6 +419,12 @@ tibble(
 ```
 
 ### Covariate Effects
+
+Estimated effects of each environmental and habitat covariate on population
+growth rate (log-λ). Positive values indicate a beneficial effect; negative
+values indicate suppression. Dynamic covariates (flow, temperature, invasives,
+lake trout) are estimated as random slopes that vary across populations around
+a global hyper-mean shown here.
 
 ```{r covar-table}
 get_est <- function(nm) {
@@ -463,8 +474,10 @@ covar_df |>
 
 ### Thermal Performance Curve
 
-Bull trout growth rate shows a unimodal response to water temperature
-(linear + negative quadratic).
+Bull trout population growth rate shows a unimodal (hump-shaped) response to
+August water temperature: growth is fastest at intermediate temperatures and
+declines at both extremes. The curve is estimated jointly from the linear and
+quadratic temperature coefficients in the model.
 
 ```{r thermal-curve, fig.height=4}
 if (covar_config$use_Temp == 1) {
@@ -473,6 +486,12 @@ if (covar_config$use_Temp == 1) {
 ```
 
 ### Variance Components
+
+How much do populations differ from one another, and how much year-to-year
+noise is in the data? This table summarizes the estimated standard deviations
+(SDs) of process noise, autocorrelation in annual deviations, observation
+overdispersion, and the hierarchical random effects that allow demographic
+parameters to vary across populations and core areas.
 
 ```{r variance-table}
 var_rows <- list(
@@ -544,16 +563,19 @@ ggplot() +
 
 ---
 
-## Quasi-Extinction Risk Summary
+## Demographic Risk Summary
 
-Probability that local population abundance falls below threshold at any point
-during the `r nYears_proj`-year projection (`r qext$nsim` simulations).
+Probability that a local population falls below 20 adults at any point during
+the `r nYears_proj`-year forward projection, based on `r qext$nsim` stochastic
+simulations. Populations near or below this threshold are at elevated risk of
+local extirpation. Results are sorted from highest to lowest risk.
 
 ```{r qext-table}
 qext_tbl20 <- qext$qext_table |>
   filter(threshold == 20) |>
   arrange(desc(p_qext)) |>
-  select(pop_name, core_name, p_qext, N_med_end, N_lo_end, N_hi_end)
+  select(pop_name, core_name, p_qext, N_med_end, N_lo_end, N_hi_end) |>
+  mutate(pop_name = pop_display[match(pop_name, U_LocalPops_In)])
 
 qext_tbl20 |>
   kable(col.names = c("Population", "Core Area",
