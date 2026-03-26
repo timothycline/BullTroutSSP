@@ -472,6 +472,65 @@ covar_df |>
   footnote(general = "*** p < 0.01  ** p < 0.05  * p < 0.10.  Dynamic covariates carry an effective 6-yr lag.")
 ```
 
+### Relative Covariate Importance
+
+Effect of each covariate on population growth rate (log-λ), ranked by
+absolute magnitude. All dynamic covariates are z-scored so effects are
+directly comparable across drivers. Filled bars indicate 95% CI excludes
+zero; error bars show ± 1.96 SE. Lake trout and non-native fish show the
+largest suppression effects.
+
+```{r covar-barplot, fig.height=4.5, fig.width=7}
+covar_bar_rows <- list(
+  list(par = "bLKT_M",  label = "Lake trout",                 type = "Dynamic"),
+  list(par = "bINV_M",  label = "Non-native trout",           type = "Dynamic"),
+  list(par = "bTemp2",  label = "August temperature²",        type = "Dynamic"),
+  list(par = "bTemp_M", label = "August temperature",         type = "Dynamic"),
+  list(par = "bFlow_M", label = "Summer streamflow",          type = "Dynamic"),
+  list(par = "bUVB",    label = "Unconfined valley bottom",   type = "Static"),
+  list(par = "bRD",     label = "Road density",               type = "Static"),
+  list(par = "bFlood",  label = "Flood frequency (W95)",      type = "Static"),
+  list(par = "bAdf",    label = "Lake area (adfluvial)",      type = "Static")
+)
+
+bar_df <- bind_rows(lapply(covar_bar_rows, function(r) {
+  es <- get_est(r$par)
+  tibble(label = r$label, type = r$type, est = es[1], se = es[2])
+})) |>
+  filter(!is.na(est)) |>
+  mutate(
+    lo95  = est - 1.96 * se,
+    hi95  = est + 1.96 * se,
+    sig   = (lo95 > 0) | (hi95 < 0),
+    sig_f = ifelse(sig, "sig", "ns"),
+    dir   = ifelse(est >= 0, "Positive", "Negative"),
+    label = factor(label, levels = label[order(abs(est))])
+  )
+
+ggplot(bar_df, aes(x = label, y = est, fill = dir, alpha = sig_f)) +
+  geom_col(width = 0.65, color = "grey30", linewidth = 0.3) +
+  geom_errorbar(aes(ymin = lo95, ymax = hi95),
+                width = 0.25, color = "grey20", linewidth = 0.5) +
+  geom_hline(yintercept = 0, linewidth = 0.5, color = "grey40") +
+  scale_fill_manual(values = c("Positive" = "steelblue3", "Negative" = "tomato3"),
+                    name = NULL) +
+  scale_alpha_manual(values = c("ns" = 0.30, "sig" = 0.85), guide = "none") +
+  coord_flip() +
+  facet_grid(type ~ ., scales = "free_y", space = "free_y") +
+  labs(
+    x        = NULL,
+    y        = "Effect on log-λ per SD covariate",
+    title    = "Relative Covariate Importance",
+    subtitle = "Ranked by |effect|  |  Solid = 95% CI excludes zero  |  Error bars: 95% CI"
+  ) +
+  theme_out +
+  theme(
+    legend.position  = "none",
+    strip.text.y     = element_text(size = 9, face = "bold", angle = 0),
+    strip.background = element_rect(fill = "grey93", color = "grey70")
+  )
+```
+
 ### Thermal Performance Curve
 
 Bull trout population growth rate shows a unimodal (hump-shaped) response to
