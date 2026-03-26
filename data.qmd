@@ -30,8 +30,8 @@ library(here)
 library(tidyverse)
 library(patchwork)
 
-source(here("Code", "MPVA_Functions1_8.R"))
-suppressMessages(source(here("Code", "PrepareData_MPVA1_5.R")))
+source(here("Code", "MPVA_Functions1_13.R"))
+suppressMessages(source(here("Code", "PrepareData_MPVA1_9.R")))
 
 # ── Index helpers ─────────────────────────────────────────────────────────────
 pop_core_vec <- CoreArea_Num[match(seq_len(nPop), LocalPops_Num)]
@@ -89,13 +89,21 @@ df_temp <- as.data.frame.matrix(xtTemp) |>
          aug_temp_C = if_else(aug_temp_C == 0, NA_real_, aug_temp_C)) |>
   filter(!is.na(aug_temp_C))
 
-# ── Tidy invasives (back-transform logit → proportion) ───────────────────
-df_inv <- InvRatIn_raw |>
+# ── Tidy invasives (raw proportions — do NOT use z-scored logit here) ────
+# InvRatIn_raw is z-scored logit; plogis(z-score) is NOT a proportion.
+# Read the actual interpolated proportions (0–1) directly.
+InvProp_raw <- read.csv(here('Data', 'InvasiveProportion_Proportion_Interpolated.csv'),
+                        row.names = 1, check.names = FALSE)
+colnames(InvProp_raw) <- gsub("^X", "", colnames(InvProp_raw))
+
+df_inv <- InvProp_raw |>
   as.data.frame() |>
   rownames_to_column("pop_name") |>
-  pivot_longer(-pop_name, names_to = "year", values_to = "inv_logit") |>
-  mutate(year    = as.integer(year),
-         inv_prop = plogis(inv_logit)) |>
+  pivot_longer(-pop_name, names_to = "year", values_to = "inv_prop") |>
+  mutate(year = as.integer(year),
+         # 1e-6 is the numerical floor used to allow logit-transform of 0s;
+         # values below 1e-4 are indistinguishable from zero — clip to 0.
+         inv_prop = if_else(inv_prop < 1e-4, 0, inv_prop)) |>
   filter(!is.na(inv_prop))
 
 # ── Tidy LKT (core-level; show z-scored logit index) ────────────────────
@@ -169,7 +177,7 @@ plot_inv <- function(pop_idx) {
     geom_line(color = "darkorange", linewidth = 0.9) +
     geom_point(size = 1.5, color = "darkorange") +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1),
-                       limits = c(0, NA)) +
+                       limits = c(0, max(max(d$inv_prop, na.rm = TRUE), 0.01))) +
     labs(x = NULL, y = "Non-native proportion", title = "Non-native trout ratio") +
     theme_data
 }
@@ -189,11 +197,113 @@ plot_lkt <- function(core_idx) {
 }
 ```
 
-For each population, plots show redd counts, summer streamflow, August water
-temperature, and non-native trout ratio. Each core area section also includes a
-static covariate table and a lake trout abundance index plot (core-level).
-Covariate years shown are the actual measurement years; the model applies an
-effective 6-year lag.
+## Data Summary
+
+This page documents the data assembled across **`r nPop` local populations** in
+**`r nCore` core areas**, spanning `r min(DatYears)`–`r max(DatYears)`. All covariates
+were compiled from multiple state, federal, and academic sources and processed into
+a common format for the hierarchical model. The sections below describe each data
+type, its source, and the transformations applied before model fitting.
+
+---
+
+### Population Abundance — Redd Counts
+
+Annual redd counts are the primary abundance index. Spawning redds (nests) are
+counted by technicians walking fixed survey reaches each fall; counts are
+proportional to the number of spawning adults and have been used to track bull
+trout population trends across the recovery units for more than two decades.
+
+**Source:** USGS-harmonized redd count database compiled from USFWS, Montana FWP,
+Idaho IDFG, and tribal monitoring programs.
+
+**Coverage:** Survey sites with at least 10 years of data are retained. Within each
+population, multiple survey reaches (sites) contribute counts in the same year;
+the population-level total is the sum across sites. A count of zero is recorded
+when a site was surveyed but no redds were observed; years when a site was not
+surveyed are treated as missing (not zero).
+
+**In the model:** Redd counts enter as the observed response. Modeled as NB2
+(negative binomial, fixed dispersion) conditioned on latent adult abundance,
+survey-reach length, and a contemporaneous flow effect on detection probability.
+
+---
+
+### Dynamic Covariates — Annual Time Series
+
+The following covariates vary by population and year and enter the population
+process equation with a **6-year lag** (5 years specified in data prep; the C++
+model adds 1 additional year). This lag reflects the approximate time from
+egg incubation under a given year's environmental conditions to first-time
+spawning as an adult — roughly one bull trout generation.
+
+```{r covar-table, echo=FALSE}
+cov_tab <- tibble::tribble(
+  ~Covariate,         ~`Spatial scale`, ~`Metric`,                        ~`Transformation`,              ~`Source`,
+  "Summer streamflow", "Population",    "Annual sum of daily discharge",  "Log → z-score → 6-yr lag",    "USGS stream gauge network; ProcessedFlowMetrics.csv",
+  "August temperature","Population",    "Mean August stream temperature (°C)", "Z-score → 6-yr lag",    "NorWeST spatially-continuous stream temperature model (Isaak et al. 2016); MeanPatchAnnualTemps.RDS",
+  "Non-native fish proportion (INV)", "Population", "Proportion of non-native salmonids (brook + brown trout) in electrofishing catch", "Floor at 0.1% → logit → z-score; forward-filled for missing years", "Electrofishing surveys compiled from MFWP, USFWS, Tribes; BLTPatch_InvasiveRatio",
+  "Lake trout index (LKT)", "Core area",  "Proportion of lake trout in netting catch", "Logit → z-score; forward-filled for missing years", "Annual netting surveys — Glacier NP and MFWP; LakeNetting/"
+)
+
+knitr::kable(cov_tab, format = "html") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"),
+                            font_size = 12, full_width = TRUE) |>
+  kableExtra::column_spec(1, bold = TRUE) |>
+  kableExtra::column_spec(5, width = "28%")
+```
+
+A **contemporaneous flow** term (same year, no lag) is also included in the
+*observation* model to account for year-to-year variation in redd detectability —
+high-flow years reduce observer efficiency and can suppress counts independently
+of true abundance changes.
+
+**Lake trout** data are measured at the **core area** level (not population) and
+are only available for lake-connected systems. A binary indicator flags which
+core areas have LKT data; the LKT effect is estimated only for those cores.
+
+---
+
+### Static Covariates — Population Characteristics
+
+The following covariates are fixed through time and characterize the physical
+setting and life-history context of each population. They inform the
+population-level mean growth rate (b₀ᵣ) through a regression on static
+population attributes.
+
+```{r static-table, echo=FALSE}
+static_tab <- tibble::tribble(
+  ~Covariate,                ~`Metric`,                                       ~`Transformation`,          ~`Source`,
+  "Valley bottom extent (VB)", "Riparian valley floor area (km²)",           "Log(x + 1) → z-score",    "GIS — Whited, Flathead Lake Biological Station",
+  "W95 flood frequency",       "Mean annual days exceeding 95th-pct flow",   "Log(x + 1) → z-score",    "Derived from USGS stream gauge flow records",
+  "Road density — valley bottom (RDVB)", "Road length per km² of valley bottom", "Log(x + 1) → z-score", "National road layer intersected with valley bottom GIS — Whited, FLBS",
+  "Adfluvial life history",    "Binary: population has lake-resident life-history access", "0/1",         "Core area life-history classification — USFWS Recovery Plan; CoreArea_LifeHistory.csv",
+  "Habitat extent (km)",       "Connected spawning habitat length (km)",     "Used as density denominator in process model", "GIS — connected habitat layer, BLTPatches_metrics"
+)
+
+knitr::kable(static_tab, format = "html") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"),
+                            font_size = 12, full_width = TRUE) |>
+  kableExtra::column_spec(1, bold = TRUE) |>
+  kableExtra::column_spec(4, width = "28%")
+```
+
+Valley bottom extent and road density were derived from GIS layers developed by
+**Diane Whited** at the Flathead Lake Biological Station. These capture landscape-scale
+habitat availability and disturbance pressure that can affect spawning habitat
+quality and population productivity independently of year-to-year environmental
+variation.
+
+---
+
+### Population Time Series Plots
+
+The plots below show, for each local population: annual redd counts (bars = totals,
+points = individual survey-site counts), summer streamflow, August temperature,
+and non-native trout proportion. Core area sections also include a lake trout
+abundance index (where available) and a static covariate summary table.
+Covariate time series are displayed in their native units; the model uses
+z-scored and lagged versions.
 
 ```{r core-index, results='asis'}
 # Clickable core area index

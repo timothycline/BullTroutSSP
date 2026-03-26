@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-03-24">
+<meta name="dcterms.date" content="2026-03-26">
 
-<title>Bull Trout SSP — Population Viability Analysis - Metapopulation Summary</title>
+<title>Bull Trout SSP — Population Viability Analysis - Core Area Status</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./home.html" rel="" target="">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./model.html" rel="" target="">
  <span class="menu-text">Model</span></a>
   </li>  
   <li class="nav-item">
@@ -111,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./metapop.html" rel="" target="" aria-current="page">
- <span class="menu-text">Metapopulation</span></a>
+ <span class="menu-text">Core Area Status</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
@@ -130,6 +130,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#composite-metrics-multiple-perspectives" id="toc-composite-metrics-multiple-perspectives" class="nav-link" data-scroll-target="#composite-metrics-multiple-perspectives">Composite Metrics: Multiple Perspectives</a></li>
+  <li><a href="#multi-metric-status-overview" id="toc-multi-metric-status-overview" class="nav-link" data-scroll-target="#multi-metric-status-overview">Multi-Metric Status Overview</a></li>
   <li><a href="#abundance-density-by-core-area" id="toc-abundance-density-by-core-area" class="nav-link" data-scroll-target="#abundance-density-by-core-area">Abundance Density by Core Area</a></li>
   <li><a href="#risk-matrix-core-growth-rate-vs.-quasi-extinction-risk" id="toc-risk-matrix-core-growth-rate-vs.-quasi-extinction-risk" class="nav-link" data-scroll-target="#risk-matrix-core-growth-rate-vs.-quasi-extinction-risk">Risk Matrix: Core Growth Rate vs.&nbsp;Quasi-Extinction Risk</a></li>
   <li><a href="#population-status-by-core-area" id="toc-population-status-by-core-area" class="nav-link" data-scroll-target="#population-status-by-core-area">Population Status by Core Area</a></li>
@@ -142,8 +144,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Metapopulation Summary</h1>
-<p class="subtitle lead">Core-Area Viability and Abundance</p>
+<h1 class="title">Core Area Status</h1>
+<p class="subtitle lead">Viability and Portfolio Metrics Across the Columbia Headwaters Recovery Unit</p>
 </div>
 
 
@@ -154,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 24, 2026</p>
+      <p class="date">March 26, 2026</p>
     </div>
   </div>
   
@@ -166,15 +168,64 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This page summarises bull trout viability at the <strong>core-area</strong> level across 26 core areas in the Columbia Headwaters Recovery Unit, based on 80 local populations monitored from 1984 to 2022.</p>
-<p>Estimates are derived from the hierarchical state-space Ricker model (Model v1_22 / Data v1_8).</p>
-<p><strong>Metrics:</strong></p>
-<ul>
-<li><strong>N/km</strong> — estimated current abundance per km of connected spawning habitat (last data year)</li>
-<li><strong>λ (core)</strong> — intrinsic growth rate at the core-area level; exp(b0r_core)</li>
-<li><strong>Metapop Qext</strong> — probability that total core-area abundance falls below a minimum threshold at any point in a 7-year forward projection</li>
-<li><strong>Pop status</strong> — fraction of local populations with λ ≥ 1 vs.&nbsp;λ &lt; 1</li>
-</ul>
+<p>26 core areas, 80 local populations, 1984–2022. Model v1_22 / Data v1_8.</p>
+<p>Core areas approximate probable metapopulations but boundaries also reflect watershed structure and jurisdictional units. They are the primary viability assessment unit for this recovery unit.</p>
+</section>
+<section id="composite-metrics-multiple-perspectives" class="level2">
+<h2 class="anchored" data-anchor-id="composite-metrics-multiple-perspectives">Composite Metrics: Multiple Perspectives</h2>
+<p>No single metric captures core area status fully. The five metrics used here each prioritise a different conservation objective and are not interchangeable.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Conservation objective</th>
+<th>Key limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Abundance (N/km)</strong></td>
+<td>Maximise total fish</td>
+<td>Blind to spatial distribution</td>
+</tr>
+<tr class="even">
+<td><strong>Growth rate (λ)</strong></td>
+<td>Identify recovering vs.&nbsp;declining units</td>
+<td>Backward-looking</td>
+</tr>
+<tr class="odd">
+<td><strong>Occupancy</strong></td>
+<td>Maintain all extant local populations (≥ 20 adults)</td>
+<td>Insensitive to population size</td>
+</tr>
+<tr class="even">
+<td><strong>Portfolio balance</strong></td>
+<td>Detect over-concentration in a single dominant population</td>
+<td>Independent of total abundance</td>
+</tr>
+<tr class="odd">
+<td><strong>Persistence (1 − Qext)</strong></td>
+<td>Long-term viability under current trajectory</td>
+<td>Projection-dependent</td>
+</tr>
+</tbody>
+</table>
+<p>Occupancy and portfolio balance deserve particular attention. A core that has lost populations has reduced network redundancy regardless of total abundance — remaining populations carry the full burden of demographic rescue. Portfolio balance (effective populations / total, from Shannon diversity of the abundance distribution) flags cores where fish are concentrated in one tributary: functionally a single population even if others nominally persist.</p>
+<p>The heatmap below presents all five metrics simultaneously, each standardised to the range across core areas, so managers can apply their own weighting rather than a fixed composite.</p>
+<hr>
+</section>
+<section id="multi-metric-status-overview" class="level2">
+<h2 class="anchored" data-anchor-id="multi-metric-status-overview">Multi-Metric Status Overview</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="metapop_files/figure-html/heatmap-1.png" class="img-fluid" width="912"></p>
+</div>
+</div>
 <hr>
 </section>
 <section id="abundance-density-by-core-area" class="level2">
@@ -193,7 +244,7 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="metapop_files/figure-html/risk-matrix-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p><em>Quadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small/isolated; orange = declining but larger buffer; red = declining and high extinction risk.</em></p>
+<p><em>Quadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small or isolated; orange = declining but with larger population buffer; red = declining with high extinction risk.</em></p>
 <hr>
 </section>
 <section id="population-status-by-core-area" class="level2">
@@ -210,11 +261,11 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item" id="htmlwidget-a2cedb33f66032e1e334" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-a2cedb33f66032e1e334">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"core":["Akokala Lake","Big Salmon Lake","Bitterroot River","Blackfoot River","Bowman Lake","Bull Lake","Cerulean Quartz Middle Quartz Lakes","Clearwater Riverand Lakes","Cyclone Lake","Flathead Lake","Harrison Lake","Holland Lake","Hungry Horse Reservoir","Kootenai River","Lindbergh Lake","Logging Lake","Lower Quartz Lake","Middle Clark Fork River","Rock Creek","St Mary River","Swan Lake","Upper Clark Fork River","Upper Stillwater Lake","Upper Whitefish Lake","West Fork Bitterroot River","Whitefish Lake"],"n_pops":[1,1,2,5,1,1,1,4,1,17,1,1,7,6,1,1,1,2,7,3,9,3,1,1,1,1],"hab_km":[0.956828,7.242048,4.844125,37.336781,2.915218,14.323161,3.288996,14.8384325204255,0.804672,190.140107440426,2.424901,5.98704052042553,107.214497,53.0448205612766,0.804672,1.193035,1.031987,12.472416,35.566502,17.9611215612766,75.9455060408511,7.242047,15.932506,4.828032,2.735885,7.563917],"density_N_km":[5.13,12.41,10.37,6.23,1.56,1.41,19.94,4.91,1.77,2.96,2.37,3.05,8.43,1.45,22.2,2.17,5.77,4.46,4.44,6.25,4.77,13.72,2.76,2.31,1.83,1.39],"density_lo_km":[2.57,4.74,5.95,3.91,0.42,0.87,9.89,2.9,0.7,1.87,0.8,1.79,4.07,0.88,12.24,0.81,2.13,2.9,2.8,3.67,3.01,8.09,1.77,1.08,0.82,0.79],"density_hi_km":[10.23,32.53,18.09,9.94,5.84,2.27,40.21,8.34,4.5,4.74,6.97,5.21,18.1,2.41,40.26,5.8,15.63,6.89,7.15,10.65,7.59,25.7,4.29,4.93,4.09,2.43],"lambda_core":[0.924,0.966,0.982,0.962,1.08,0.881,0.996,0.965,0.947,0.946,0.958,0.914,0.994,0.962,1.118,0.981,0.994,0.99,0.947,0.952,0.934,0.994,1.005,1.056,1.008,1.012],"lambda_lo90":[0.731,0.77,0.931,0.927,0.845,0.7,0.791,0.771,0.753,0.76,0.755,0.728,0.798,0.928,0.872,0.773,0.784,0.935,0.913,0.761,0.749,0.942,0.801,0.84,0.942,0.805],"lambda_hi90":[1.168,1.213,1.035,0.999,1.381,1.108,1.255,1.207,1.191,1.177,1.216,1.148,1.237,0.998,1.434,1.246,1.26,1.048,0.981,1.192,1.165,1.05,1.26,1.327,1.078,1.273],"n_growing":[0,0,1,2,1,0,1,1,0,2,0,0,4,0,1,0,1,2,2,1,0,3,1,1,0,1],"n_declining":[1,1,1,3,0,1,0,3,1,15,1,1,3,6,0,1,0,0,5,2,9,0,0,0,1,0],"pct_declining":[100,100,50,60,0,100,0,75,100,88,100,100,43,100,0,100,0,0,71,67,100,0,0,0,100,0],"metapop_qext":[1,0.004,0.493,0.001,1,0.98,0.018,0.976,1,0.006,1,0.992,0,1,0.575,1,1,0.18,0.926,0.103,0.033,0.037,0.013,1,1,1],"metapop_qext_maj":[1,0.004,0.169,0.304,1,0.98,0.018,0.947,1,0.339,1,0.992,0,1,0.575,1,1,0.008,1,0.947,0.21,0.601,0.013,1,1,1]},"columns":[{"id":"core","name":"Core Area","type":"character","minWidth":160,"sticky":"left"},{"id":"n_pops","name":"Pops","type":"numeric","maxWidth":65},{"id":"hab_km","name":"Habitat (km)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":90},{"id":"density_N_km","name":"N/km (med)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":90,"style":[{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"}]},{"id":"density_lo_km","name":"N/km (5%)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":80},{"id":"density_hi_km","name":"N/km (95%)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":80},{"id":"lambda_core","name":"λ (core)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":85,"style":[{"background":"#FFA5A5","fontWeight":"bold"},{"background":"#FFD7D7","fontWeight":"bold"},{"background":"#FFEAEA","fontWeight":"bold"},{"background":"#FFD2D2","fontWeight":"bold"},{"background":"#ADC9FF","fontWeight":"bold"},{"background":"#FF7171","fontWeight":"bold"},{"background":"#FFFAFA","fontWeight":"bold"},{"background":"#FFD5D5","fontWeight":"bold"},{"background":"#FFC0C0","fontWeight":"bold"},{"background":"#FFBFBF","fontWeight":"bold"},{"background":"#FFCDCD","fontWeight":"bold"},{"background":"#FF9999","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FFD2D2","fontWeight":"bold"},{"background":"#87AFFF","fontWeight":"bold"},{"background":"#FFE8E8","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FFF3F3","fontWeight":"bold"},{"background":"#FFC0C0","fontWeight":"bold"},{"background":"#FFC6C6","fontWeight":"bold"},{"background":"#FFB0B0","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FAFCFF","fontWeight":"bold"},{"background":"#C6D9FF","fontWeight":"bold"},{"background":"#F7FAFF","fontWeight":"bold"},{"background":"#F3F7FF","fontWeight":"bold"}]},{"id":"lambda_lo90","name":"λ (5%)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":72},{"id":"lambda_hi90","name":"λ (95%)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":72},{"id":"n_growing","name":"Growing","type":"numeric","maxWidth":75},{"id":"n_declining","name":"Declining","type":"numeric","maxWidth":80},{"id":"pct_declining","name":"% Declining","type":"numeric","format":{"cell":{"suffix":"%"},"aggregated":{"suffix":"%"}},"maxWidth":90},{"id":"metapop_qext","name":"Qext (total)","type":"numeric","format":{"cell":{"digits":1,"percent":true},"aggregated":{"digits":1,"percent":true}},"maxWidth":95,"style":[{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FFA7A7"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF5050"},{"background":"#FFFCFC"},{"background":"#FF5151"},{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FF4D4D"},{"background":"#FF4E4E"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF9898"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FFDFDF"},{"background":"#FF5A5A"},{"background":"#FFEDED"},{"background":"#FFF9F9"},{"background":"#FFF8F8"},{"background":"#FFFDFD"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FF4D4D"}]},{"id":"metapop_qext_maj","name":"Qext (majority)","type":"numeric","format":{"cell":{"digits":1,"percent":true},"aggregated":{"digits":1,"percent":true}},"maxWidth":105,"style":[{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FFE1E1"},{"background":"#FFC9C9"},{"background":"#FF4D4D"},{"background":"#FF5050"},{"background":"#FFFCFC"},{"background":"#FF5656"},{"background":"#FF4D4D"},{"background":"#FFC2C2"},{"background":"#FF4D4D"},{"background":"#FF4E4E"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF9898"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FF4D4D"},{"background":"#FF5656"},{"background":"#FFDADA"},{"background":"#FF9494"},{"background":"#FFFDFD"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FF4D4D"}]}],"columnGroups":[{"name":"Habitat & Abundance","columns":["n_pops","hab_km","density_N_km","density_lo_km","density_hi_km"]},{"name":"Core Growth Rate","columns":["lambda_core","lambda_lo90","lambda_hi90"]},{"name":"Population Status","columns":["n_growing","n_declining","pct_declining"]},{"name":"Quasi-Extinction","columns":["metapop_qext","metapop_qext_maj"]}],"resizable":true,"filterable":true,"searchable":true,"defaultPageSize":30,"highlight":true,"dataKey":"fbef8e265085b49a893e8d3908645ce2"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-2fb0c32a2b5b670fa99e" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2fb0c32a2b5b670fa99e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"core":["Akokala Lake","Big Salmon Lake","Bitterroot River","Blackfoot River","Bowman Lake","Bull Lake","Cerulean Quartz Middle Quartz Lakes","Clearwater Riverand Lakes","Cyclone Lake","Flathead Lake","Harrison Lake","Holland Lake","Hungry Horse Reservoir","Kootenai River","Lindbergh Lake","Logging Lake","Lower Quartz Lake","Middle Clark Fork River","Rock Creek","St Mary River","Swan Lake","Upper Clark Fork River","Upper Stillwater Lake","Upper Whitefish Lake","West Fork Bitterroot River","Whitefish Lake"],"n_pops":[1,1,2,5,1,1,1,4,1,17,1,1,7,6,1,1,1,2,7,3,9,3,1,1,1,1],"hab_km":[0.956828,7.242048,4.844125,37.336781,2.915218,14.323161,3.288996,14.8384325204255,0.804672,190.140107440426,2.424901,5.98704052042553,107.214497,53.0448205612766,0.804672,1.193035,1.031987,12.472416,35.566502,17.9611215612766,75.9455060408511,7.242047,15.932506,4.828032,2.735885,7.563917],"density_N_km":[5.13,12.41,10.37,6.23,1.56,1.41,19.94,4.91,1.77,2.96,2.37,3.05,8.43,1.45,22.2,2.17,5.77,4.46,4.44,6.25,4.77,13.72,2.76,2.31,1.83,1.39],"density_lo_km":[2.57,4.74,5.95,3.91,0.42,0.87,9.89,2.9,0.7,1.87,0.8,1.79,4.07,0.88,12.24,0.81,2.13,2.9,2.8,3.67,3.01,8.09,1.77,1.08,0.82,0.79],"density_hi_km":[10.23,32.53,18.09,9.94,5.84,2.27,40.21,8.34,4.5,4.74,6.97,5.21,18.1,2.41,40.26,5.8,15.63,6.89,7.15,10.65,7.59,25.7,4.29,4.93,4.09,2.43],"lambda_core":[0.924,0.966,0.982,0.962,1.08,0.881,0.996,0.965,0.947,0.946,0.958,0.914,0.994,0.962,1.118,0.981,0.994,0.99,0.947,0.952,0.934,0.994,1.005,1.056,1.008,1.012],"lambda_lo90":[0.731,0.77,0.931,0.927,0.845,0.7,0.791,0.771,0.753,0.76,0.755,0.728,0.798,0.928,0.872,0.773,0.784,0.935,0.913,0.761,0.749,0.942,0.801,0.84,0.942,0.805],"lambda_hi90":[1.168,1.213,1.035,0.999,1.381,1.108,1.255,1.207,1.191,1.177,1.216,1.148,1.237,0.998,1.434,1.246,1.26,1.048,0.981,1.192,1.165,1.05,1.26,1.327,1.078,1.273],"n_growing":[0,0,1,2,1,0,1,1,0,2,0,0,4,0,1,0,1,2,2,1,0,3,1,1,0,1],"n_declining":[1,1,1,3,0,1,0,3,1,15,1,1,3,6,0,1,0,0,5,2,9,0,0,0,1,0],"pct_declining":[100,100,50,60,0,100,0,75,100,88,100,100,43,100,0,100,0,0,71,67,100,0,0,0,100,0],"pct_occupied":[0,100,50,60,0,100,100,25,0,59,0,0,100,33,0,0,0,50,29,33,67,67,100,0,0,0],"eff_pops_rel":[1,1,0.867,0.508,1,1,1,0.621,1,0.721,1,1,0.827,0.636,1,1,1,0.656,0.399,0.667,0.762,0.841,1,1,1,1],"metapop_qext":[1,0.004,0.493,0.001,1,0.98,0.018,0.976,1,0.006,1,0.992,0,1,0.575,1,1,0.18,0.926,0.103,0.033,0.037,0.013,1,1,1],"metapop_qext_maj":[1,0.004,0.169,0.304,1,0.98,0.018,0.947,1,0.339,1,0.992,0,1,0.575,1,1,0.008,1,0.947,0.21,0.601,0.013,1,1,1]},"columns":[{"id":"core","name":"Core Area","type":"character","minWidth":160,"sticky":"left"},{"id":"n_pops","name":"Pops","type":"numeric","maxWidth":60},{"id":"hab_km","name":"Habitat (km)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":90},{"id":"density_N_km","name":"N/km (med)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":90,"style":[{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"},{"fontWeight":"bold"}]},{"id":"density_lo_km","name":"N/km (5%)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":80},{"id":"density_hi_km","name":"N/km (95%)","type":"numeric","format":{"cell":{"digits":1},"aggregated":{"digits":1}},"maxWidth":80},{"id":"lambda_core","name":"λ (core)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":85,"style":[{"background":"#FFA5A5","fontWeight":"bold"},{"background":"#FFD7D7","fontWeight":"bold"},{"background":"#FFEAEA","fontWeight":"bold"},{"background":"#FFD2D2","fontWeight":"bold"},{"background":"#ADC9FF","fontWeight":"bold"},{"background":"#FF7171","fontWeight":"bold"},{"background":"#FFFAFA","fontWeight":"bold"},{"background":"#FFD5D5","fontWeight":"bold"},{"background":"#FFC0C0","fontWeight":"bold"},{"background":"#FFBFBF","fontWeight":"bold"},{"background":"#FFCDCD","fontWeight":"bold"},{"background":"#FF9999","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FFD2D2","fontWeight":"bold"},{"background":"#87AFFF","fontWeight":"bold"},{"background":"#FFE8E8","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FFF3F3","fontWeight":"bold"},{"background":"#FFC0C0","fontWeight":"bold"},{"background":"#FFC6C6","fontWeight":"bold"},{"background":"#FFB0B0","fontWeight":"bold"},{"background":"#FFF8F8","fontWeight":"bold"},{"background":"#FAFCFF","fontWeight":"bold"},{"background":"#C6D9FF","fontWeight":"bold"},{"background":"#F7FAFF","fontWeight":"bold"},{"background":"#F3F7FF","fontWeight":"bold"}]},{"id":"lambda_lo90","name":"λ (5%)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":72},{"id":"lambda_hi90","name":"λ (95%)","type":"numeric","format":{"cell":{"digits":3},"aggregated":{"digits":3}},"maxWidth":72},{"id":"n_growing","name":"Growing","type":"numeric","maxWidth":72},{"id":"n_declining","name":"Declining","type":"numeric","maxWidth":80},{"id":"pct_declining","name":"% Declining","type":"numeric","format":{"cell":{"suffix":"%"},"aggregated":{"suffix":"%"}},"maxWidth":90},{"id":"pct_occupied","name":"Occupancy (%)","type":"numeric","format":{"cell":{"suffix":"%"},"aggregated":{"suffix":"%"}},"maxWidth":100,"style":[{"background":"#FF6666"},{"background":"#FFFFFF"},{"background":"#FFB3B3"},{"background":"#FFC2C2"},{"background":"#FF6666"},{"background":"#FFFFFF"},{"background":"#FFFFFF"},{"background":"#FF8C8C"},{"background":"#FF6666"},{"background":"#FFC0C0"},{"background":"#FF6666"},{"background":"#FF6666"},{"background":"#FFFFFF"},{"background":"#FF9898"},{"background":"#FF6666"},{"background":"#FF6666"},{"background":"#FF6666"},{"background":"#FFB3B3"},{"background":"#FF9292"},{"background":"#FF9898"},{"background":"#FFCDCD"},{"background":"#FFCDCD"},{"background":"#FFFFFF"},{"background":"#FF6666"},{"background":"#FF6666"},{"background":"#FF6666"}]},{"id":"eff_pops_rel","name":"Portfolio Balance","type":"numeric","format":{"cell":{"digits":2},"aggregated":{"digits":2}},"maxWidth":110},{"id":"metapop_qext","name":"Qext (total)","type":"numeric","format":{"cell":{"digits":1,"percent":true},"aggregated":{"digits":1,"percent":true}},"maxWidth":95,"style":[{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FFA7A7"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF5050"},{"background":"#FFFCFC"},{"background":"#FF5151"},{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FF4D4D"},{"background":"#FF4E4E"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF9898"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FFDFDF"},{"background":"#FF5A5A"},{"background":"#FFEDED"},{"background":"#FFF9F9"},{"background":"#FFF8F8"},{"background":"#FFFDFD"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FF4D4D"}]},{"id":"metapop_qext_maj","name":"Qext (majority)","type":"numeric","format":{"cell":{"digits":1,"percent":true},"aggregated":{"digits":1,"percent":true}},"maxWidth":105,"style":[{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FFE1E1"},{"background":"#FFC9C9"},{"background":"#FF4D4D"},{"background":"#FF5050"},{"background":"#FFFCFC"},{"background":"#FF5656"},{"background":"#FF4D4D"},{"background":"#FFC2C2"},{"background":"#FF4D4D"},{"background":"#FF4E4E"},{"background":"#FFFFFF"},{"background":"#FF4D4D"},{"background":"#FF9898"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FFFEFE"},{"background":"#FF4D4D"},{"background":"#FF5656"},{"background":"#FFDADA"},{"background":"#FF9494"},{"background":"#FFFDFD"},{"background":"#FF4D4D"},{"background":"#FF4D4D"},{"background":"#FF4D4D"}]}],"columnGroups":[{"name":"Habitat & Abundance","columns":["n_pops","hab_km","density_N_km","density_lo_km","density_hi_km"]},{"name":"Core Growth Rate","columns":["lambda_core","lambda_lo90","lambda_hi90"]},{"name":"Population Status","columns":["n_growing","n_declining","pct_declining"]},{"name":"Portfolio","columns":["pct_occupied","eff_pops_rel"]},{"name":"Quasi-Extinction","columns":["metapop_qext","metapop_qext_maj"]}],"resizable":true,"filterable":true,"searchable":true,"defaultPageSize":30,"highlight":true,"dataKey":"7cfa6f04498fa365f698a21c7c260c4c"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<p><em>Qext (total) = P(total core N &lt; 20 × n_pops at any projection year). Qext (majority) = P(majority of populations fall below 20 adults at any projection year). Model v1_22 | Data v1_8 | Run date: 2026-03-24</em></p>
+<p><em>Occupancy = % of local populations with estimated N ≥ 20 adults (last data year). Portfolio Balance = effective number of populations / total populations, derived from the Shannon diversity of the within-core abundance distribution (1 = perfectly balanced; values near 0 indicate dominance by a single population). Qext (total) = P(total core N &lt; 20 × n_pops at any projection year). Qext (majority) = P(majority of populations fall below 20 adults at any projection year). Model v1_22 | Data v1_8 | Run date: 2026-03-24</em></p>
 
 
 </section>

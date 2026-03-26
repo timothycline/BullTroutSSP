@@ -17,7 +17,7 @@ website:
       - href: prioritization.qmd
         text: Prioritization
       - href: metapop.qmd
-        text: Metapopulation
+        text: Core Area Status
 
 format:
   html:

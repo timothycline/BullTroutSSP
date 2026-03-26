@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-03-24">
+<meta name="dcterms.date" content="2026-03-26">
 
 <title>Bull Trout SSP — Population Viability Analysis - Data Overview</title>
 <style>
@@ -60,6 +60,9 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
 </head>
 
@@ -81,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./home.html" rel="" target="">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -89,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./model.html" rel="" target="">
  <span class="menu-text">Model</span></a>
   </li>  
   <li class="nav-item">
@@ -102,7 +105,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./metapop.html" rel="" target="">
- <span class="menu-text">Metapopulation</span></a>
+ <span class="menu-text">Core Area Status</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
@@ -120,7 +123,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Core Areas &amp; Populations</h2>
    
   <ul>
-  <li><a href="#jump-to-core-area" id="toc-jump-to-core-area" class="nav-link active" data-scroll-target="#jump-to-core-area">Jump to core area</a></li>
+  <li><a href="#data-summary" id="toc-data-summary" class="nav-link active" data-scroll-target="#data-summary">Data Summary</a>
+  <ul class="collapse">
+  <li><a href="#population-abundance-redd-counts" id="toc-population-abundance-redd-counts" class="nav-link" data-scroll-target="#population-abundance-redd-counts">Population Abundance — Redd Counts</a></li>
+  <li><a href="#dynamic-covariates-annual-time-series" id="toc-dynamic-covariates-annual-time-series" class="nav-link" data-scroll-target="#dynamic-covariates-annual-time-series">Dynamic Covariates — Annual Time Series</a></li>
+  <li><a href="#static-covariates-population-characteristics" id="toc-static-covariates-population-characteristics" class="nav-link" data-scroll-target="#static-covariates-population-characteristics">Static Covariates — Population Characteristics</a></li>
+  <li><a href="#population-time-series-plots" id="toc-population-time-series-plots" class="nav-link" data-scroll-target="#population-time-series-plots">Population Time Series Plots</a></li>
+  </ul></li>
+  <li><a href="#jump-to-core-area" id="toc-jump-to-core-area" class="nav-link" data-scroll-target="#jump-to-core-area">Jump to core area</a></li>
   </ul>
 </nav>
     </div>
@@ -141,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 24, 2026</p>
+      <p class="date">March 26, 2026</p>
     </div>
   </div>
   
@@ -157,7 +167,131 @@ ul.task-list li input[type="checkbox"] {
      Please DO NOT modify anything inside ```{r} ... ``` code blocks —
      those generate all the plots and tables automatically.
      ===================================================================== -->
-<p>For each population, plots show redd counts, summer streamflow, August water temperature, and non-native trout ratio. Each core area section also includes a static covariate table and a lake trout abundance index plot (core-level). Covariate years shown are the actual measurement years; the model applies an effective 6-year lag.</p>
+<section id="data-summary" class="level2">
+<h2 class="anchored" data-anchor-id="data-summary">Data Summary</h2>
+<p>This page documents the data assembled across <strong>80 local populations</strong> in <strong>26 core areas</strong>, spanning 1984–2022. All covariates were compiled from multiple state, federal, and academic sources and processed into a common format for the hierarchical model. The sections below describe each data type, its source, and the transformations applied before model fitting.</p>
+<hr>
+<section id="population-abundance-redd-counts" class="level3">
+<h3 class="anchored" data-anchor-id="population-abundance-redd-counts">Population Abundance — Redd Counts</h3>
+<p>Annual redd counts are the primary abundance index. Spawning redds (nests) are counted by technicians walking fixed survey reaches each fall; counts are proportional to the number of spawning adults and have been used to track bull trout population trends across the recovery units for more than two decades.</p>
+<p><strong>Source:</strong> USGS-harmonized redd count database compiled from USFWS, Montana FWP, Idaho IDFG, and tribal monitoring programs.</p>
+<p><strong>Coverage:</strong> Survey sites with at least 10 years of data are retained. Within each population, multiple survey reaches (sites) contribute counts in the same year; the population-level total is the sum across sites. A count of zero is recorded when a site was surveyed but no redds were observed; years when a site was not surveyed are treated as missing (not zero).</p>
+<p><strong>In the model:</strong> Redd counts enter as the observed response. Modeled as NB2 (negative binomial, fixed dispersion) conditioned on latent adult abundance, survey-reach length, and a contemporaneous flow effect on detection probability.</p>
+<hr>
+</section>
+<section id="dynamic-covariates-annual-time-series" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-covariates-annual-time-series">Dynamic Covariates — Annual Time Series</h3>
+<p>The following covariates vary by population and year and enter the population process equation with a <strong>6-year lag</strong> (5 years specified in data prep; the C++ model adds 1 additional year). This lag reflects the approximate time from egg incubation under a given year’s environmental conditions to first-time spawning as an adult — roughly one bull trout generation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-striped table-condensed table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Covariate</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Spatial scale</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Transformation</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Summer streamflow</td>
+<td style="text-align: left;">Population</td>
+<td style="text-align: left;">Annual sum of daily discharge</td>
+<td style="text-align: left;">Log → z-score → 6-yr lag</td>
+<td style="text-align: left; width: 28%;">USGS stream gauge network; ProcessedFlowMetrics.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">August temperature</td>
+<td style="text-align: left;">Population</td>
+<td style="text-align: left;">Mean August stream temperature (°C)</td>
+<td style="text-align: left;">Z-score → 6-yr lag</td>
+<td style="text-align: left; width: 28%;">NorWeST spatially-continuous stream temperature model (Isaak et al. 2016); MeanPatchAnnualTemps.RDS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Non-native fish proportion (INV)</td>
+<td style="text-align: left;">Population</td>
+<td style="text-align: left;">Proportion of non-native salmonids (brook + brown trout) in electrofishing catch</td>
+<td style="text-align: left;">Floor at 0.1% → logit → z-score; forward-filled for missing years</td>
+<td style="text-align: left; width: 28%;">Electrofishing surveys compiled from MFWP, USFWS, Tribes; BLTPatch_InvasiveRatio</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Lake trout index (LKT)</td>
+<td style="text-align: left;">Core area</td>
+<td style="text-align: left;">Proportion of lake trout in netting catch</td>
+<td style="text-align: left;">Logit → z-score; forward-filled for missing years</td>
+<td style="text-align: left; width: 28%;">Annual netting surveys — Glacier NP and MFWP; LakeNetting/</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>A <strong>contemporaneous flow</strong> term (same year, no lag) is also included in the <em>observation</em> model to account for year-to-year variation in redd detectability — high-flow years reduce observer efficiency and can suppress counts independently of true abundance changes.</p>
+<p><strong>Lake trout</strong> data are measured at the <strong>core area</strong> level (not population) and are only available for lake-connected systems. A binary indicator flags which core areas have LKT data; the LKT effect is estimated only for those cores.</p>
+<hr>
+</section>
+<section id="static-covariates-population-characteristics" class="level3">
+<h3 class="anchored" data-anchor-id="static-covariates-population-characteristics">Static Covariates — Population Characteristics</h3>
+<p>The following covariates are fixed through time and characterize the physical setting and life-history context of each population. They inform the population-level mean growth rate (b₀ᵣ) through a regression on static population attributes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-striped table-condensed table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Covariate</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Transformation</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Valley bottom extent (VB)</td>
+<td style="text-align: left;">Riparian valley floor area (km²)</td>
+<td style="text-align: left;">Log(x + 1) → z-score</td>
+<td style="text-align: left; width: 28%;">GIS — Whited, Flathead Lake Biological Station</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">W95 flood frequency</td>
+<td style="text-align: left;">Mean annual days exceeding 95th-pct flow</td>
+<td style="text-align: left;">Log(x + 1) → z-score</td>
+<td style="text-align: left; width: 28%;">Derived from USGS stream gauge flow records</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Road density — valley bottom (RDVB)</td>
+<td style="text-align: left;">Road length per km² of valley bottom</td>
+<td style="text-align: left;">Log(x + 1) → z-score</td>
+<td style="text-align: left; width: 28%;">National road layer intersected with valley bottom GIS — Whited, FLBS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Adfluvial life history</td>
+<td style="text-align: left;">Binary: population has lake-resident life-history access</td>
+<td style="text-align: left;">0/1</td>
+<td style="text-align: left; width: 28%;">Core area life-history classification — USFWS Recovery Plan; CoreArea_LifeHistory.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Habitat extent (km)</td>
+<td style="text-align: left;">Connected spawning habitat length (km)</td>
+<td style="text-align: left;">Used as density denominator in process model</td>
+<td style="text-align: left; width: 28%;">GIS — connected habitat layer, BLTPatches_metrics</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Valley bottom extent and road density were derived from GIS layers developed by <strong>Diane Whited</strong> at the Flathead Lake Biological Station. These capture landscape-scale habitat availability and disturbance pressure that can affect spawning habitat quality and population productivity independently of year-to-year environmental variation.</p>
+<hr>
+</section>
+<section id="population-time-series-plots" class="level3">
+<h3 class="anchored" data-anchor-id="population-time-series-plots">Population Time Series Plots</h3>
+<p>The plots below show, for each local population: annual redd counts (bars = totals, points = individual survey-site counts), summer streamflow, August temperature, and non-native trout proportion. Core area sections also include a lake trout abundance index (where available) and a static covariate summary table. Covariate time series are displayed in their native units; the model uses z-scored and lagged versions.</p>
+</section>
+</section>
 <section id="jump-to-core-area" class="level2 cell" data-layout-align="center">
 <h2 class="anchored" data-anchor-id="jump-to-core-area">Jump to core area</h2>
 <ul>

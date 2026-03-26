@@ -1,6 +1,6 @@
 ---
-title: "Metapopulation Summary"
-subtitle: "Core-Area Viability and Abundance"
+title: "Core Area Status"
+subtitle: "Viability and Portfolio Metrics Across the Columbia Headwaters Recovery Unit"
 date: today
 format:
   html:
@@ -26,25 +26,149 @@ ms   <- readRDS(here("Results", paste0(OutName, ".RDS")))
 cs   <- ms$core_summary
 pt   <- ms$pop_table
 meta <- ms$meta
+
+# ── Portfolio metrics computed from pop_table ──────────────────────────────
+shannon_entropy <- function(x) {
+  x <- x[!is.na(x) & x > 0]
+  if (length(x) == 0) return(0)
+  p <- x / sum(x)
+  -sum(p * log(p))
+}
+
+portfolio <- pt |>
+  group_by(core) |>
+  summarise(
+    n_pops_total = n(),
+    n_occupied   = sum(N_med >= 20, na.rm = TRUE),
+    pct_occupied = round(100 * n_occupied / n_pops_total, 0),
+    eff_n_pops   = exp(shannon_entropy(N_med)),
+    .groups      = "drop"
+  ) |>
+  mutate(eff_pops_rel = round(eff_n_pops / n_pops_total, 3))
+
+cs <- cs |>
+  left_join(
+    select(portfolio, core, n_occupied, pct_occupied, eff_n_pops, eff_pops_rel),
+    by = "core"
+  )
 ```
 
 ## Overview
 
-This page summarises bull trout viability at the **core-area** level across
-`r meta$nCore` core areas in the Columbia Headwaters Recovery Unit, based on
-`r meta$nPop` local populations monitored from
-`r min(meta$DatYears)` to `r max(meta$DatYears)`.
+`r meta$nCore` core areas, `r meta$nPop` local populations, `r min(meta$DatYears)`–`r max(meta$DatYears)`.
+Model v`r meta$ModelVersion` / Data v`r meta$DataVersion`.
 
-Estimates are derived from the hierarchical state-space Ricker model
-(Model v`r meta$ModelVersion` / Data v`r meta$DataVersion`).
+Core areas approximate probable metapopulations but boundaries also reflect watershed
+structure and jurisdictional units. They are the primary viability assessment unit for this
+recovery unit.
 
-**Metrics:**
+## Composite Metrics: Multiple Perspectives
 
-- **N/km** — estimated current abundance per km of connected spawning habitat (last data year)
-- **λ (core)** — intrinsic growth rate at the core-area level; exp(b0r_core)
-- **Metapop Qext** — probability that total core-area abundance falls below a
-  minimum threshold at any point in a `r meta$nYears_proj`-year forward projection
-- **Pop status** — fraction of local populations with λ ≥ 1 vs. λ < 1
+No single metric captures core area status fully. The five metrics used here each
+prioritise a different conservation objective and are not interchangeable.
+
+| Metric | Conservation objective | Key limitation |
+|---|---|---|
+| **Abundance (N/km)** | Maximise total fish | Blind to spatial distribution |
+| **Growth rate (λ)** | Identify recovering vs. declining units | Backward-looking |
+| **Occupancy** | Maintain all extant local populations (≥ 20 adults) | Insensitive to population size |
+| **Portfolio balance** | Detect over-concentration in a single dominant population | Independent of total abundance |
+| **Persistence (1 − Qext)** | Long-term viability under current trajectory | Projection-dependent |
+
+Occupancy and portfolio balance deserve particular attention. A core that has lost
+populations has reduced network redundancy regardless of total abundance — remaining
+populations carry the full burden of demographic rescue. Portfolio balance (effective
+populations / total, from Shannon diversity of the abundance distribution) flags cores
+where fish are concentrated in one tributary: functionally a single population even if
+others nominally persist.
+
+The heatmap below presents all five metrics simultaneously, each standardised to the
+range across core areas, so managers can apply their own weighting rather than a
+fixed composite.
+
+---
+
+## Multi-Metric Status Overview
+
+```{r heatmap, fig.height=8, fig.width=9.5}
+metric_levels <- c(
+  "Occupancy (%)",
+  "Portfolio Balance",
+  "Abundance (N/km)",
+  "Growth (λ)",
+  "Persistence"
+)
+
+hm_raw <- cs |>
+  mutate(core_label = gsub("([a-z])([A-Z])", "\\1 \\2", core)) |>
+  transmute(
+    core_label,
+    `Occupancy (%)`   = pct_occupied,
+    `Portfolio Balance` = eff_pops_rel,
+    `Abundance (N/km)` = density_N_km,
+    `Growth (λ)`       = lambda_core,
+    `Persistence`      = 1 - metapop_qext   # higher = better
+  ) |>
+  pivot_longer(-core_label, names_to = "metric", values_to = "raw") |>
+  group_by(metric) |>
+  mutate(
+    std = (raw - min(raw, na.rm = TRUE)) /
+          pmax(max(raw, na.rm = TRUE) - min(raw, na.rm = TRUE), 1e-9)
+  ) |>
+  ungroup() |>
+  mutate(
+    metric = factor(metric, levels = metric_levels),
+    # Label: show the interpretable raw value in each tile
+    label = case_when(
+      metric == "Occupancy (%)"    ~ paste0(round(raw), "%"),
+      metric == "Portfolio Balance" ~ sprintf("%.2f", raw),
+      metric == "Abundance (N/km)" ~ sprintf("%.1f", raw),
+      metric == "Growth (λ)"       ~ sprintf("%.3f", raw),
+      metric == "Persistence"      ~ scales::percent(1 - raw, accuracy = 1),  # show Qext
+      TRUE ~ as.character(raw)
+    )
+  )
+
+# Order core areas by mean standardised score — best at top
+core_order <- hm_raw |>
+  group_by(core_label) |>
+  summarise(mean_std = mean(std, na.rm = TRUE), .groups = "drop") |>
+  arrange(mean_std) |>
+  pull(core_label)
+
+hm_raw <- hm_raw |>
+  mutate(core_label = factor(core_label, levels = core_order))
+
+ggplot(hm_raw, aes(x = metric, y = core_label, fill = std)) +
+  geom_tile(color = "white", linewidth = 0.6) +
+  geom_text(aes(label = label), size = 2.7, color = "grey10") +
+  scale_fill_distiller(
+    palette   = "RdYlGn",
+    direction = 1,
+    limits    = c(0, 1),
+    name      = "Relative\nstatus",
+    labels    = scales::percent_format(accuracy = 1)
+  ) +
+  scale_x_discrete(position = "top") +
+  labs(
+    x        = NULL,
+    y        = NULL,
+    subtitle = paste0(
+      "Each metric standardised to the range across all core areas (green = best, red = worst within dataset).\n",
+      "Persistence tile labels show Qext probability (lower = greener). ",
+      "Portfolio Balance = effective populations / total populations.\n",
+      "Core areas ordered top-to-bottom by mean rank across all five metrics."
+    )
+  ) +
+  theme_bw(base_size = 11) +
+  theme(
+    axis.text.x     = element_text(angle = 0, hjust = 0.5, face = "bold", size = 10),
+    axis.text.y     = element_text(size = 9),
+    panel.grid      = element_blank(),
+    legend.position = "right",
+    plot.subtitle   = element_text(color = "grey40", size = 8.5)
+  )
+```
 
 ---
 
@@ -142,8 +266,8 @@ ggplot(cs_risk,
   )
 ```
 
-*Quadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small/isolated;
-orange = declining but larger buffer; red = declining and high extinction risk.*
+*Quadrants: green = stable (λ ≥ 1, low Qext); yellow = growing but small or isolated;
+orange = declining but with larger population buffer; red = declining with high extinction risk.*
 
 ---
 
@@ -208,12 +332,20 @@ qext_style <- function(value) {
   list(background = bg)
 }
 
+occ_style <- function(value) {
+  if (is.na(value)) return(list())
+  intensity <- (100 - value) / 100
+  bg <- rgb(1, 1 - intensity * 0.6, 1 - intensity * 0.6)
+  list(background = bg)
+}
+
 cs_tbl <- cs |>
   mutate(core = gsub("([a-z])([A-Z])", "\\1 \\2", core)) |>
   select(core, n_pops, hab_km,
          density_N_km, density_lo_km, density_hi_km,
          lambda_core, lambda_lo90, lambda_hi90,
          n_growing, n_declining, pct_declining,
+         pct_occupied, eff_pops_rel,
          metapop_qext, metapop_qext_maj)
 
 reactable(
@@ -225,24 +357,27 @@ reactable(
   defaultPageSize = 30,
   highlight       = TRUE,
   columns = list(
-    core             = colDef(name = "Core Area",       minWidth = 160, sticky = "left"),
-    n_pops           = colDef(name = "Pops",            maxWidth = 65),
-    hab_km           = colDef(name = "Habitat (km)",    format = colFormat(digits = 1), maxWidth = 90),
-    density_N_km     = colDef(name = "N/km (med)",      format = colFormat(digits = 1),
+    core             = colDef(name = "Core Area",        minWidth = 160, sticky = "left"),
+    n_pops           = colDef(name = "Pops",             maxWidth = 60),
+    hab_km           = colDef(name = "Habitat (km)",     format = colFormat(digits = 1), maxWidth = 90),
+    density_N_km     = colDef(name = "N/km (med)",       format = colFormat(digits = 1),
                                style = function(v) list(fontWeight = "bold"), maxWidth = 90),
-    density_lo_km    = colDef(name = "N/km (5%)",       format = colFormat(digits = 1), maxWidth = 80),
-    density_hi_km    = colDef(name = "N/km (95%)",      format = colFormat(digits = 1), maxWidth = 80),
-    lambda_core      = colDef(name = "λ (core)",        format = colFormat(digits = 3),
-                               style = lambda_style,    maxWidth = 85),
-    lambda_lo90      = colDef(name = "λ (5%)",          format = colFormat(digits = 3), maxWidth = 72),
-    lambda_hi90      = colDef(name = "λ (95%)",         format = colFormat(digits = 3), maxWidth = 72),
-    n_growing        = colDef(name = "Growing",         maxWidth = 75),
-    n_declining      = colDef(name = "Declining",       maxWidth = 80),
-    pct_declining    = colDef(name = "% Declining",     format = colFormat(suffix = "%"), maxWidth = 90),
-    metapop_qext     = colDef(name = "Qext (total)",    format = colFormat(percent = TRUE, digits = 1),
-                               style = qext_style,      maxWidth = 95),
-    metapop_qext_maj = colDef(name = "Qext (majority)", format = colFormat(percent = TRUE, digits = 1),
-                               style = qext_style,      maxWidth = 105)
+    density_lo_km    = colDef(name = "N/km (5%)",        format = colFormat(digits = 1), maxWidth = 80),
+    density_hi_km    = colDef(name = "N/km (95%)",       format = colFormat(digits = 1), maxWidth = 80),
+    lambda_core      = colDef(name = "λ (core)",         format = colFormat(digits = 3),
+                               style = lambda_style,     maxWidth = 85),
+    lambda_lo90      = colDef(name = "λ (5%)",           format = colFormat(digits = 3), maxWidth = 72),
+    lambda_hi90      = colDef(name = "λ (95%)",          format = colFormat(digits = 3), maxWidth = 72),
+    n_growing        = colDef(name = "Growing",          maxWidth = 72),
+    n_declining      = colDef(name = "Declining",        maxWidth = 80),
+    pct_declining    = colDef(name = "% Declining",      format = colFormat(suffix = "%"), maxWidth = 90),
+    pct_occupied     = colDef(name = "Occupancy (%)",    format = colFormat(suffix = "%"),
+                               style = occ_style,        maxWidth = 100),
+    eff_pops_rel     = colDef(name = "Portfolio Balance", format = colFormat(digits = 2), maxWidth = 110),
+    metapop_qext     = colDef(name = "Qext (total)",     format = colFormat(percent = TRUE, digits = 1),
+                               style = qext_style,       maxWidth = 95),
+    metapop_qext_maj = colDef(name = "Qext (majority)",  format = colFormat(percent = TRUE, digits = 1),
+                               style = qext_style,       maxWidth = 105)
   ),
   columnGroups = list(
     colGroup(name = "Habitat & Abundance",
@@ -251,13 +386,19 @@ reactable(
              columns = c("lambda_core", "lambda_lo90", "lambda_hi90")),
     colGroup(name = "Population Status",
              columns = c("n_growing", "n_declining", "pct_declining")),
+    colGroup(name = "Portfolio",
+             columns = c("pct_occupied", "eff_pops_rel")),
     colGroup(name = "Quasi-Extinction",
              columns = c("metapop_qext", "metapop_qext_maj"))
   )
 )
 ```
 
-*Qext (total) = P(total core N < 20 × n_pops at any projection year).
+*Occupancy = % of local populations with estimated N ≥ 20 adults (last data year).
+Portfolio Balance = effective number of populations / total populations, derived from the
+Shannon diversity of the within-core abundance distribution (1 = perfectly balanced; values
+near 0 indicate dominance by a single population).
+Qext (total) = P(total core N < 20 × n_pops at any projection year).
 Qext (majority) = P(majority of populations fall below 20 adults at any projection year).
 Model v`r meta$ModelVersion` | Data v`r meta$DataVersion` |
 Run date: `r meta$run_date`*

@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Bull Trout SSP Team">
-<meta name="dcterms.date" content="2026-03-24">
 
-<title>Bull Trout SSP — Population Viability Analysis - Bull Trout Multi-Population Viability Analysis</title>
+<title>Bull Trout SSP — Population Viability Analysis - Status and Conservation Risk of Threatened Bull Trout</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -95,15 +59,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -121,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./home.html" rel="" target="">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -129,7 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./model.html" rel="" target="">
  <span class="menu-text">Model</span></a>
   </li>  
   <li class="nav-item">
@@ -142,7 +101,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./metapop.html" rel="" target="">
- <span class="menu-text">Metapopulation</span></a>
+ <span class="menu-text">Core Area Status</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
@@ -155,70 +114,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
-  <ul class="collapse">
-  <li><a href="#spatial-hierarchy" id="toc-spatial-hierarchy" class="nav-link" data-scroll-target="#spatial-hierarchy">Spatial Hierarchy</a></li>
-  <li><a href="#data-coverage" id="toc-data-coverage" class="nav-link" data-scroll-target="#data-coverage">Data Coverage</a></li>
-  </ul></li>
-  <li><a href="#model-description" id="toc-model-description" class="nav-link" data-scroll-target="#model-description">Model Description</a>
-  <ul class="collapse">
-  <li><a href="#process-model" id="toc-process-model" class="nav-link" data-scroll-target="#process-model">Process Model</a></li>
-  <li><a href="#observation-model" id="toc-observation-model" class="nav-link" data-scroll-target="#observation-model">Observation Model</a></li>
-  <li><a href="#cpue-sub-model" id="toc-cpue-sub-model" class="nav-link" data-scroll-target="#cpue-sub-model">CPUE Sub-Model</a></li>
-  <li><a href="#hierarchical-parameter-structure" id="toc-hierarchical-parameter-structure" class="nav-link" data-scroll-target="#hierarchical-parameter-structure">Hierarchical Parameter Structure</a></li>
-  <li><a href="#three-stage-fitting" id="toc-three-stage-fitting" class="nav-link" data-scroll-target="#three-stage-fitting">Three-Stage Fitting</a></li>
-  </ul></li>
-  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection">Model Selection</a>
-  <ul class="collapse">
-  <li><a href="#flow-lag" id="toc-flow-lag" class="nav-link" data-scroll-target="#flow-lag">Flow Lag</a></li>
-  <li><a href="#static-habitat-covariates" id="toc-static-habitat-covariates" class="nav-link" data-scroll-target="#static-habitat-covariates">Static Habitat Covariates</a></li>
-  </ul></li>
-  <li><a href="#model-fit" id="toc-model-fit" class="nav-link" data-scroll-target="#model-fit">Model Fit</a>
-  <ul class="collapse">
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence">Convergence</a></li>
-  <li><a href="#observed-vs-fitted-redd-counts" id="toc-observed-vs-fitted-redd-counts" class="nav-link" data-scroll-target="#observed-vs-fitted-redd-counts">Observed vs Fitted Redd Counts</a></li>
-  </ul></li>
-  <li><a href="#residual-diagnostics" id="toc-residual-diagnostics" class="nav-link" data-scroll-target="#residual-diagnostics">Residual Diagnostics</a></li>
-  <li><a href="#process-error-and-observation-dispersion" id="toc-process-error-and-observation-dispersion" class="nav-link" data-scroll-target="#process-error-and-observation-dispersion">Process Error and Observation Dispersion</a></li>
-  <li><a href="#why-nb2-overdispersion-diagnostic" id="toc-why-nb2-overdispersion-diagnostic" class="nav-link" data-scroll-target="#why-nb2-overdispersion-diagnostic">Why NB2? Overdispersion Diagnostic</a></li>
-  <li><a href="#causal-analysis-invasives-and-bull-trout" id="toc-causal-analysis-invasives-and-bull-trout" class="nav-link" data-scroll-target="#causal-analysis-invasives-and-bull-trout">Causal Analysis: Invasives and Bull Trout</a>
-  <ul class="collapse">
-  <li><a href="#species-specific-displacement-lags" id="toc-species-specific-displacement-lags" class="nav-link" data-scroll-target="#species-specific-displacement-lags">Species-specific displacement lags</a></li>
-  </ul></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bull Trout Multi-Population Viability Analysis</h1>
-<p class="subtitle lead">TMB State-Space Ricker Model — v1.22</p>
+<h1 class="title">Status and Conservation Risk of Threatened Bull Trout</h1>
+<p class="subtitle lead">Columbia Headwaters and Saint Mary Recovery Units</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Bull Trout SSP Team </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 24, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -226,1155 +136,128 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-
 <!-- =====================================================================
      COLLABORATORS: Feel free to edit any text in this file.
      Please DO NOT modify anything inside ```{r} ... ``` code blocks —
-     those generate the figures and tables automatically from the model.
-     The section headings and narrative paragraphs are all fair game.
+     those generate content automatically from the model.
      ===================================================================== -->
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Version identifiers ──────────────────────────────────────────────────────</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>DataVersion     <span class="ot">&lt;-</span> <span class="st">"1_8"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ModelVersion    <span class="ot">&lt;-</span> <span class="st">"1_22"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>RunVersion      <span class="ot">&lt;-</span> <span class="st">"1_21"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>FunctionVersion <span class="ot">&lt;-</span> <span class="st">"1_13"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>SaveName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"MPVA_Fit_D"</span>, DataVersion, <span class="st">"_M"</span>, ModelVersion, <span class="st">"_R"</span>, RunVersion)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Helper functions ─────────────────────────────────────────────────────────</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"Code"</span>, <span class="fu">paste0</span>(<span class="st">"MPVA_Functions"</span>, FunctionVersion, <span class="st">".R"</span>)))</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Load saved model fit ─────────────────────────────────────────────────────</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="fu">paste0</span>(SaveName, <span class="st">".RDS"</span>)))</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">list2env</span>(fit, <span class="at">envir =</span> .GlobalEnv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
-</div>
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nPop  <span class="ot">&lt;-</span> data_list<span class="sc">$</span>nPop</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nCore <span class="ot">&lt;-</span> data_list<span class="sc">$</span>nCore</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>pop_core_vec <span class="ot">&lt;-</span> data_list<span class="sc">$</span>pop_core <span class="sc">+</span> 1L   <span class="co"># 1-indexed core for each pop</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Convenience extractors ───────────────────────────────────────────────────</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>get_rep <span class="ot">&lt;-</span> <span class="cf">function</span>(pname) {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">est =</span> fit_rep<span class="sc">$</span>value[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> pname],</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">se  =</span> fit_rep<span class="sc">$</span>sd[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value)    <span class="sc">==</span> pname]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>re_summ <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_rep, <span class="at">select =</span> <span class="st">"random"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>get_re  <span class="ot">&lt;-</span> <span class="cf">function</span>(nm) <span class="fu">unname</span>(re_summ[<span class="fu">rownames</span>(re_summ) <span class="sc">==</span> nm, <span class="st">"Estimate"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+<section id="project-background" class="level2">
+<h2 class="anchored" data-anchor-id="project-background">Project Background</h2>
+<p>Bull trout (<em>Salvelinus confluentus</em>) are a cold-water obligate salmonid listed as Threatened under the U.S. Endangered Species Act. Across the Columbia Headwaters and Saint Mary Recovery Units, the only populations east of the Continental Divide, many local populations have declined in recent decades due to a combination of habitat degradation, warming and altered stream hydrology, and the spread of non-native fishes.</p>
+<p>Despite decades of monitoring effort, our ability to rigorously assess population status and conservation risk has been limited by a lack of data-driven, quantitative approaches operating at scales relevant to management. Single-population trend analyses often have low statistical power, can be sensitive to the time window of available data, and fail to capture the hierarchical structure of bull trout populations, from local spawning streams, to core area metapopulations, to the recovery unit as a whole.</p>
+<p>This project was conceived to address that gap. In 2021, a team from the <strong>USGS Northern Rocky Mountain Science Center (NOROCK)</strong> and the <strong>U.S. Fish and Wildlife Service</strong> was awarded funding through the USGS-FWS <strong>Science Support Partnership</strong> to develop a unified, spatiotemporal status andthreat assessment for bull trout in these two recovery units. This website presents the products of that effort.</p>
 <hr>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This document presents the model structure and key diagnostics for a hierarchical state-space Ricker model fitted to bull trout (<em>Salvelinus confluentus</em>) redd count time series across multiple local populations nested within core areas. Detailed results — covariate effects, population trajectories, exposure and sensitivity, and future viability projections — are in the <a href="./results.html">Model Results</a> tab.</p>
-<section id="spatial-hierarchy" class="level3">
-<h3 class="anchored" data-anchor-id="spatial-hierarchy">Spatial Hierarchy</h3>
-<p>The model uses a three-level spatial structure:</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Level</th>
-<th>Unit</th>
-<th>N</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Core area</td>
-<td>Watershed complex</td>
-<td>26</td>
-</tr>
-<tr class="even">
-<td>Local population</td>
-<td>Spawning tributary</td>
-<td>80</td>
-</tr>
-<tr class="odd">
-<td>Survey site</td>
-<td>Redd count reach</td>
-<td>105</td>
-</tr>
-</tbody>
-</table>
 </section>
-<section id="data-coverage" class="level3">
-<h3 class="anchored" data-anchor-id="data-coverage">Data Coverage</h3>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>year_range <span class="ot">&lt;-</span> <span class="fu">range</span>(DatYears)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n_obs      <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(data_list<span class="sc">$</span>ReddCounts))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>n_possible <span class="ot">&lt;-</span> <span class="fu">prod</span>(<span class="fu">dim</span>(data_list<span class="sc">$</span>ReddCounts))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Years"</span>, <span class="st">"Core areas"</span>, <span class="st">"Local populations"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Survey sites"</span>, <span class="st">"Site-year observations"</span>, <span class="st">"Data coverage"</span>),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(year_range[<span class="dv">1</span>], <span class="st">"–"</span>, year_range[<span class="dv">2</span>]),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nCore,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nPop,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    data_list<span class="sc">$</span>nSites,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    n_obs,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n_obs <span class="sc">/</span> n_possible, <span class="dv">1</span>), <span class="st">"%"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">1984 – 2022</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Core areas</td>
-<td style="text-align: left;">26</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Local populations</td>
-<td style="text-align: left;">80</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Survey sites</td>
-<td style="text-align: left;">105</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Site-year observations</td>
-<td style="text-align: left;">2407</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Data coverage</td>
-<td style="text-align: left;">58.8%</td>
-</tr>
-</tbody>
-</table>
-
-
+<section id="project-team" class="level2">
+<h2 class="anchored" data-anchor-id="project-team">Project Team</h2>
+<p><strong>USGS Principal Investigators</strong></p>
+<ul>
+<li>Timothy Cline, Montana State University (formerly USGS NOROCK)</li>
+<li>Clint Muhlfeld, USGS NOROCK</li>
+<li>Robert Al-Chokhachy, USGS NOROCK</li>
+</ul>
+<p><strong>USFWS Project Officers</strong></p>
+<ul>
+<li>Dan Brewer, Bull Trout Recovery Coordinator, Montana Ecological Services Office</li>
+<li>Ben Conard, Deputy Office Supervisor, Montana Ecological Services Office</li>
+</ul>
+<p><strong>Collaborators</strong></p>
+<ul>
+<li>David Schmetterling, Montana Fish, Wildlife and Parks</li>
+<li>Vin D’Angelo, USGS NOROCK</li>
+<li>Diane Whited, Flathead Lake Biological Station (GIS and spatial data)</li>
+</ul>
+<hr>
+</section>
+<section id="what-we-did" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-did">What We Did</h2>
+<p>The project was organized around three objectives, each corresponding to a section of this website.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+1 — Centralized Database
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We assembled and synthesized redd count monitoring data from 80 local bull trout populations across 26 core areas, spanning 1984–2022. Environmental covariates (stream temperature, summer base-flow, invasive fish proportion, and lake trout abundance) were compiled from state, federal, and tribal partners and linked to each population at annual resolution.</p>
+<p>→ <a href="data.html">Explore the data</a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+2 — Hierarchical Multi-Population Viability Analysis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We developed a hierarchical state-space Ricker model that integrates all available abundance data across local populations and core areas simultaneously. This approach borrows strength across populations to estimate demographic rates for data-sparse populations, propagates observation and process uncertainty through the analysis, and directly estimates the effects of abiotic and biotic threats on population growth rates (λ) at the local population and core area scales.</p>
+<p>→ <a href="model.html">View model results</a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+3 — Decision-Support Tools
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We translated model outputs into an annually-updatable conservation prioritization framework designed to help resource managers identify which populations are most at risk and which management levers (invasive species control, flow augmentation, temperature reduction) offer the greatest potential benefit per population and per core area.</p>
+<p>→ <a href="prioritization.html">Explore the prioritization tools</a></p>
 </div>
 </div>
 <hr>
 </section>
-</section>
-<section id="model-description" class="level2">
-<h2 class="anchored" data-anchor-id="model-description">Model Description</h2>
-<section id="process-model" class="level3">
-<h3 class="anchored" data-anchor-id="process-model">Process Model</h3>
-<p>The latent population abundance follows a density-dependent Ricker process with AR(1) process error:</p>
-<p><span class="math display">\[\log N_{p,t} = \log N_{p,t-1} + R_{p,t} + \varepsilon_{p,t}\]</span></p>
-<p>where the instantaneous growth rate is:</p>
-<p><span class="math display">\[R_{p,t} = b_{0r,p} + \beta_{\text{Flow},p} \cdot \text{Flow}_{p,t-1}
-           + \beta_{\text{Temp},p} \cdot T_{p,t-1}
-           + \beta_{\text{Temp}_2} \cdot T_{p,t-1}^2
-           + \beta_{\text{INV},p} \cdot \text{INV}_{p,t-1}
-           + \beta_{\text{LKT},M} \cdot \text{LKT}_{c,t-1}
-           - \phi_p \cdot D_{p,t-1}\]</span></p>
-<p>Process errors follow an AR(1) structure:</p>
-<p><span class="math display">\[\varepsilon_{p,t} = \rho \cdot \varepsilon_{p,t-1} + \eta_{p,t}, \quad
-  \eta_{p,t} \sim \mathcal{N}\!\left(0,\; \sigma_N \sqrt{1-\rho^2}\right)\]</span></p>
-<p>All dynamic covariates carry an effective lag of <strong>6 years</strong> (5-year R-side lag + 1-year C++ indexing), reflecting the time from in-gravel incubation to adult redd counts.</p>
-</section>
-<section id="observation-model" class="level3">
-<h3 class="anchored" data-anchor-id="observation-model">Observation Model</h3>
-<p>Redd counts at each survey site follow a Negative Binomial (NB2) distribution:</p>
-<p><span class="math display">\[C_{s,y} \sim \text{NB2}\!\left(\mu_{s,y},\; \phi_{\text{obs}}\right), \quad
-  \mu_{s,y} = 0.5 \cdot N_{p,y} \cdot \pi_s \cdot \exp(\beta_{\text{FC}} \cdot \text{Flow}_{p,y})\]</span></p>
-<p>where <span class="math inline">\(\phi_{\text{obs}}\)</span> is the NB2 dispersion parameter (<span class="math inline">\(\text{Var} = \mu + \mu^2/\phi_{\text{obs}}\)</span>; as <span class="math inline">\(\phi_{\text{obs}} \to \infty\)</span> the distribution collapses to Poisson), <span class="math inline">\(\pi_s\)</span> is the fraction of population habitat surveyed at site <span class="math inline">\(s\)</span>, and <span class="math inline">\(\beta_{\text{FC}}\)</span> captures the contemporaneous same-year flow effect on redd detectability (observation model only; does not enter the state equation).</p>
-</section>
-<section id="cpue-sub-model" class="level3">
-<h3 class="anchored" data-anchor-id="cpue-sub-model">CPUE Sub-Model</h3>
-<p>For populations with electrofishing data, model-based CPUE (fish km⁻¹) provides an independent abundance index:</p>
-<p><span class="math display">\[\log(\text{CPUE}_i) \sim \mathcal{N}\!\left(\log N_{p,y} - \log(\text{extent}_p)
-  + q_s,\; \sigma_{\text{CPUE}}\right)\]</span></p>
-<p>where <span class="math inline">\(q_s\)</span> is a section-level catchability random effect that absorbs persistent efficiency differences among electrofishing reaches.</p>
-</section>
-<section id="hierarchical-parameter-structure" class="level3">
-<h3 class="anchored" data-anchor-id="hierarchical-parameter-structure">Hierarchical Parameter Structure</h3>
+<section id="species-background" class="level2">
+<h2 class="anchored" data-anchor-id="species-background">Species Background</h2>
+<p>Bull trout require cold (&lt; 13 °C), clean, complex, and connected streams for all life stages. They are highly sensitive to a suite of anthropogenic stressors:</p>
 <table class="table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 42%">
+<col style="width: 57%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Parameter</th>
-<th>Hierarchy</th>
+<th>Threat</th>
+<th>Mechanism</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Baseline growth rate <span class="math inline">\(b_{0r}\)</span></td>
-<td>Global → Core → Population</td>
+<td>Warming water temperatures</td>
+<td>Upper spawning threshold ~13 °C; lethal above ~20 °C; accelerated warming under climate change</td>
 </tr>
 <tr class="even">
-<td>Density dependence <span class="math inline">\(\phi\)</span></td>
-<td>Global → Population</td>
+<td>Altered hydrology</td>
+<td>Low summer base-flow reduces habitat availability; high winter floods scour incubating eggs</td>
 </tr>
 <tr class="odd">
-<td>Flow slope <span class="math inline">\(\beta_\text{Flow}\)</span></td>
-<td>Global hyper-mean → Population</td>
+<td>Non-native fish</td>
+<td>Competitive displacement by brook trout and brown trout; predation and competition from lake trout in lake-connected systems</td>
 </tr>
 <tr class="even">
-<td>Temperature slope <span class="math inline">\(\beta_\text{Temp}\)</span></td>
-<td>Global hyper-mean → Population</td>
+<td>Migratory barriers</td>
+<td>Loss of access to adfluvial (lake-resident) life history reduces productivity; adfluvial populations support higher λ</td>
 </tr>
 <tr class="odd">
-<td>Invasive slope <span class="math inline">\(\beta_\text{INV}\)</span></td>
-<td>Global hyper-mean → Population</td>
-</tr>
-<tr class="even">
-<td>Lake trout slope <span class="math inline">\(\beta_\text{LKT}\)</span></td>
-<td>Global scalar (cores with lake trout only)</td>
-</tr>
-<tr class="odd">
-<td>Adfluvial access, unconfined valley bottom</td>
-<td>Global scalar on <span class="math inline">\(b_{0r}\)</span> mean</td>
-</tr>
-<tr class="even">
-<td>W95 winter flood frequency, road density</td>
-<td>Global scalar on <span class="math inline">\(b_{0r}\)</span> mean</td>
+<td>Habitat degradation</td>
+<td>Road-related fine sediment impairs gravel spawning habitat; riparian degradation increases thermal loading</td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="three-stage-fitting" class="level3">
-<h3 class="anchored" data-anchor-id="three-stage-fitting">Three-Stage Fitting</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Stage</th>
-<th>Observation model</th>
-<th>Fixed</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A</td>
-<td>Poisson</td>
-<td>All SDs, AR(1) ρ</td>
-<td>Initialize latent states</td>
-</tr>
-<tr class="even">
-<td>B1</td>
-<td>Poisson</td>
-<td>All SDs</td>
-<td>Stabilise hierarchy under Poisson</td>
-</tr>
-<tr class="odd">
-<td>B2</td>
-<td>NB2</td>
-<td>— (all free)</td>
-<td>Full model — final inference</td>
-</tr>
-</tbody>
-</table>
+<p>Bull trout population structure is hierarchical: local spawning populations are nested within core areas (roughly watershed-scale metapopulations), which in turn comprise recovery units. Effective conservation planning must account for dynamics at all three scales. This is a central motivation for the multi-population modeling approach used here.</p>
 <hr>
-</section>
-</section>
-<section id="model-selection" class="level2">
-<h2 class="anchored" data-anchor-id="model-selection">Model Selection</h2>
-<section id="flow-lag" class="level3">
-<h3 class="anchored" data-anchor-id="flow-lag">Flow Lag</h3>
-<p>Bull trout have a complex life history: eggs are deposited in late summer, incubate over winter, and juveniles spend several years rearing before returning as adults to spawn. We therefore tested a range of lags between environmental conditions and the observed adult redd count response. With temperature fixed at an effective 6-year lag (the best-supported specification from earlier runs), we searched a grid of <strong>effective lags 4–8 years</strong> × <strong>moving-average windows (none, 2-year, 3-year)</strong> for summer streamflow (15 combinations total). All models used the 3-stage NB2 fitting procedure; comparison is by marginal AIC.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fl <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="st">"FlowLagSearch_2026-03-22.RDS"</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fl_plot <span class="ot">&lt;-</span> fl<span class="sc">$</span>results_df <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(AIC)) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ma_label  =</span> <span class="fu">case_when</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      MovAvgF <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"No moving average"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      MovAvgF <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"2-year MA"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      MovAvgF <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"3-year MA"</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">label     =</span> <span class="fu">factor</span>(label, <span class="at">levels =</span> <span class="fu">rev</span>(label[<span class="fu">order</span>(AIC)])),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill_grp  =</span> <span class="fu">case_when</span>(</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      delta_AIC <span class="sc">&lt;=</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Within 2 AIC (equivalent)"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      delta_AIC <span class="sc">&lt;=</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Within 7 AIC (some support)"</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>           <span class="sc">~</span> <span class="st">"&gt; 7 AIC (little support)"</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Within 2 AIC (equivalent)"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Within 7 AIC (some support)"</span>,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"&gt; 7 AIC (little support)"</span>))</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fl_plot, <span class="fu">aes</span>(<span class="at">x =</span> label, <span class="at">y =</span> delta_AIC, <span class="at">fill =</span> fill_grp)) <span class="sc">+</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.85</span>, <span class="at">width =</span> <span class="fl">0.65</span>) <span class="sc">+</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"goldenrod"</span>,  <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">7</span>, <span class="at">linetype =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"tomato"</span>,     <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"Δ%.1f"</span>, delta_AIC)),</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">3.2</span>) <span class="sc">+</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Within 2 AIC (equivalent)"</span>  <span class="ot">=</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Within 7 AIC (some support)"</span> <span class="ot">=</span> <span class="st">"goldenrod3"</span>,</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>               <span class="st">"&gt; 7 AIC (little support)"</span>    <span class="ot">=</span> <span class="st">"grey60"</span>),</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>))) <span class="sc">+</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="cn">NULL</span>,</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"ΔAIC relative to best model"</span>,</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Flow lag selection — ΔAIC by lag specification"</span>,</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">sprintf</span>(</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Temperature fixed: effective %d-yr lag, no smoothing  |  Data v%s  |  Model v%s"</span>,</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>      fl<span class="sc">$</span>TempLag <span class="sc">+</span> <span class="dv">1</span>, fl<span class="sc">$</span>DataVersion, fl<span class="sc">$</span>ModelVersion</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"NA = model failed to converge; longer lags exceeded the time-series extent"</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/flow-lag-selection-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The <strong>6-year effective lag with no moving average</strong> (Lag6_NoMA) has the lowest AIC. The next-best models all involve shorter lags with multi-year smoothing, which may be capturing a similar biological signal through averaging. Given the clean biological interpretation — eggs deposited in year <em>t</em> incubate for approximately one winter and juveniles rear for approximately 4–5 years before returning as adults — an unsmoothed 6-year lag is preferred. This specification is used in all subsequent model runs.</p>
-</section>
-<section id="static-habitat-covariates" class="level3">
-<h3 class="anchored" data-anchor-id="static-habitat-covariates">Static Habitat Covariates</h3>
-<p>With the flow lag fixed, we tested all 2^4 = 16 subsets of four static habitat scalars that shift the prior mean of the population-level baseline growth rate:</p>
-<table class="table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 28%">
-<col style="width: 47%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Covariate</th>
-<th>Abbreviation</th>
-<th>Biological hypothesis</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Adfluvial access (binary)</td>
-<td>Adf</td>
-<td>Lake-connected populations have higher adult survival / energy reserves</td>
-</tr>
-<tr class="even">
-<td>Unconfined valley bottom (z-score)</td>
-<td>VB</td>
-<td>Wider floodplains support more redd habitat and higher carrying capacity</td>
-</tr>
-<tr class="odd">
-<td>W95 winter flood frequency (z-score)</td>
-<td>Flood</td>
-<td>High-flow winters scour redds and reduce recruitment</td>
-</tr>
-<tr class="even">
-<td>Road density in valley bottom (z-score)</td>
-<td>RD</td>
-<td>Roads increase fine sediment delivery and reduce egg-to-fry survival</td>
-</tr>
-</tbody>
-</table>
-<p>Dynamic covariates (flow, temperature, invasives, lake trout) were held at the selected lag specification throughout. Comparison is by AICc.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="st">"StaticCovarSelection_2026-03-23.RDS"</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sc_plot <span class="ot">&lt;-</span> sc<span class="sc">$</span>results_df <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(AICc)) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">label    =</span> <span class="fu">factor</span>(label, <span class="at">levels =</span> <span class="fu">rev</span>(label[<span class="fu">order</span>(AICc)])),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill_grp =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      delta_AICc_vs_best <span class="sc">&lt;=</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Within 2 AICc (equivalent)"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      delta_AICc_vs_best <span class="sc">&lt;=</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Within 7 AICc (some support)"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                    <span class="sc">~</span> <span class="st">"&gt; 7 AICc (little support)"</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Within 2 AICc (equivalent)"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Within 7 AICc (some support)"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"&gt; 7 AICc (little support)"</span>))</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sc_plot, <span class="fu">aes</span>(<span class="at">x =</span> label, <span class="at">y =</span> delta_AICc_vs_best, <span class="at">fill =</span> fill_grp)) <span class="sc">+</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.85</span>, <span class="at">width =</span> <span class="fl">0.65</span>) <span class="sc">+</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"goldenrod"</span>,  <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">7</span>, <span class="at">linetype =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"tomato"</span>,     <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"Δ%.1f  (k=%d)"</span>, delta_AICc_vs_best, k_fixed)),</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.05</span>, <span class="at">size =</span> <span class="fl">3.0</span>) <span class="sc">+</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Within 2 AICc (equivalent)"</span>  <span class="ot">=</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Within 7 AICc (some support)"</span> <span class="ot">=</span> <span class="st">"goldenrod3"</span>,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>               <span class="st">"&gt; 7 AICc (little support)"</span>    <span class="ot">=</span> <span class="st">"grey60"</span>),</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.30</span>))) <span class="sc">+</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="cn">NULL</span>,</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"ΔAICc relative to best model"</span>,</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Static covariate model selection — all 16 subsets"</span>,</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">sprintf</span>(</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Flow lag %d yr, Temp lag %d yr (no smoothing)  |  Data v%s  |  n = %d site-years"</span>,</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      sc<span class="sc">$</span>FlowLag <span class="sc">+</span> <span class="dv">1</span>, sc<span class="sc">$</span>TempLag <span class="sc">+</span> <span class="dv">1</span>, sc<span class="sc">$</span>DataVersion, sc<span class="sc">$</span>n_obs</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/static-covar-selection-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sc<span class="sc">$</span>results_df <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(AICc)) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, use_Adfluvial, use_VB, use_Flood, use_RD,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         AICc, delta_AICc_vs_best, AICc_weight) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(use_Adfluvial, use_VB, use_Flood, use_RD),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span> <span class="fu">ifelse</span>(. <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"✓"</span>, <span class="st">""</span>)),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(AICc, delta_AICc_vs_best), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>)),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">AICc_weight =</span> <span class="fu">round</span>(AICc_weight, <span class="dv">3</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Model"</span>, <span class="st">"Adf"</span>, <span class="st">"VB"</span>, <span class="st">"Flood"</span>, <span class="st">"RD"</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"AICc"</span>, <span class="st">"ΔAICc"</span>, <span class="st">"w"</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">font_size =</span> <span class="dv">12</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="fu">which</span>(sc<span class="sc">$</span>results_df<span class="sc">$</span>delta_AICc_vs_best[<span class="sc">!</span><span class="fu">is.na</span>(sc<span class="sc">$</span>results_df<span class="sc">$</span>AICc)] <span class="sc">&lt;=</span> <span class="dv">2</span>),</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">background =</span> <span class="st">"#EBF5FB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">Adf</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">VB</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">Flood</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">RD</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AICc</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">ΔAICc</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">w</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">Adf+Flood</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;"></td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;"></td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">18646.17</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">0.00</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">0.361</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">Adf+VB+Flood</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;"></td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">18647.33</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">1.16</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">0.203</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">Adf+Flood+RD</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;"></td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: center; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">✓</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">18648.15</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">1.98</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(235, 245, 251, 255) !important;">0.134</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Full (Adf+VB+Flood+RD)</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18648.79</td>
-<td style="text-align: right;">2.62</td>
-<td style="text-align: right;">0.097</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Adf</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18650.64</td>
-<td style="text-align: right;">4.47</td>
-<td style="text-align: right;">0.039</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Adf+VB</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18650.95</td>
-<td style="text-align: right;">4.78</td>
-<td style="text-align: right;">0.033</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Adf+VB+RD</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18651.86</td>
-<td style="text-align: right;">5.69</td>
-<td style="text-align: right;">0.021</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">VB</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18652.02</td>
-<td style="text-align: right;">5.85</td>
-<td style="text-align: right;">0.019</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">VB+Flood</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18652.06</td>
-<td style="text-align: right;">5.89</td>
-<td style="text-align: right;">0.019</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Flood</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18652.13</td>
-<td style="text-align: right;">5.96</td>
-<td style="text-align: right;">0.018</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Adf+RD</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18652.44</td>
-<td style="text-align: right;">6.27</td>
-<td style="text-align: right;">0.016</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Null (no static)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: right;">18652.65</td>
-<td style="text-align: right;">6.48</td>
-<td style="text-align: right;">0.014</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">VB+RD</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18653.86</td>
-<td style="text-align: right;">7.69</td>
-<td style="text-align: right;">0.008</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">VB+Flood+RD</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18654.11</td>
-<td style="text-align: right;">7.94</td>
-<td style="text-align: right;">0.007</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Flood+RD</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18654.40</td>
-<td style="text-align: right;">8.23</td>
-<td style="text-align: right;">0.006</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">RD</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: right;">18654.82</td>
-<td style="text-align: right;">8.65</td>
-<td style="text-align: right;">0.005</td>
-</tr>
-</tbody>
-</table>
+<p><em>Model v1_22 · Data v1_10 · Funded by the USGS–FWS Science Support Partnership, FY21-22 Interior Regions 5 and 7</em></p>
 
 
-</div>
-</div>
-<p><strong>Adfluvial access</strong> and <strong>flood frequency</strong> appear in every model with strong support (ΔAICc ≤ 2); both have clear, directional effects. Valley bottom width and road density are individually marginal but add modest support when combined with the core two. The <strong>full model (all four scalars)</strong> sits at ΔAICc = 2.6 — within conventional equivalent-support range — and is retained to preserve biological completeness and consistency across core areas with different habitat profiles.</p>
-<hr>
-</section>
-</section>
-<section id="model-fit" class="level2">
-<h2 class="anchored" data-anchor-id="model-fit">Model Fit</h2>
-<section id="convergence" class="level3">
-<h3 class="anchored" data-anchor-id="convergence">Convergence</h3>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>conv_label <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(optB<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"Converged (0)"</span>,</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">paste</span>(<span class="st">"Not converged ("</span>, optB<span class="sc">$</span>convergence, <span class="st">")"</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>max_grad   <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(fit_rep<span class="sc">$</span>gradient.fixed))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>rho_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"rho"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>phi_e      <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"phi_obs"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sigN_e     <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"sigmaN"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metric =</span> <span class="fu">c</span>(<span class="st">"Convergence code"</span>, <span class="st">"Negative log-likelihood"</span>, <span class="st">"Max |gradient|"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>             <span class="st">"AR(1) ρ"</span>, <span class="st">"NB2 dispersion φ_obs"</span>, <span class="st">"Process error σ_N"</span>),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value  =</span> <span class="fu">c</span>(</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    conv_label,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(optB<span class="sc">$</span>objective, <span class="dv">2</span>),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">formatC</span>(max_grad, <span class="at">format =</span> <span class="st">"e"</span>, <span class="at">digits =</span> <span class="dv">2</span>),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(rho_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(rho_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>),</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(phi_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(phi_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>),</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="fu">round</span>(sigN_e<span class="sc">$</span>est, <span class="dv">3</span>), <span class="st">" (SE "</span>, <span class="fu">round</span>(sigN_e<span class="sc">$</span>se, <span class="dv">3</span>), <span class="st">")"</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Metric"</span>, <span class="st">"Value"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Convergence code</td>
-<td style="text-align: left;">Converged (0)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Negative log-likelihood</td>
-<td style="text-align: left;">9039.76</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Max &amp;#124;gradient&amp;#124;</td>
-<td style="text-align: left;">2.44e-02</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AR(1) ρ</td>
-<td style="text-align: left;">0.359 (SE 0.143)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NB2 dispersion φ_obs</td>
-<td style="text-align: left;">3.124 (SE 0.142)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Process error σ_N</td>
-<td style="text-align: left;">0.103 (SE 0.017)</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
-<section id="observed-vs-fitted-redd-counts" class="level3">
-<h3 class="anchored" data-anchor-id="observed-vs-fitted-redd-counts">Observed vs Fitted Redd Counts</h3>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit_plots <span class="ot">&lt;-</span> <span class="fu">plot_fit</span>(data_list, fit_rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-2.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-3.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-4.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-5.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Worst-fitting sites:
-# A tibble: 15 × 6
-   pop   site      n  rmse mean_pearson sd_pearson
-   &lt;fct&gt; &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 5     6        26  32.3       -3.12        2.28
- 2 71    93       38  32.1        0.107       2.82
- 3 72    95       38  30.9        2.41        3.19
- 4 62    83       27  29.4       -2.69        2.74
- 5 72    94       38  28.4       -2.61        1.98
- 6 61    81       12  27.1        0.134       3.11
- 7 76    99       38  24.0        0.126       2.50
- 8 60    80       12  23.1        0.224       2.59
- 9 28    39       32  22.8        0.240       2.71
-10 26    37       34  20.7        2.06        3.21
-11 46    63       38  20.6        1.28        2.48
-12 5     7        24  20.5        2.06        3.96
-13 80    105      29  20.5        1.21        2.69
-14 14    19       27  20.5        0.366       3.07
-15 66    87       12  20.2        0.121       2.40</code></pre>
-</div>
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>fit</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>df_obsfit <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> y_obs)) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans =</span> <span class="st">"log1p"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Fitted NB2 mean (log1p scale)"</span>, <span class="at">y =</span> <span class="st">"Observed (log1p scale)"</span>,</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed vs Fitted Redd Counts — All Site-Years"</span>) <span class="sc">+</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/obs-fitted-scatter-6.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-</section>
-</section>
-<section id="residual-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="residual-diagnostics">Residual Diagnostics</h2>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_resid <span class="ot">&lt;-</span> fit_plots<span class="sc">$</span>resid</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df_resid <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pearson)) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">60</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pearson Residual"</span>, <span class="at">y =</span> <span class="st">"Count"</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Residual Distribution — All Site-Years"</span>) <span class="sc">+</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/residuals-dist-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_resid <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_actual =</span> DatYears[year]) <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year_actual) <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_r =</span> <span class="fu">mean</span>(pearson, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">se_r   =</span> <span class="fu">sd</span>(pearson, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">n</span>()),</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year_actual, <span class="at">y =</span> mean_r)) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_r <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_r,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> mean_r <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_r), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean Pearson Residual (± 95% CI)"</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Mean Residual by Year — Check for Temporal Trends"</span>) <span class="sc">+</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/residuals-year-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-</section>
-<section id="process-error-and-observation-dispersion" class="level2">
-<h2 class="anchored" data-anchor-id="process-error-and-observation-dispersion">Process Error and Observation Dispersion</h2>
-<p>AR(1) temporal autocorrelation and NB2 overdispersion absorb variance that would otherwise inflate covariate effects or process error. The AR(1) captures persistent multi-year trends in population dynamics; NB2 absorbs aggregated spawning behaviour and observer variability in redd counts.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sigq_e  <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"sigma_q"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sigc_e  <span class="ot">&lt;-</span> <span class="fu">get_rep</span>(<span class="st">"sigma_cpue"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>params_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">c</span>(<span class="st">"AR(1) autocorrelation ρ"</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Process error σ_N (innovation SD)"</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"NB2 dispersion φ_obs"</span>,</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"CPUE observation SD σ_cpue"</span>,</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"CPUE catchability SD σ_q"</span>),</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate  =</span> <span class="fu">c</span>(rho_e<span class="sc">$</span>est, sigN_e<span class="sc">$</span>est, phi_e<span class="sc">$</span>est, sigc_e<span class="sc">$</span>est, sigq_e<span class="sc">$</span>est),</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">SE        =</span> <span class="fu">c</span>(rho_e<span class="sc">$</span>se,  sigN_e<span class="sc">$</span>se,  phi_e<span class="sc">$</span>se,  sigc_e<span class="sc">$</span>se,  sigq_e<span class="sc">$</span>se)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lower95 =</span> Estimate <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> SE,</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Upper95 =</span> Estimate <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> SE</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>params_df <span class="sc">|&gt;</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>,</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Parameter"</span>, <span class="st">"Estimate"</span>, <span class="st">"SE"</span>, <span class="st">"Lower 95%"</span>, <span class="st">"Upper 95%"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Lower 95%</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Upper 95%</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">rho</td>
-<td style="text-align: left;">AR(1) autocorrelation ρ</td>
-<td style="text-align: right;">0.359</td>
-<td style="text-align: right;">0.143</td>
-<td style="text-align: right;">0.079</td>
-<td style="text-align: right;">0.639</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sigmaN</td>
-<td style="text-align: left;">Process error σ_N (innovation SD)</td>
-<td style="text-align: right;">0.103</td>
-<td style="text-align: right;">0.017</td>
-<td style="text-align: right;">0.070</td>
-<td style="text-align: right;">0.137</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">phi_obs</td>
-<td style="text-align: left;">NB2 dispersion φ_obs</td>
-<td style="text-align: right;">3.124</td>
-<td style="text-align: right;">0.142</td>
-<td style="text-align: right;">2.845</td>
-<td style="text-align: right;">3.402</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sigma_cpue</td>
-<td style="text-align: left;">CPUE observation SD σ_cpue</td>
-<td style="text-align: right;">0.300</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.300</td>
-<td style="text-align: right;">0.300</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sigma_q</td>
-<td style="text-align: left;">CPUE catchability SD σ_q</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.500</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-<hr>
-</section>
-<section id="why-nb2-overdispersion-diagnostic" class="level2">
-<h2 class="anchored" data-anchor-id="why-nb2-overdispersion-diagnostic">Why NB2? Overdispersion Diagnostic</h2>
-<p>Redd counts show strong overdispersion relative to what a Poisson observation model would predict. The plot below compares the observed site-level variance against mean redd count (each point = one survey site, ≥ 5 years of data) with the theoretical variance function for Poisson (<span class="math inline">\(\text{Var} = \mu\)</span>) and NB2 (<span class="math inline">\(\text{Var} = \mu + \mu^2/\phi_{\text{obs}}\)</span>). The data track the NB2 curve closely across nearly three orders of magnitude in abundance; the Poisson line consistently underpredicts variance, especially at high counts.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build site × year data frame using the already-loaded fit objects</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>phi_val <span class="ot">&lt;-</span> phi_e<span class="sc">$</span>est[<span class="dv">1</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>phi_se_ <span class="ot">&lt;-</span> phi_e<span class="sc">$</span>se[<span class="dv">1</span>]</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>logN_mat_diag <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  fit_rep<span class="sc">$</span>value[<span class="fu">names</span>(fit_rep<span class="sc">$</span>value) <span class="sc">==</span> <span class="st">"logN"</span>],</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> nPop, <span class="at">ncol =</span> data_list<span class="sc">$</span>nYears</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>df_diag <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">site =</span> <span class="fu">seq_len</span>(data_list<span class="sc">$</span>nSites),</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">year =</span> <span class="fu">seq_len</span>(data_list<span class="sc">$</span>nYears)) <span class="sc">|&gt;</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop   =</span> data_list<span class="sc">$</span>site_pop[site] <span class="sc">+</span> 1L,</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_obs =</span> <span class="fu">as.vector</span>(data_list<span class="sc">$</span>ReddCounts),</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu    =</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">exp</span>(logN_mat_diag[<span class="fu">cbind</span>(pop, year)]) <span class="sc">*</span> data_list<span class="sc">$</span>pS[site]</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.finite</span>(y_obs), <span class="sc">!</span><span class="fu">is.na</span>(y_obs), mu <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Per-site variance vs mean (at least 5 years of data per site)</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>site_stats <span class="ot">&lt;-</span> df_diag <span class="sc">|&gt;</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site) <span class="sc">|&gt;</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">obs_mean =</span> <span class="fu">mean</span>(y_obs),</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">obs_var  =</span> <span class="fu">var</span>(y_obs),</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">n        =</span> <span class="fu">n</span>(),</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups  =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">5</span>, obs_mean <span class="sc">&gt;</span> <span class="dv">0</span>, obs_var <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute global overdispersion statistics for annotation</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>od_pois <span class="ot">&lt;-</span> <span class="fu">sum</span>((df_diag<span class="sc">$</span>y_obs <span class="sc">-</span> df_diag<span class="sc">$</span>mu)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> df_diag<span class="sc">$</span>mu) <span class="sc">/</span> <span class="fu">nrow</span>(df_diag)</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>od_nb2  <span class="ot">&lt;-</span> <span class="fu">sum</span>((df_diag<span class="sc">$</span>y_obs <span class="sc">-</span> df_diag<span class="sc">$</span>mu)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>               (df_diag<span class="sc">$</span>mu <span class="sc">+</span> df_diag<span class="sc">$</span>mu<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> phi_val)) <span class="sc">/</span> <span class="fu">nrow</span>(df_diag)</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Theory curves</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>mu_seq <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="fu">log10</span>(<span class="fu">min</span>(site_stats<span class="sc">$</span>obs_mean)),</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">log10</span>(<span class="fu">max</span>(site_stats<span class="sc">$</span>obs_mean)),</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>                 <span class="at">length.out =</span> <span class="dv">300</span>)</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>var_lines <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">mu      =</span> mu_seq,</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">Poisson =</span> mu_seq,</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">NB2     =</span> mu_seq <span class="sc">+</span> mu_seq<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> phi_val</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>mu, <span class="at">names_to =</span> <span class="st">"model"</span>, <span class="at">values_to =</span> <span class="st">"var"</span>)</span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(site_stats, <span class="fu">aes</span>(<span class="at">x =</span> obs_mean, <span class="at">y =</span> obs_var)) <span class="sc">+</span></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">colour =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> var_lines,</span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> var, <span class="at">colour =</span> model, <span class="at">linetype =</span> model),</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.0</span>) <span class="sc">+</span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">Poisson =</span> <span class="st">"steelblue"</span>, <span class="at">NB2 =</span> <span class="st">"tomato"</span>),</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">Poisson =</span> <span class="st">"dashed"</span>, <span class="at">NB2 =</span> <span class="st">"solid"</span>),</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>                        <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="cn">Inf</span>, <span class="at">y =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">hjust =</span> <span class="fl">1.05</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">3.2</span>,</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Poisson disp. = %.1f  |  NB2 disp. = %.2f  |  φ = %.2f (SE %.2f)"</span>,</span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>             od_pois, od_nb2, phi_val, phi_se_</span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>           ), <span class="at">colour =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="st">"Site mean redd count (log scale)"</span>,</span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"Site observed variance (log scale)"</span>,</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Observed variance vs mean — NB2 vs Poisson"</span>,</span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">sprintf</span>(</span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>      <span class="st">"NB2: Var = μ + μ²/φ,  φ = %.2f (SE = %.2f);  Poisson: Var = μ"</span>,</span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>      phi_val, phi_se_</span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/nb2-justification-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-</section>
-<section id="causal-analysis-invasives-and-bull-trout" class="level2">
-<h2 class="anchored" data-anchor-id="causal-analysis-invasives-and-bull-trout">Causal Analysis: Invasives and Bull Trout</h2>
-<p>To determine whether the negative association between non-native trout and bull trout reflects <strong>displacement</strong> (invasives suppressing bull trout population growth) or <strong>replacement</strong> (declining bull trout creating space for invasives), we fit cross-lagged mixed-effects regressions using the model-estimated latent log-abundance as the bull trout index. The displacement signal — INV(t−k) predicting log-λ(t) — is large, negative, and highly significant across all lags from 1 to 8 years (|t| = 6–21), with the strongest effect at a 1-year lag and gradual decay at longer horizons as expected from a lagged life-history response. The replacement signal — logN(t) predicting ΔINV(t+k) — is indistinguishable from zero at every lead (|t| &lt; 0.4, R² &lt; 0.01%). The asymmetry between the two directions strongly supports a causal pathway from invasive trout to bull trout suppression, rather than the reverse.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="st">"CrossLag_INV_BLT_2026-03-23.RDS"</span>))</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>inv2blt <span class="ot">&lt;-</span> cl<span class="sc">$</span>results_inv2blt <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sig =</span> <span class="fu">abs</span>(t_stat) <span class="sc">&gt;</span> <span class="dv">2</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">panel =</span> <span class="st">"INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement: invasives drive bull trout decline]"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>blt2inv <span class="ot">&lt;-</span> cl<span class="sc">$</span>results_blt2inv <span class="sc">|&gt;</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sig =</span> <span class="fu">abs</span>(t_stat) <span class="sc">&gt;</span> <span class="dv">2</span>,</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">panel =</span> <span class="st">"logN(t) \u2192 \u0394INV(t+k)   [Replacement: bull trout decline drives invasion]"</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(inv2blt, blt2inv) <span class="sc">|&gt;</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">panel =</span> <span class="fu">factor</span>(panel, <span class="at">levels =</span> <span class="fu">c</span>(</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement: invasives drive bull trout decline]"</span>,</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logN(t) \u2192 \u0394INV(t+k)   [Replacement: bull trout decline drives invasion]"</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">|&gt;</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag_yr, <span class="at">y =</span> beta)) <span class="sc">+</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower95, <span class="at">ymax =</span> upper95, <span class="at">fill =</span> sig),</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.18</span>) <span class="sc">+</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> sig), <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> sig, <span class="at">fill =</span> sig),</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"grey60"</span>,  <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"steelblue"</span>),</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| \u2264 2"</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| &gt; 2"</span>),</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values  =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"grey60"</span>,  <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"steelblue"</span>),</span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels  =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| \u2264 2"</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| &gt; 2"</span>),</span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>                    <span class="at">name    =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>panel, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Lag / lead (years)"</span>,</span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Regression coefficient (± 95% CI)"</span>,</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Cross-lagged analysis: causal direction between invasives and bull trout"</span>,</span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="fu">paste0</span>(<span class="st">"Mixed-effects regression on model-estimated latent log-abundance.  "</span>,</span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Run date: "</span>, cl<span class="sc">$</span>run_date)</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text       =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/crosslag-plot-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<section id="species-specific-displacement-lags" class="level3">
-<h3 class="anchored" data-anchor-id="species-specific-displacement-lags">Species-specific displacement lags</h3>
-<p>Both brook trout (BKT) and brown trout (BNT) independently displace bull trout, but at different time scales: BKT effects peak at lags 1–2 years, consistent with direct headwater competition among juveniles, while BNT effects are strongest at lags 3–5 years, suggesting a slower pathway possibly mediated through displacement of juvenile bull trout cohorts before they recruit to the adult stage. Neither species shows any evidence of a replacement signal — bull trout decline does not predict subsequent increases in either invader, ruling out a vacancy-driven mechanism and reinforcing the causal direction from invasive trout to bull trout suppression.</p>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cls <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"Results"</span>, <span class="st">"CrossLag_INV_BLT_Species_2026-03-23.RDS"</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>species_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Brook trout (BKT)"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Brown trout (BNT)"</span> <span class="ot">=</span> <span class="st">"tomato"</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Combined"</span>          <span class="ot">=</span> <span class="st">"grey40"</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>cls<span class="sc">$</span>results_all <span class="sc">|&gt;</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">"Combined"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sig   =</span> <span class="fu">abs</span>(t_stat) <span class="sc">&gt;</span> <span class="dv">2</span>,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel =</span> <span class="fu">case_when</span>(</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>      direction <span class="sc">==</span> <span class="st">"INV \u2192 BLT"</span> <span class="sc">~</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement]"</span>,</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      direction <span class="sc">==</span> <span class="st">"BLT \u2192 INV"</span> <span class="sc">~</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"logN(t) \u2192 \u0394INV(t+k)   [Replacement]"</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel =</span> <span class="fu">factor</span>(panel, <span class="at">levels =</span> <span class="fu">c</span>(</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"INV(t\u2212k) \u2192 log\u03bb(t)   [Displacement]"</span>,</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"logN(t) \u2192 \u0394INV(t+k)   [Replacement]"</span></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag_yr, <span class="at">y =</span> beta,</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> species, <span class="at">fill =</span> species, <span class="at">shape =</span> sig)) <span class="sc">+</span></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower95, <span class="at">ymax =</span> upper95), <span class="at">alpha =</span> <span class="fl">0.12</span>,</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> species_pal, <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values  =</span> species_pal, <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">21</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">19</span>),</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| \u2264 2"</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"|t| &gt; 2"</span>),</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name   =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>panel, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Lag / lead (years)"</span>,</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Regression coefficient (\u00b1 95% CI)"</span>,</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Species-specific cross-lagged analysis: BKT and BNT"</span>,</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="fu">paste0</span>(<span class="st">"Filled points: |t| &gt; 2.  Run date: "</span>, cls<span class="sc">$</span>run_date)</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text       =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/crosslag-species-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<p><em>Generated with <a href="https://quarto.org">Quarto</a> · Model code at <a href="https://github.com/timothycline/BullTroutSSP">github.com/timothycline/BullTroutSSP</a></em></p>
-
-
-</section>
 </section>
 
 </main> <!-- /main -->
