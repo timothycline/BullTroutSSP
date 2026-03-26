@@ -481,21 +481,33 @@ zero; error bars show ± 1.96 SE. Lake trout and non-native fish show the
 largest suppression effects.
 
 ```{r covar-barplot, fig.height=4.5, fig.width=7}
+# Combined temperature effect: Δ log-λ moving from T = 0.5 SD to T = 1.5 SD
+# Δ = bTemp_M * (1.5 - 0.5) + bTemp2 * (1.5² - 0.5²)
+#   = bTemp_M * 1.0           + bTemp2 * 2.0
+# SE via delta method (linear combination); covariance term omitted (conservative).
+bTemp_M_es  <- get_est("bTemp_M")
+bTemp2_es   <- get_est("bTemp2")
+temp_comb_est <- 1.0 * bTemp_M_es[1] + 2.0 * bTemp2_es[1]
+temp_comb_se  <- sqrt(1.0^2 * bTemp_M_es[2]^2 + 2.0^2 * bTemp2_es[2]^2)
+
 covar_bar_rows <- list(
-  list(par = "bLKT_M",  label = "Lake trout",                 type = "Dynamic"),
-  list(par = "bINV_M",  label = "Non-native trout",           type = "Dynamic"),
-  list(par = "bTemp2",  label = "August temperature²",        type = "Dynamic"),
-  list(par = "bTemp_M", label = "August temperature",         type = "Dynamic"),
-  list(par = "bFlow_M", label = "Summer streamflow",          type = "Dynamic"),
-  list(par = "bUVB",    label = "Unconfined valley bottom",   type = "Static"),
-  list(par = "bRD",     label = "Road density",               type = "Static"),
-  list(par = "bFlood",  label = "Flood frequency (W95)",      type = "Static"),
-  list(par = "bAdf",    label = "Lake area (adfluvial)",      type = "Static")
+  list(par = "bLKT_M",       label = "Lake trout",                      type = "Dynamic"),
+  list(par = "bINV_M",       label = "Non-native trout",                type = "Dynamic"),
+  list(par = "temp_combined", label = "August temperature (0.5→1.5 SD)", type = "Dynamic"),
+  list(par = "bFlow_M",      label = "Summer streamflow",               type = "Dynamic"),
+  list(par = "bUVB",         label = "Unconfined valley bottom",        type = "Static"),
+  list(par = "bRD",          label = "Road density",                    type = "Static"),
+  list(par = "bFlood",       label = "Flood frequency (W95)",           type = "Static"),
+  list(par = "bAdf",         label = "Lake area (adfluvial)",           type = "Static")
 )
 
 bar_df <- bind_rows(lapply(covar_bar_rows, function(r) {
-  es <- get_est(r$par)
-  tibble(label = r$label, type = r$type, est = es[1], se = es[2])
+  if (r$par == "temp_combined") {
+    tibble(label = r$label, type = r$type, est = temp_comb_est, se = temp_comb_se)
+  } else {
+    es <- get_est(r$par)
+    tibble(label = r$label, type = r$type, est = es[1], se = es[2])
+  }
 })) |>
   filter(!is.na(est)) |>
   mutate(
@@ -519,9 +531,12 @@ ggplot(bar_df, aes(x = label, y = est, fill = dir, alpha = sig_f)) +
   facet_grid(type ~ ., scales = "free_y", space = "free_y") +
   labs(
     x        = NULL,
-    y        = "Effect on log-λ per SD covariate",
+    y        = "Effect on log-λ",
     title    = "Relative Covariate Importance",
-    subtitle = "Ranked by |effect|  |  Solid = 95% CI excludes zero  |  Error bars: 95% CI"
+    subtitle = paste0(
+      "Ranked by |effect|  |  Solid = 95% CI excludes zero  |  Error bars: 95% CI\n",
+      "Temperature: combined linear + quadratic effect of a 1 SD warming in the upper thermal range"
+    )
   ) +
   theme_out +
   theme(
